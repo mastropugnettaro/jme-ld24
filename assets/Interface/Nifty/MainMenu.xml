@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+    <useStyles filename="nifty-default-styles.xml" />
+    <useControls filename="nifty-default-controls.xml" />
+
+    <style id="main">
+        <attributes
+        visibleToMouse="true"
+        font="Interface/Fonts/Forte.fnt"
+        align="center"
+        height="90px"
+        width="350px"/>
+    </style>
+
+    <screen id="start" controller="com.teamjmonkey.ui.MainMenuScreen">
+        <layer id="background" backgroundColor="#003f"  childLayout="center">
+        </layer>
+        <layer id="menu_layer" childLayout="center" >
+            <panel childLayout="vertical" visibleToMouse="true" backgroundColor="#900f" >
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true" />
+                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true" />
+                </effect>
+                <control id="main_menu" name ="label"  style="main" text="NEW GAME" backgroundColor="#090f">
+                    <interact onClick="showLoadingScreen()" />
+                </control>
+                <control id="main_continue" name ="label" style="main" text="CONTINUE">
+                    <interact onClick="hud()" />
+                </control>
+                <control id="main_level_select" name ="label" style="main" text="LEVEL">
+                    <interact onClick="quit()"/>
+                </control>
+                <control id="main_options" name = "label" style="main" text="OPTIONS">
+                    <interact onClick="showOptionsScreen()" />
+                </control>
+                <control id="main_credits" name = "label" style="main" text="CREDITS">
+                    <interact onClick="hud()" />
+                </control>
+                <control id="main_exit" name ="label" style="main" text="EXIT">
+                    <interact onClick="showExitDialog()"/>
+                </control>
+            </panel>
+        </layer>
+    </screen>
+
+    <!-- Popup layer for exiting -->
+    <popup id="popupExit" childLayout="center" backgroundColor="#000a">
+        <panel childLayout="vertical" width="50%" height="30%" backgroundColor="#666f" padding = "10%" >
+            <text text="Are you sure?" font="aurulent-sans-16.fnt" align="center" />
+            <panel height="*" />
+            <panel childLayout="horizontal">
+                <control name = "button" label = "Cancel" valign="bottom" align="right" >
+                    <interact onClick="closePopup()" />
+                </control>
+                <panel width="*" height="0" />
+                <control name = "button" label = "Exit" valign="bottom" align="left" >
+                    <interact onClick="exit()" />
+                </control>
+            </panel>
+        </panel>
+    </popup>
+
+    <screen id="end" >
+    </screen>
+</nifty>
