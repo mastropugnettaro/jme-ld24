@@ -75,6 +75,10 @@ public class GameAppState extends AbstractAppState {
 
         public void onAnalog(String name, float value, float tpf) {
 
+            if(GameState.getGameState() != GameState.RUNNING) {
+                return;
+            }
+
             //move main Character
             if (name.equals(LEFT_MOVE)) {
             } else if (name.equals(RIGHT_MOVE)) {

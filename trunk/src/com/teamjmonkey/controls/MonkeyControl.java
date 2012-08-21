@@ -18,4 +18,8 @@ public enum MonkeyControl {
 
         return null;
     }
+
+    public Class<? extends BaseControl> getClazz() {
+        return clazz;
+    }
 }
