@@ -27,7 +27,7 @@ public class MainMenuScreen implements ScreenController {
         nifty.getSoundSystem().addSound("titleSound", "Sounds/ahem.ogg");
 
         sound = nifty.getSoundSystem().getSound("titleSound");
-        sound.setVolume(0.5f);
+        sound.setVolume(0.1f);
     }
 
     public void onStartScreen() {
