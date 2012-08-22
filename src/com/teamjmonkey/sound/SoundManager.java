@@ -10,15 +10,15 @@ import java.util.EnumMap;
 
 public class SoundManager implements Manager {
 
-    private static EnumMap<MonkeySound, AudioNode> soundMap;
+    private EnumMap<MonkeySound, AudioNode> soundMap;
     private GameNameGoesHere myApp;
     private AudioRenderer audioRenderer;
     private AssetManager assetManager;
 
     public SoundManager() {
         myApp = GameNameGoesHere.getApp();
-        this.audioRenderer = myApp.getAudioRenderer();
-        this.assetManager = myApp.getAssetManager();
+        audioRenderer = myApp.getAudioRenderer();
+        assetManager = myApp.getAssetManager();
 
         soundMap = new EnumMap<MonkeySound, AudioNode>(MonkeySound.class);
     }
@@ -130,7 +130,6 @@ public class SoundManager implements Manager {
 
     public void cleanup() {
         unloadAllMusic();
-
-        System.gc();
+        soundMap.clear();
     }
 }
