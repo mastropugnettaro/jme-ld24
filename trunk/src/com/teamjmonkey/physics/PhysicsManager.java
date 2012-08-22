@@ -34,10 +34,6 @@ public class PhysicsManager implements Manager {
     }
 
     public void cleanup() {
-        Iterator it = collisionShapeMap.keySet().iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
-        }
+        collisionShapeMap.clear();
     }
 }
