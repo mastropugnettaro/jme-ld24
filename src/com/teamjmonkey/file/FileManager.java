@@ -39,6 +39,7 @@ public class FileManager implements Manager {
     public FileManager(AssetManager assetManager) {
 
         //IMPORTANT incorporate the UserSettings in here
+        this.assetManager = assetManager;
 
         createSQLFile();
 
