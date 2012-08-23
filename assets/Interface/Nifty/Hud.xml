@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+
+    <screen id="hud" controller="com.teamjmonkey.appstates.GameAppState">
+        <layer id="layer" childLayout="vertical">
+            <image filename="Interface/health_bar.jpg" height="100px" width="200px" align = "left" valign="top" />
+            <panel height="*" />
+            <panel childLayout="horizontal">
+            <control name="label" text="HELLLLLOOO" font="Interface/Fonts/Forte.fnt" color="#897f" height="90px" width="350px" valign="bottom" />
+            <panel width="*" height="0"/>
+            <image filename="Interface/face.jpg" height="200px" width="250px" align = "left" valign="top" />
+            </panel>
+        </layer>
+    </screen>
+</nifty>
