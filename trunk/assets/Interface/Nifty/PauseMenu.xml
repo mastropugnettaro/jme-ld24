@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+
+    <useStyles filename="nifty-default-styles.xml" />
+    <useControls filename="nifty-default-controls.xml" />
+
+    <style id="pauseStyle">
+        <attributes
+        visibleToMouse="true"
+        font="Interface/Fonts/Forte.fnt"
+        align="center"
+        height="90px"
+        width="400px"/>
+    </style>
+
+    <screen id="pause" controller="com.teamjmonkey.appstates.MainMenuAppState">
+        <layer id="background" backgroundColor="#003f"  childLayout="center">
+        </layer>
+        <layer id="menu_layer" childLayout="center" >
+            <panel childLayout="vertical" visibleToMouse="true" backgroundColor="#900f" >
+                <effect>
+                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true" />
+                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true" />
+                </effect>
+                <control id="main_resume" name ="label"  style="pauseStyle" text="RESUME" backgroundColor="#090f">
+                    <interact onClick="resume()" />
+                </control>
+                <control id="main_restart" name ="label" style="pauseStyle" text="RESTART LEVEL">
+                    <interact onClick="restart()" />
+                </control>
+                <control id="main_main_menu" name ="label" style="pauseStyle" text="MAIN MENU">
+                    <interact onClick="showMainMenu()"/>
+                </control>
+                <control id="main_options" name = "label" style="pauseStyle" text="OPTIONS">
+                    <interact onClick="showOptionsScreen()" />
+                </control>
+                <control id="main_exit" name ="label" style="pauseStyle" text="LEAVE">
+                    <interact onClick="exit()"/>
+                </control>
+            </panel>
+        </layer>
+    </screen>
+</nifty>

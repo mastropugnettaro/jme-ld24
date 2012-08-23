@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+
+    <screen id="options" controller="com.teamjmonkey.ui.OptionsScreen">
+        <layer id="layer" backgroundColor="#003f" childLayout="center">
+            <panel id = "container" childLayout ="vertical" >
+                <panel childLayout="horizontal" >
+                    <panel width="*" height="0"/>
+                    <control id="simpleCheckBox" name="checkbox" checked="true" />
+                    <panel width="1%" height= "0" />
+                    <text id="text" text="SOUND" valign="center" font="Interface/Fonts/Forte.fnt" paddingRight="10" />
+                    <panel width="*" height="0" />
+                </panel>
+ <control name="horizontalScrollbar" worldMax="1000.0" worldPageSize="100.0" initial="10.0" buttonStepSize="10.0" pageStepSize="100.0" width="50%" />
+                <control name="button" label="Back" align="center">
+                    <interact onClick="gotoMainMenu()" />
+                </control>
+            </panel>
+        </layer>
+    </screen>
+</nifty>

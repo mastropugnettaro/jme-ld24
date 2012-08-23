@@ -4,6 +4,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.teamjmonkey.GameNameGoesHere;
+import com.teamjmonkey.ui.OptionsScreen;
 import com.teamjmonkey.ui.UIManager;
 import com.teamjmonkey.util.GameState;
 import de.lessvoid.nifty.Nifty;
@@ -26,8 +27,8 @@ public class MainMenuAppState extends AbstractAppState implements ScreenControll
     private SoundHandle sound;
 
     public MainMenuAppState() {
-        nifty.registerScreenController(this);
-        nifty.fromXml("Interface/Nifty/MainMenu.xml", "start");
+        nifty.fromXml("Interface/Nifty/MainMenu.xml", "start", this, new OptionsScreen());
+        nifty.addXml("Interface/Nifty/OptionsMenu.xml");
 
         nifty.getSoundSystem().addSound("titleSound", "Sounds/ahem.ogg");
 
@@ -89,7 +90,6 @@ public class MainMenuAppState extends AbstractAppState implements ScreenControll
     }
 
     public void bind(Nifty nifty, Screen screen) {
-        System.out.println("bind( " + screen.getScreenId() + ")");
         popupElement = nifty.createPopup("popupExit");
     }
 
