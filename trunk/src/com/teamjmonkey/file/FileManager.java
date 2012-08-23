@@ -50,18 +50,19 @@ public class FileManager implements Manager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void createSQLFile() {
-        File storageFolder = JmeSystem.getStorageFolder();
 
+        String settingsFile = "teamjmonkey.db";
+
+        File storageFolder = JmeSystem.getStorageFolder();
         File settingsDirectory = new File(storageFolder, ".TeamJMonkey");
         if (!settingsDirectory.exists()) {
             if (settingsDirectory.mkdir()) {
                 assetManager.registerLoader(DatabaseLoader.class, "db");
 
-                String levelFilename = "Files/teamjmonkey.db";
+                String levelFilename = "Files/" + settingsFile;
                 AssetKey myKey1 = new AssetKey(levelFilename);
                 AssetInfo info1 = assetManager.locateAsset(myKey1);
                 InputStream inputStream = (InputStream) info1.openStream();
@@ -71,7 +72,7 @@ public class FileManager implements Manager {
                 String absolutePath = "";
 
                 try {
-                    File bfile = new File(settingsDirectory, "teamjmonkey.db");
+                    File bfile = new File(settingsDirectory, settingsFile);
                     absolutePath = bfile.getAbsolutePath();
                     outStream = new FileOutputStream(bfile);
 
@@ -88,15 +89,15 @@ public class FileManager implements Manager {
                     outStream.close();
                 } catch (Exception e) {
                     e.printStackTrace();
-                } finally {
-                    DATABASE_URL = "jdbc:sqlite:" + absolutePath;
                 }
             }
         }
+
+        // where the sqlite database file is located
+        DATABASE_URL = "jdbc:sqlite:" + settingsDirectory + "/" + settingsFile;
     }
 
     public class DatabaseLoader implements AssetLoader {
-
         public InputStream load(AssetInfo assetInfo) throws IOException {
             return assetInfo.openStream();
         }
@@ -209,7 +210,7 @@ public class FileManager implements Manager {
         PreparedStatement stmt = null;
 
         try {
-            String sql = "UPDATE " + TABLE_NAME_LEVEL_STATS + " SET `" + columnName + "` = ? WHERE `id` = ?";
+            String sql = "UPDATE " + tableName + " SET `" + columnName + "` = ? WHERE `id` = ?";
             stmt = connection.prepareStatement(sql);
             stmt.setObject(1, value);
             stmt.setInt(2, level);
