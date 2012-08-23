@@ -12,7 +12,7 @@
         width="350px"/>
     </style>
 
-    <screen id="start" controller="com.teamjmonkey.ui.MainMenuScreen">
+    <screen id="start" controller="com.teamjmonkey.appstates.MainMenuAppState">
         <layer id="background" backgroundColor="#003f"  childLayout="center">
         </layer>
         <layer id="menu_layer" childLayout="center" >
