@@ -5,21 +5,24 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.level.LevelManager;
-import com.teamjmonkey.ui.LoadingScreen;
 import com.teamjmonkey.ui.UIManager;
 import com.teamjmonkey.util.GameState;
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.screen.Screen;
+import de.lessvoid.nifty.screen.ScreenController;
 
-public class LoadingScreenAppState extends AbstractAppState {
+public class LoadingScreenAppState extends AbstractAppState implements ScreenController {
 
     private AppStateManager stateManager;
     private int frameCount = 0;
-    private LoadingScreen loadingScreen;
     private GameNameGoesHere myApp = GameNameGoesHere.getApp();
     private UIManager uiManager = myApp.getUIManager();
     private LevelManager levelManager = myApp.getLevelManager();
+    private Nifty nifty = uiManager.getNifty();
 
     public LoadingScreenAppState() {
-        loadingScreen = new LoadingScreen();
+        nifty.registerScreenController(this);
+        nifty.addXml("Interface/Nifty/LoadingScreen.xml");
     }
 
     @Override
@@ -43,7 +46,7 @@ public class LoadingScreenAppState extends AbstractAppState {
 
         if (frameCount == 1) {
             //load the screen
-            loadingScreen.showLoadingScreen();
+            showLoadingScreen();
         } else if (frameCount == 150) { //using 150 as a debug, this is where you load the game
 
             //at end of loading
@@ -59,5 +62,22 @@ public class LoadingScreenAppState extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
+    }
+
+    //==== Nifty functions ====
+    public void onStartScreen() {
+        System.out.println("onStartScreen");
+    }
+
+    public void onEndScreen() {
+        System.out.println("onEndScreen");
+    }
+
+    public void bind(Nifty nifty, Screen screen) {
+        System.out.println("bind( " + screen.getScreenId() + ")");
+    }
+
+    public void showLoadingScreen() {
+        nifty.gotoScreen("loadingScreen");
     }
 }
