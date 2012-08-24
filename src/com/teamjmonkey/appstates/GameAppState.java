@@ -1,6 +1,7 @@
 package com.teamjmonkey.appstates;
 
 import com.jme3.app.Application;
+import com.jme3.app.FlyCamAppState;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
@@ -36,30 +37,25 @@ public class GameAppState extends AbstractAppState implements ScreenController {
 
     @Override
     public void stateAttached(AppStateManager stateManager) {
-        inputManager.setCursorVisible(false);
+        super.stateAttached(stateManager);
+        //inputManager.setCursorVisible(false);
         GameState.setGameState(GameState.RUNNING);
         showHud();
 
-        //super.stateAttached(stateManager);
-//        myApp.getFlyByCamera().setEnabled(true);
-        myApp.getInputManager().setCursorVisible(false);
-
-        //press esc and open the pause menu
-        // myApp.getStateManager().detach(myApp.getStateManager().getState(ResetStatsState.class));
-        // myApp.getStateManager().detach(myApp.getStateManager().getState(DebugKeysAppState.class));
-        // inputManager.addMapping(null, triggers);
-        // myApp.getStateManager().detach(myApp.getStateManager().getState(FlyCamAppState.class));
-        // myApp.getStateManager().attach(new FlyCamAppState());
+        myApp.getStateManager().attach(new FlyCamAppState());
+        //myApp.getInputManager().setCursorVisible(false);
 
         loadDesktopInputs();
     }
 
     @Override
     public void stateDetached(AppStateManager stateManager) {
+        super.stateDetached(stateManager);
         removeDesktopInputs();
-        removeHud();
 
-        // pause any playing music
+
+        // TODO: pause any playing music
+
     }
 
     @Override
@@ -74,7 +70,9 @@ public class GameAppState extends AbstractAppState implements ScreenController {
 
     private void loadDesktopInputs() {
 
-        inputManager.deleteMapping("SIMPLEAPP_Exit");
+        if (inputManager.hasMapping("SIMPLEAPP_Exit")) {
+            inputManager.deleteMapping("SIMPLEAPP_Exit");
+        }
 
         inputManager.addMapping(PAUSE, new KeyTrigger(KeyboardInputEvent.KEY_ESCAPE),
                 new KeyTrigger(KeyboardInputEvent.KEY_PAUSE),
@@ -125,14 +123,13 @@ public class GameAppState extends AbstractAppState implements ScreenController {
             }
         }
     };
-
     private ActionListener actionListener = new ActionListener() {
 
         public void onAction(String name, boolean isPressed, float tpf) {
 
             if (name.equals(PAUSE) && !isPressed) {
                 myApp.getStateManager().detach(GameAppState.this);
-                myApp.getStateManager().attach(new PauseMenuAppState());
+                myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(PauseMenuAppState.class));
             }
         }
     };

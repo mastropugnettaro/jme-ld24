@@ -41,8 +41,6 @@ public class LevelManager {
         g.move(2, 0, 0);
         myApp.getRootNode().attachChild(g);
 
-        myApp.getStateManager().attach(new FlyCamAppState());
-
         BaseControl control = (BaseControl) controlManager.getControl(MonkeyControl.LOOK_AT_ORIGIN);
         rootNode.addControl(control);
 

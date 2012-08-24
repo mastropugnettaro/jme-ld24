@@ -3,6 +3,7 @@ package com.teamjmonkey;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.bullet.BulletAppState;
+import com.teamjmonkey.appstates.MonkeyAppStateManager;
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.effects.EffectsManager;
 import com.teamjmonkey.entity.EntityManager;
@@ -28,6 +29,7 @@ public class GameNameGoesHere extends SimpleApplication {
     private EffectsManager effectsManager;
     private EntityManager entityManager;
     private UserSettings userSettings;
+    private MonkeyAppStateManager monkeyAppStateManager;
 
     public GameNameGoesHere() {
         super(new StatsAppState());
@@ -36,7 +38,6 @@ public class GameNameGoesHere extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         thisApp = this;
-
 
         // == Move a lot of these into the "initialise once" level === //
         bulletAppState = new BulletAppState();
@@ -53,6 +54,7 @@ public class GameNameGoesHere extends SimpleApplication {
         materialManager = new MaterialManager();
         entityManager = new EntityManager();
         userSettings = new UserSettings();
+        monkeyAppStateManager = new MonkeyAppStateManager();
 
         levelManager = new LevelManager();
 
@@ -105,5 +107,9 @@ public class GameNameGoesHere extends SimpleApplication {
 
     public UserSettings getUserSettings() {
         return userSettings;
+    }
+
+    public MonkeyAppStateManager getMonkeyAppStateManager() {
+        return monkeyAppStateManager;
     }
 }
