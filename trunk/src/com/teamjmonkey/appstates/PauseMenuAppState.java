@@ -5,6 +5,7 @@ import com.jme3.app.FlyCamAppState;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
+import com.jme3.input.RawInputListener;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.ui.UIManager;
 import com.teamjmonkey.util.GameState;
@@ -36,23 +37,29 @@ public class PauseMenuAppState extends AbstractAppState implements ScreenControl
 
     @Override
     public void stateAttached(AppStateManager stateManager) {
-        GameState.setGameState(GameState.PAUSED);
-        showPauseMenu();
+        super.stateAttached(stateManager);
 
-        stateManager.detach(stateManager.getState(FlyCamAppState.class));
-        myApp.getInputManager().setCursorVisible(true);
-
-        loadDesktopInputs();
     }
 
     @Override
     public void stateDetached(AppStateManager stateManager) {
+        super.stateDetached(stateManager);
         removeDesktopInputs();
     }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
+        GameState.setGameState(GameState.PAUSED);
+
+        //myApp.getInputManager().setCursorVisible(true);
+
+                myApp.getStateManager().detach(myApp.getStateManager().getState(FlyCamAppState.class));
+
+
+        showPauseMenu();
+
+        loadDesktopInputs();
     }
 
     @Override
@@ -74,11 +81,35 @@ public class PauseMenuAppState extends AbstractAppState implements ScreenControl
     }
 
     // ==== nifty ====
+    @NiftyEventSubscriber(pattern = "pause_.*")
+    public void onHover(String id, NiftyMouseMovedEvent event) {
+
+        if (currentElement == null) { //initial element
+            if (event.getElement().getRenderer(TextRenderer.class) != null) {
+                currentElement = event.getElement();
+
+                // hover
+                TextRenderer renderer1 = currentElement.getRenderer(TextRenderer.class);
+                renderer1.setColor(Color.BLACK);
+
+                sound.play();
+            }
+        } else {
+            if (event.getElement() != currentElement) {
+                currentElement.getRenderer(TextRenderer.class).setColor(Color.WHITE);
+                currentElement = null;
+            }
+        }
+    }
 
     public void bind(Nifty nifty, Screen screen) {
+                        nifty.getNiftyMouse().setMousePosition(10, 10);
+                    //    nifty.
+
     }
 
     public void onStartScreen() {
+//                nifty.resetMouseInputEvents();
     }
 
     public void onEndScreen() {
@@ -90,7 +121,7 @@ public class PauseMenuAppState extends AbstractAppState implements ScreenControl
 
     public void resume() {
         myApp.getStateManager().detach(this);
-        myApp.getStateManager().attach(new GameAppState());
+        myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(GameAppState.class));
     }
 
     public void restart() {

@@ -11,10 +11,8 @@ import de.lessvoid.nifty.Nifty;
 public class UIManager implements Manager {
 
     private GameNameGoesHere myApp;
-    private MainMenuAppState mainMenuAppState;
     private AppStateManager stateManager;
     private Nifty nifty;
-    private LoadingScreenAppState loadingScreenAppState;
 
     public UIManager() {
         myApp = GameNameGoesHere.getApp();
@@ -49,18 +47,10 @@ public class UIManager implements Manager {
     }
 
     public void showMainMenu() {
-        if (mainMenuAppState == null) {
-            mainMenuAppState = new MainMenuAppState();
-        }
-
-        stateManager.attach(mainMenuAppState);
+        stateManager.attach(myApp.getMonkeyAppStateManager().getAppState(MainMenuAppState.class));
     }
 
     public void showLoadingScreen() {
-        if (loadingScreenAppState == null) {
-            loadingScreenAppState = new LoadingScreenAppState();
-        }
-
-        stateManager.attach(loadingScreenAppState);
+        stateManager.attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
     }
 }
