@@ -1,14 +1,11 @@
 package com.teamjmonkey.entity;
 
-import com.jme3.scene.Spatial;
-
 public class EntityManager {
 
     private MainCharacter mainCharacter;
 
     public BaseEntity create(Entity newEntity) {
         BaseEntity entity = newEntity.createEntity();
-        entity.addMaterial();
         return entity;
     }
 

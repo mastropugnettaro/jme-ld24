@@ -12,6 +12,8 @@ import com.teamjmonkey.file.UserSettings;
 import com.teamjmonkey.graphics.GraphicManager;
 import com.teamjmonkey.graphics.MaterialManager;
 import com.teamjmonkey.level.LevelManager;
+import com.teamjmonkey.physics.PhysicsManager;
+import com.teamjmonkey.sound.SoundManager;
 import com.teamjmonkey.ui.UIManager;
 import com.teamjmonkey.util.PreloadManager;
 
@@ -30,6 +32,8 @@ public class GameNameGoesHere extends SimpleApplication {
     private EntityManager entityManager;
     private UserSettings userSettings;
     private MonkeyAppStateManager monkeyAppStateManager;
+    private PhysicsManager physicsManager;
+    private SoundManager soundManager;
 
     public GameNameGoesHere() {
         super(new StatsAppState());
@@ -55,8 +59,11 @@ public class GameNameGoesHere extends SimpleApplication {
         entityManager = new EntityManager();
         userSettings = new UserSettings();
         monkeyAppStateManager = new MonkeyAppStateManager();
+        physicsManager = new PhysicsManager();
+        soundManager = new SoundManager();
 
         levelManager = new LevelManager();
+        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
         uiManager.showMainMenu();
     }
@@ -112,4 +119,14 @@ public class GameNameGoesHere extends SimpleApplication {
     public MonkeyAppStateManager getMonkeyAppStateManager() {
         return monkeyAppStateManager;
     }
+
+    public PhysicsManager getPhysicsManager() {
+        return physicsManager;
+    }
+
+    public SoundManager getSoundManager() {
+        return soundManager;
+    }
+
+
 }

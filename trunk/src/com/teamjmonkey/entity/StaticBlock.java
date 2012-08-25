@@ -2,28 +2,44 @@ package com.teamjmonkey.entity;
 
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Box;
 import com.teamjmonkey.controls.MonkeyControl;
-import com.teamjmonkey.graphics.Graphics;
 import com.teamjmonkey.graphics.MonkeyMaterial;
 
-public class MainCharacter extends BaseEntity {
+public class StaticBlock extends BaseEntity {
 
     private RigidBodyControl rigidBodyControl;
+    private Vector3f extents;
 
-    public MainCharacter() {
-        super(Graphics.MAIN_CHARACTER);
-        spatial.setName("mainCharacter");
+    public StaticBlock() {
+        super();
+    }
+
+    public void createBlock (Vector3f extents) {
+        this.extents = extents;
+        Box b = new Box(new Vector3f(-extents.x, -extents.y, -extents.z), extents);
+        Geometry box = new Geometry("block", b);
+        spatial = box;
+    }
+
+    @Override
+    public void finalise() {
         addMaterial();
+        addPhysicsControl();
+        addControl();
     }
 
     @Override
     protected CollisionShape getCollisionShape() {
-        return createNewSphereCollisionShape();
+        return createNewBoxCollisionShape();
     }
 
     @Override
     public void addPhysicsControl() {
-        rigidBodyControl = new RigidBodyControl(getCollisionShape(), 0.2f);
+        rigidBodyControl = new RigidBodyControl(getCollisionShape(), 0f);
         spatial.addControl(rigidBodyControl);
         bulletAppState.getPhysicsSpace().add(rigidBodyControl);
     }
@@ -35,19 +51,12 @@ public class MainCharacter extends BaseEntity {
 
     @Override
     public void addControl() {
-        spatial.addControl(controlManager.getControl(MonkeyControl.LOOK_AT));
     }
 
     @Override
     public void cleanup() {
         bulletAppState.getPhysicsSpace().remove(rigidBodyControl);
         spatial.removeControl(RigidBodyControl.class);
-        spatial.removeControl(spatial.getControl(MonkeyControl.LOOK_AT.getClazz()));
-    }
-
-    @Override
-    public void finalise() {
-        addPhysicsControl();
-        addControl();
+        spatial = null;
     }
 }

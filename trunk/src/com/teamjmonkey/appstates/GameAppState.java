@@ -11,6 +11,7 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.teamjmonkey.GameNameGoesHere;
+import com.teamjmonkey.level.LevelManager;
 import com.teamjmonkey.ui.UIManager;
 import com.teamjmonkey.util.GameState;
 import de.lessvoid.nifty.Nifty;
@@ -23,12 +24,15 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     private GameNameGoesHere myApp = GameNameGoesHere.getApp();
     private InputManager inputManager = myApp.getInputManager();
     private UIManager uiManager = myApp.getUIManager();
+    private LevelManager levelManager = myApp.getLevelManager();
     private Nifty nifty = uiManager.getNifty();
     private final String LEFT_MOVE = "LeftMove";
     private final String RIGHT_MOVE = "RightMove";
     private final String FORWARD_MOVE = "UpMove";
     private final String BACKWARD_MOVE = "BackMove";
     private final String PAUSE = "Pause";
+    private final String NEXT_LEVEL = "NextLevel";
+    private final String PREVIOUS_LEVEL = "PreviousLevel";
 
     public GameAppState() {
         nifty.registerScreenController(this);
@@ -38,12 +42,10 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     @Override
     public void stateAttached(AppStateManager stateManager) {
         super.stateAttached(stateManager);
-        //inputManager.setCursorVisible(false);
         GameState.setGameState(GameState.RUNNING);
         showHud();
 
         myApp.getStateManager().attach(new FlyCamAppState());
-        //myApp.getInputManager().setCursorVisible(false);
 
         loadDesktopInputs();
     }
@@ -53,9 +55,7 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         super.stateDetached(stateManager);
         removeDesktopInputs();
 
-
         // TODO: pause any playing music
-
     }
 
     @Override
@@ -77,8 +77,10 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         inputManager.addMapping(PAUSE, new KeyTrigger(KeyboardInputEvent.KEY_ESCAPE),
                 new KeyTrigger(KeyboardInputEvent.KEY_PAUSE),
                 new KeyTrigger(KeyboardInputEvent.KEY_P));
+        inputManager.addMapping(NEXT_LEVEL, new KeyTrigger(KeyboardInputEvent.KEY_F2));
+        inputManager.addMapping(PREVIOUS_LEVEL, new KeyTrigger(KeyboardInputEvent.KEY_F1));
 
-        inputManager.addListener(actionListener, PAUSE);
+        inputManager.addListener(actionListener, PAUSE, NEXT_LEVEL, PREVIOUS_LEVEL);
 
         // add mappings
         inputManager.addMapping(LEFT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, true));
@@ -103,6 +105,8 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         inputManager.deleteMapping(BACKWARD_MOVE);
 
         inputManager.deleteMapping(PAUSE);
+        inputManager.deleteMapping(NEXT_LEVEL);
+        inputManager.deleteMapping(PREVIOUS_LEVEL);
 
         inputManager.removeListener(analogListener);
         inputManager.removeListener(actionListener);
@@ -127,9 +131,18 @@ public class GameAppState extends AbstractAppState implements ScreenController {
 
         public void onAction(String name, boolean isPressed, float tpf) {
 
-            if (name.equals(PAUSE) && !isPressed) {
-                myApp.getStateManager().detach(GameAppState.this);
-                myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(PauseMenuAppState.class));
+            if (!isPressed) {
+
+                if (name.equals(PAUSE) && !isPressed) {
+                    myApp.getStateManager().detach(GameAppState.this);
+                    myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(PauseMenuAppState.class));
+                } else if (name.equals(NEXT_LEVEL)) {
+                    levelManager.loadNextLevel();
+                    myApp.getStateManager().detach(GameAppState.this);
+                } else if (name.equals(PREVIOUS_LEVEL)) {
+                    levelManager.loadPreviousLevel();
+                    myApp.getStateManager().detach(GameAppState.this);
+                }
             }
         }
     };

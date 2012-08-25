@@ -5,8 +5,9 @@ import com.jme3.app.FlyCamAppState;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
-import com.jme3.input.RawInputListener;
+import com.jme3.math.Vector2f;
 import com.teamjmonkey.GameNameGoesHere;
+import com.teamjmonkey.level.LevelManager;
 import com.teamjmonkey.ui.UIManager;
 import com.teamjmonkey.util.GameState;
 import de.lessvoid.nifty.Nifty;
@@ -27,12 +28,15 @@ public class PauseMenuAppState extends AbstractAppState implements ScreenControl
     private Nifty nifty = uiManager.getNifty();
     private Element currentElement;
     private SoundHandle sound;
+    private Vector2f cursorPosition;
+    private LevelManager levelManager;
 
     public PauseMenuAppState() {
         nifty.registerScreenController(this);
         nifty.addXml("Interface/Nifty/PauseMenu.xml");
 
         sound = nifty.getSoundSystem().getSound("titleSound");
+        levelManager = myApp.getLevelManager();
     }
 
     @Override
@@ -52,10 +56,8 @@ public class PauseMenuAppState extends AbstractAppState implements ScreenControl
         super.initialize(stateManager, app);
         GameState.setGameState(GameState.PAUSED);
 
-        //myApp.getInputManager().setCursorVisible(true);
-
-                myApp.getStateManager().detach(myApp.getStateManager().getState(FlyCamAppState.class));
-
+        myApp.getStateManager().detach(myApp.getStateManager().getState(FlyCamAppState.class));
+        myApp.getInputManager().setCursorVisible(true);
 
         showPauseMenu();
 
@@ -103,13 +105,9 @@ public class PauseMenuAppState extends AbstractAppState implements ScreenControl
     }
 
     public void bind(Nifty nifty, Screen screen) {
-                        nifty.getNiftyMouse().setMousePosition(10, 10);
-                    //    nifty.
-
     }
 
     public void onStartScreen() {
-//                nifty.resetMouseInputEvents();
     }
 
     public void onEndScreen() {
@@ -125,6 +123,8 @@ public class PauseMenuAppState extends AbstractAppState implements ScreenControl
     }
 
     public void restart() {
+        myApp.getStateManager().detach(this);
+        levelManager.restartLevel();
     }
 
     public void showMainMenu() {

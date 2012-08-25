@@ -1,28 +1,28 @@
 package com.teamjmonkey.level;
 
-import com.jme3.app.FlyCamAppState;
-import com.jme3.material.Material;
-import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.shape.Box;
 import com.teamjmonkey.GameNameGoesHere;
-import com.teamjmonkey.controls.BaseControl;
+import com.teamjmonkey.appstates.LoadingScreenAppState;
 import com.teamjmonkey.controls.ControlManager;
-import com.teamjmonkey.controls.MonkeyControl;
-import com.teamjmonkey.entity.BaseEntity;
-import com.teamjmonkey.entity.Entity;
 import com.teamjmonkey.entity.EntityManager;
-import com.teamjmonkey.entity.MainCharacter;
 import com.teamjmonkey.graphics.MaterialManager;
+import com.teamjmonkey.physics.PhysicsManager;
+import com.teamjmonkey.sound.SoundManager;
+import com.teamjmonkey.util.Manager;
 
-public class LevelManager {
+public class LevelManager implements Manager {
 
     private GameNameGoesHere myApp;
     private Node rootNode;
     private ControlManager controlManager;
     private EntityManager entityManager;
     private MaterialManager materialManager;
+    private PhysicsManager physicsManager;
+    private SoundManager soundManager;
+    private boolean stateInitialised;
+    private Level currentLevel;
+    private int currentIntLevel;
+    private final int NUM_LEVELS;
 
     public LevelManager() {
         myApp = GameNameGoesHere.getApp();
@@ -30,29 +30,84 @@ public class LevelManager {
         controlManager = myApp.getControlManager();
         entityManager = myApp.getEntityManager();
         materialManager = myApp.getMaterialManager();
+        physicsManager = myApp.getPhysicsManager();
+        soundManager = myApp.getSoundManager();
+        stateInitialised = false;
+        currentIntLevel = 1;
+        NUM_LEVELS = 2;
     }
 
-    public void initialiseLevel() {
+    public int getCurrentIntLevel() {
+        return currentIntLevel;
+    }
 
-        Box b = new Box(Vector3f.ZERO, 1, 1, 1);
-        Geometry g = new Geometry("box", b);
-        g.setMaterial(new Material(myApp.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
+    public void setCurrentIntLevel(int level) {
+        this.currentIntLevel = level;
+    }
 
-        g.move(2, 0, 0);
-        myApp.getRootNode().attachChild(g);
+    // only call this once during the first ever level
+    public void initialiseGameStatesOnce() {
+    }
 
-        BaseControl control = (BaseControl) controlManager.getControl(MonkeyControl.LOOK_AT_ORIGIN);
-        rootNode.addControl(control);
+    public void load(int level) {
 
-        int level = 1;
+        if (!stateInitialised) {
+            initialiseGameStatesOnce();
+        }
+
         materialManager.load(level);
+        physicsManager.load(level);
+        
+        soundManager.load(level);
 
-        BaseEntity create = entityManager.create(Entity.TEST);
-        MainCharacter createMainCharacter = entityManager.createMainCharacter();
+        switch (level) {
+            case 1:
+                currentLevel = new Level1();
+                break;
+            case 2:
+                currentLevel = new Level2();
+                break;
+        }
+    }
 
-        createMainCharacter.getSpatial().move(-3, 0, 0);
+    public void restartLevel() {
 
-        rootNode.attachChild(create.getSpatial());
-        rootNode.attachChild(createMainCharacter.getSpatial());
+        currentLevel.cleanup();
+
+        //this calls currentLevel.load() inside
+        myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
+        currentLevel.load();
+    }
+
+    public void loadNextLevel() {
+        if (currentIntLevel == NUM_LEVELS) {
+            currentIntLevel = 1;
+        } else {
+            currentIntLevel++;
+        }
+
+        currentLevel.cleanup();
+        myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
+        load(currentIntLevel);
+    }
+
+    public void loadPreviousLevel() {
+        if (currentIntLevel == 1) {
+            currentIntLevel = NUM_LEVELS;
+        } else {
+            currentIntLevel--;
+        }
+
+        currentLevel.cleanup();
+        myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
+        load(currentIntLevel);
+    }
+
+    public void cleanup() {
+        materialManager.cleanup();
+        physicsManager.cleanup();
+        soundManager.cleanup();
+
+        currentLevel.cleanup();
     }
 }

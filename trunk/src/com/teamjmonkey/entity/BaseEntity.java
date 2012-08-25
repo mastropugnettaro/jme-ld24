@@ -49,10 +49,11 @@ public abstract class BaseEntity {
 
     public abstract void cleanup();
 
+    public abstract void finalise();
+
     public void addPhysicsControl() {
         RigidBodyControl rigidBodyControl = new RigidBodyControl(getCollisionShape(), 1);
         rigidBodyControl.setKinematic(true);
-        rigidBodyControl.setRestitution(1);
         spatial.addControl(rigidBodyControl);
         bulletAppState.getPhysicsSpace().add(rigidBodyControl);
     }

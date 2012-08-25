@@ -2,7 +2,7 @@ package com.teamjmonkey.controls;
 
 public enum MonkeyControl {
 
-    LOOK_AT_ORIGIN(TestControl.class);
+    LOOK_AT(LookAtControl.class);
     private Class<? extends BaseControl> clazz;
 
     MonkeyControl(Class<? extends BaseControl> control) {
