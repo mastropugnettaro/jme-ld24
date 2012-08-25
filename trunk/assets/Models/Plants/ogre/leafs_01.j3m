@@ -1,0 +1,13 @@
+Material My Material : Common/MatDefs/Light/Lighting.j3md {
+     MaterialParameters {
+        DiffuseMap : Models/Plants/leafs_01.png
+     }
+    AdditionalRenderState {
+      AlphaTestFalloff 0.05
+      Blend Alpha
+      Wireframe Off
+      DepthWrite On
+      DepthTest On
+      FaceCull Off
+    }
+}
