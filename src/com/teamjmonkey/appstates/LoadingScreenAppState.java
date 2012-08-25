@@ -19,6 +19,8 @@ public class LoadingScreenAppState extends AbstractAppState implements ScreenCon
     private UIManager uiManager = myApp.getUIManager();
     private LevelManager levelManager = myApp.getLevelManager();
     private Nifty nifty = uiManager.getNifty();
+    private int FRAME_COUNT = 150;
+    private boolean isLoaded = false;
 
     public LoadingScreenAppState() {
         nifty.registerScreenController(this);
@@ -29,11 +31,13 @@ public class LoadingScreenAppState extends AbstractAppState implements ScreenCon
     public void stateAttached(AppStateManager stateManager) {
         this.stateManager = stateManager;
         GameState.setGameState(GameState.LOADING_LEVEL);
+        frameCount = 0;
     }
 
     @Override
     public void stateDetached(AppStateManager stateManager) {
-        uiManager.getNifty().gotoScreen("end");
+       // uiManager.getNifty().gotoScreen("end");
+        isLoaded = true;
     }
 
     @Override
@@ -47,12 +51,12 @@ public class LoadingScreenAppState extends AbstractAppState implements ScreenCon
         if (frameCount == 1) {
             //load the screen
             showLoadingScreen();
-        } else if (frameCount == 150) { //using 150 as a debug, this is where you load the game
+        } else if (frameCount == FRAME_COUNT) { //using 150 as a debug, this is where you load the game
 
             //at end of loading
             stateManager.detach(this);
 
-            levelManager.initialiseLevel();
+            levelManager.load(levelManager.getCurrentIntLevel());
             stateManager.attach(myApp.getMonkeyAppStateManager().getAppState(GameAppState.class));
         }
 

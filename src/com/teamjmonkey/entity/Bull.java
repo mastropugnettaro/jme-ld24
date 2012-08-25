@@ -4,16 +4,14 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.teamjmonkey.controls.MonkeyControl;
 import com.teamjmonkey.graphics.Graphics;
-import com.teamjmonkey.graphics.MonkeyMaterial;
 
-public class MainCharacter extends BaseEntity {
+public class Bull extends BaseEntity {
 
     private RigidBodyControl rigidBodyControl;
 
-    public MainCharacter() {
-        super(Graphics.MAIN_CHARACTER);
-        spatial.setName("mainCharacter");
-        addMaterial();
+    public Bull() {
+        super(Graphics.BULL);
+        spatial.setName("bull");
     }
 
     @Override
@@ -29,19 +27,16 @@ public class MainCharacter extends BaseEntity {
     }
 
     @Override
-    public void addMaterial() {
-        spatial.setMaterial(materialManager.getMaterial(MonkeyMaterial.MAIN_CHARACTER));
-    }
+    public void addMaterial() { }
 
     @Override
     public void addControl() {
-        spatial.addControl(controlManager.getControl(MonkeyControl.LOOK_AT));
+       // spatial.addControl(controlManager.getControl(MonkeyControl.LOOK_AT_ORIGIN));
     }
 
     @Override
     public void cleanup() {
         bulletAppState.getPhysicsSpace().remove(rigidBodyControl);
-        spatial.removeControl(RigidBodyControl.class);
         spatial.removeControl(spatial.getControl(MonkeyControl.LOOK_AT.getClazz()));
     }
 

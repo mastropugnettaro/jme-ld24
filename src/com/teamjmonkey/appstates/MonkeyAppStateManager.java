@@ -1,23 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.teamjmonkey.appstates;
 
 import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
-import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.util.Manager;
 import java.util.ArrayList;
 
-/**
- *
- * @author Wesley
- */
 public class MonkeyAppStateManager implements Manager {
-
-    // Make sure to use .addXML in the constructors
-    // Initialise instead of stateAttached?
 
     private ArrayList<AbstractAppState> appStates = new ArrayList<AbstractAppState>(5);
 

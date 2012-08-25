@@ -3,7 +3,8 @@ package com.teamjmonkey.graphics;
 public enum Graphics {
 
     MAIN_CHARACTER("MainCharacter/MainCharacter.j3o"),
-    ANOTHER_OBJECT("MainCharacter/MainCharacter.j3o");
+    ANOTHER_OBJECT("MainCharacter/MainCharacter.j3o"),
+    BULL("bull.j3o");
 
     private String fileLocation;
     private String pathToModel = "Models/";

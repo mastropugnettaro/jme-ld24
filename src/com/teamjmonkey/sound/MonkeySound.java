@@ -2,8 +2,8 @@ package com.teamjmonkey.sound;
 
 public enum MonkeySound {
 
-        TEST_MUSIC("amen.ogg", true),
-        TEST_SOUND("amen.ogg", false);
+        TEST_MUSIC("ahem.ogg", true),
+        TEST_SOUND("ahem.ogg", false);
 
         private final String path;
         private final boolean music;
