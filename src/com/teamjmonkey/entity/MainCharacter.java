@@ -1,5 +1,6 @@
 package com.teamjmonkey.entity;
 
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
@@ -15,7 +16,7 @@ import com.teamjmonkey.controls.MonkeyControl;
 import java.io.IOException;
 
 public class MainCharacter extends BaseEntity implements Savable {
-
+    
     private CharacterControl player;
     private GhostControl control;
 
@@ -24,12 +25,12 @@ public class MainCharacter extends BaseEntity implements Savable {
         spatial = new Node("mainCharacter");
         spatial.setUserData("entity", this);
     }
-
+    
     @Override
     protected CollisionShape getCollisionShape() {
         return new CapsuleCollisionShape(1.5f, 3f, 1);
     }
-
+    
     @Override
     public void addPhysicsControl() {
         player = new CharacterControl(getCollisionShape(), 0.1f);
@@ -37,6 +38,8 @@ public class MainCharacter extends BaseEntity implements Savable {
         player.setFallSpeed(30);
         player.setGravity(30);
         player.setPhysicsLocation(new Vector3f(0, 10, 0));
+        player.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_03);
+        player.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_02);
         bulletAppState.getPhysicsSpace().add(player);
 
         spatial.addControl(player);
@@ -47,19 +50,20 @@ public class MainCharacter extends BaseEntity implements Savable {
 
 
     }
-
+    
     public CharacterControl getCharacterControl() {
         return player;
     }
-
+    
     @Override
-    public void addMaterial() { }
-
+    public void addMaterial() {
+    }
+    
     @Override
     public void addControl() {
         spatial.addControl(controlManager.getControl(MonkeyControl.SET_TO_CAM));
     }
-
+    
     @Override
     public void cleanup() {
         spatial.getControl(MonkeyControl.SET_TO_CAM.getClazz()).cleanup();
@@ -67,19 +71,19 @@ public class MainCharacter extends BaseEntity implements Savable {
         spatial.setUserData("entity", null);
         player = null;
     }
-
+    
     @Override
     public void finalise() {
         addPhysicsControl();
         addControl();
     }
-
+    
     @Override
     public void write(JmeExporter e) throws IOException {
         OutputCapsule capsule = e.getCapsule(this);
         capsule.write(this.player, "player", null);
     }
-
+    
     @Override
     public void read(JmeImporter e) throws IOException {
         InputCapsule capsule = e.getCapsule(this);

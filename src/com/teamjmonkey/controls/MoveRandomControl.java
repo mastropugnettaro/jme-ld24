@@ -10,7 +10,7 @@ public class MoveRandomControl extends BaseControl {
 
     private static final float MOVEMENT_ACCURACY = 0.5f;
     private static final float REDUCE_WAIT_CHANCE = 0.2f;
-    private static final float TURN_SPEED_MULTIPLIER = 0.5f;
+    private static final float TURN_SPEED_MULTIPLIER = 0.25f;
     //---//
     private final Random random = new Random();
     private final WalkableArea area;
@@ -159,7 +159,9 @@ public class MoveRandomControl extends BaseControl {
     public void resume() {
         calculateNewTarget();
         isTurning = false;
+        isTurned = true;
         isWaiting = false;
         isPaused = false;
+        isMoving = false;
     }
 }
