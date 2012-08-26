@@ -2,6 +2,7 @@ package com.teamjmonkey.level;
 
 import com.jme3.scene.Node;
 import com.teamjmonkey.GameNameGoesHere;
+import com.teamjmonkey.animation.AnimManager;
 import com.teamjmonkey.appstates.LoadingScreenAppState;
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.entity.EntityManager;
@@ -24,7 +25,7 @@ public class LevelManager implements Manager {
     private GraphicManager graphicsManager;
     private PreloadManager preloadManager;
     private boolean stateInitialised;
-
+    private AnimManager animManager;
     private Level currentLevel;
     private int currentIntLevel;
     private final int NUM_LEVELS;
@@ -39,6 +40,7 @@ public class LevelManager implements Manager {
         soundManager = myApp.getSoundManager();
         preloadManager = myApp.getPreloadManager();
         graphicsManager = myApp.getGraphicManager();
+        animManager = myApp.getAnimManager();
         stateInitialised = false;
         currentIntLevel = 1;
         NUM_LEVELS = 5;
@@ -52,11 +54,13 @@ public class LevelManager implements Manager {
         this.currentIntLevel = level;
     }
 
+    public Level getCurrentLevel() {
+        return currentLevel;
+    }
+
     // only call this once during the first ever level
     public void initialiseGameStatesOnce() {
-
         // Load LevelCommon
-
     }
 
     public void load(int level) {
@@ -87,6 +91,8 @@ public class LevelManager implements Manager {
                 currentLevel = new Level5(); // new part of the map opens
                 break;
         }
+
+      //  animManager.load(level);
     }
 
     public void restartLevel() {
@@ -125,5 +131,6 @@ public class LevelManager implements Manager {
         graphicsManager.cleanup();
 
         currentLevel.cleanup();
+      //  animManager.cleanup();
     }
 }

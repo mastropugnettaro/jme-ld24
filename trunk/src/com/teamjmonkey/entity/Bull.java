@@ -5,6 +5,7 @@ import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.teamjmonkey.animation.AnimComponent;
 import com.teamjmonkey.graphics.Graphics;
 
 public class Bull extends BaseEntity {
@@ -14,6 +15,8 @@ public class Bull extends BaseEntity {
     public Bull() {
         super(Graphics.BULL);
         spatial.setName("enemy");
+
+        animComponent = new AnimComponent(spatial);
 
         //this to to align the controls better
         float getYExtent = getExtents().getY();

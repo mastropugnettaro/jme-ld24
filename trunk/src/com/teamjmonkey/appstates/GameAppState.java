@@ -9,6 +9,7 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.teamjmonkey.GameNameGoesHere;
+import com.teamjmonkey.animation.AnimManager;
 import com.teamjmonkey.level.LevelCommon;
 import com.teamjmonkey.level.LevelManager;
 import com.teamjmonkey.ui.UIManager;
@@ -46,6 +47,7 @@ public class GameAppState extends AbstractAppState implements ScreenController {
 
         myApp.getStateManager().attach(new NewFlyCamAppState());
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LevelCommon.class));
+        myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(AnimManager.class));
         myApp.getBulletAppState().setEnabled(true);
 
         loadDesktopInputs();
@@ -58,6 +60,7 @@ public class GameAppState extends AbstractAppState implements ScreenController {
 
         // deatch all Level States
         myApp.getStateManager().detach(myApp.getStateManager().getState(LevelCommon.class));
+        myApp.getStateManager().detach(myApp.getStateManager().getState(AnimManager.class));
         myApp.getBulletAppState().setEnabled(false);
 
         // TODO: pause any playing music
