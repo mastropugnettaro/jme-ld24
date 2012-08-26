@@ -128,7 +128,7 @@ public class MainCharacterControl extends BaseControl implements ActionListener,
         String aName = event.getNodeA().getName();
         String bName = event.getNodeB().getName();
 
-       // success they have collide
+        // success they have collide
 
         if ((aName.equals(MAIN_CHARACTER) && bName.equals(ENEMY))
                 || (bName.equals(MAIN_CHARACTER) && aName.equals(ENEMY))) {
@@ -142,7 +142,9 @@ public class MainCharacterControl extends BaseControl implements ActionListener,
 
             // note the use of getParent, this was used to line the collision shapes
             MoveRandomControl control = enemy.getParent().getControl(MoveRandomControl.class);
-            control.setEnabled(false);
+            if (control != null) {
+                control.setEnabled(false);
+            }
 
             // THIS MUST BE CALLED SOMEWHERE
             //  MovementControl.setEnabled(true);
