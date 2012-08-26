@@ -4,6 +4,7 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.teamjmonkey.animation.AnimComponent;
 import com.teamjmonkey.controls.AggroControl;
+import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.graphics.Graphics;
 
 public class Bull extends MovableEntity {
@@ -35,6 +36,7 @@ public class Bull extends MovableEntity {
 
     @Override
     public void cleanup() {
+        spatial.removeControl(MoveRandomControl.class);
         spatial.getControl(AggroControl.class).cleanup();
     }
 

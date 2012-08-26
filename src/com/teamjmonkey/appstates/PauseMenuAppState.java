@@ -56,9 +56,6 @@ public class PauseMenuAppState extends AbstractAppState implements ScreenControl
         super.initialize(stateManager, app);
         GameState.setGameState(GameState.PAUSED);
 
-        myApp.getStateManager().detach(myApp.getStateManager().getState(NewFlyCamAppState.class));
-        myApp.getInputManager().setCursorVisible(true);
-
         showPauseMenu();
 
         loadDesktopInputs();

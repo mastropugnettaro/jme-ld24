@@ -3,14 +3,17 @@ package com.teamjmonkey.appstates;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.util.NewFlyCamera;
 
 public class NewFlyCamAppState extends AbstractAppState {
 
-    private Application app;
     private NewFlyCamera flyCam;
+    private GameNameGoesHere myApp = GameNameGoesHere.getApp();
 
     public NewFlyCamAppState() {
+        flyCam = new NewFlyCamera(myApp.getCamera());
+        flyCam.setConstraint(true);
     }
 
     /**
@@ -25,17 +28,19 @@ public class NewFlyCamAppState extends AbstractAppState {
     }
 
     @Override
-    public void initialize(AppStateManager stateManager, Application app) {
-        super.initialize(stateManager, app);
+    public void stateAttached(AppStateManager stateManager) {
+        super.stateAttached(stateManager);
 
-        this.app = app;
+        setEnabled(true);
+        flyCam.registerWithInput(myApp.getInputManager());
+    }
 
-        if (app.getInputManager() != null) {
+    @Override
+    public void stateDetached(AppStateManager stateManager) {
+        super.stateDetached(stateManager);
 
-            flyCam = new NewFlyCamera(app.getCamera());
-            flyCam.setConstraint(true);
-            flyCam.registerWithInput(app.getInputManager());
-        }
+        setEnabled(false);
+        flyCam.unregisterInput();
     }
 
     @Override
@@ -48,7 +53,5 @@ public class NewFlyCamAppState extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
-
-        flyCam.unregisterInput();
     }
 }
