@@ -22,12 +22,9 @@ import com.teamjmonkey.ai.areas.WalkableArea;
 import com.teamjmonkey.ai.areas.WalkableCircle;
 import com.teamjmonkey.ai.areas.WalkableRectangle;
 import com.teamjmonkey.controls.AggroControl;
-import com.teamjmonkey.controls.LookAtControl;
-import com.teamjmonkey.controls.MonkeyControl;
 import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.entity.BaseEntity;
 import com.teamjmonkey.entity.Bull;
-import com.teamjmonkey.entity.Spear;
 import java.util.LinkedList;
 
 public class Level1 implements Level {
@@ -70,8 +67,8 @@ public class Level1 implements Level {
         WalkableArea midCircle = new WalkableCircle(0f, 0f, 20f);
         for (int i = 0; i < 30; i++) {
             Bull bull = (Bull) entityManager.create(Entity.BULL);
-            bull.getSpatial().addControl(new MoveRandomControl(field));
-            bull.getSpatial().addControl(new AggroControl(new AggroBehaviorStare(0.5f)));
+            bull.getSpatial().addControl(new MoveRandomControl(bull, field));
+            bull.getSpatial().addControl(new AggroControl(bull, 20f, 5f, new AggroBehaviorStare(0.5f), null));
             bull.getSpatial().setLocalTranslation(field.getRandomPointInside());
             bull.finalise();
             rootNode.attachChild(bull.getSpatial());
@@ -80,8 +77,8 @@ public class Level1 implements Level {
 
         for (int i = 0; i < 5; i++) {
             Bull bull = (Bull) entityManager.create(Entity.BULL);
-            bull.getSpatial().addControl(new MoveRandomControl(midCircle));
-            bull.getSpatial().addControl(new AggroControl(new AggroBehaviorStare(0.5f)));
+            bull.getSpatial().addControl(new MoveRandomControl(bull, midCircle));
+            bull.getSpatial().addControl(new AggroControl(bull, 20f, 5f, new AggroBehaviorStare(0.5f), null));
             bull.getSpatial().setLocalTranslation(midCircle.getRandomPointInside());
             bull.finalise();
             rootNode.attachChild(bull.getSpatial());

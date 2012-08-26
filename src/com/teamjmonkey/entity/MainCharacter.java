@@ -27,7 +27,7 @@ public class MainCharacter extends BaseEntity implements Savable {
     }
 
     @Override
-    protected CollisionShape getCollisionShape() {
+    public CollisionShape getCollisionShape() {
         return new CapsuleCollisionShape(1.5f, 3f, 1);
     }
 
