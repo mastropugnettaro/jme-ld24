@@ -162,19 +162,11 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
             Spatial enemy = aName.equals(ENEMY) ? a : b;
             Spatial mainCharacter = aName.equals(ENEMY) ? b : a;
 
-            // check if the enemy is in wait state
-
-            // check if the enemy is in attack state
-
             // note the use of getParent, this was used to line the collision shapes
             MoveRandomControl control = enemy.getParent().getControl(MoveRandomControl.class);
-  //          if (control != null) {
-  //              control.setEnabled(false);
-  //          }
-
-            // THIS MUST BE CALLED SOMEWHERE
-            //  MovementControl.setEnabled(true);
-            //  MovementControl.resume(); // if neccessary
+            if (control != null) {
+                control.setEnabled(false);
+            }
         }
     }
 
