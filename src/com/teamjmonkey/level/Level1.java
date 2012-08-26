@@ -17,7 +17,13 @@ import com.teamjmonkey.physics.PhysicsManager;
 import com.teamjmonkey.sound.SoundManager;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+import com.teamjmonkey.ai.areas.WalkableArea;
+import com.teamjmonkey.ai.areas.WalkableCircle;
+import com.teamjmonkey.ai.areas.WalkableRectangle;
+import com.teamjmonkey.controls.MonkeyControl;
+import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.entity.BaseEntity;
+import com.teamjmonkey.entity.Bull;
 import com.teamjmonkey.entity.Spear;
 import java.util.LinkedList;
 
@@ -51,11 +57,28 @@ public class Level1 implements Level {
 
     @Override
     public void load() {
-        
+
         TestPlatform testPlatform = (TestPlatform) entityManager.create(Entity.TEST_FLOOR);
         testPlatform.finalise();
         rootNode.attachChild(testPlatform.getSpatial());
         allEntities.add(testPlatform);
+
+        WalkableArea field = new WalkableRectangle(-156f, -156f, 312f, 312f);
+        WalkableArea midCircle = new WalkableCircle(0f, 0f, 20f);
+        for (int i = 0; i < 30; i++) {
+            Bull bull = (Bull) entityManager.create(Entity.BULL);
+            bull.getSpatial().addControl(new MoveRandomControl(field));
+            bull.getSpatial().setLocalTranslation(field.getRandomPointInside());
+            rootNode.attachChild(bull.getSpatial());
+            allEntities.add(bull);
+        }
+        for (int i = 0; i < 5; i++) {
+            Bull bull = (Bull) entityManager.create(Entity.BULL);
+            bull.getSpatial().addControl(new MoveRandomControl(midCircle));
+            bull.getSpatial().setLocalTranslation(midCircle.getRandomPointInside());
+            rootNode.attachChild(bull.getSpatial());
+            allEntities.add(bull);
+        }
 
         MainCharacter mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
         mainCharacter.getSpatial().move(0, 10, 0);
