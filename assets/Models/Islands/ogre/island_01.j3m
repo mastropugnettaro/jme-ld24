@@ -1,0 +1,18 @@
+Material My Material : Common/MatDefs/Terrain/TerrainLighting.j3md {
+     MaterialParameters {
+        DiffuseMap : Repeat Models/Islands/textures/base_10_sand_03.dds
+        DiffuseMap_0_scale : 95.0
+        DiffuseMap_3_scale : 95.0
+        DiffuseMap_1_scale : 95.0
+        DiffuseMap_2_scale : 95.0
+        AlphaMap : Repeat Models/Islands/textures/island_mask_01.png
+        isTerrainGrid : false
+        Diffuse : 0.2 0.8 0.0 1.0
+        DiffuseMap_1 : Repeat Models/Islands/textures/base_02_grass_03.dds
+        Ambient : 0.0 1.0 0.2 1.0
+        Shininess : 0.0
+        DiffuseMap_2 : Repeat Models/Islands/textures/base_03_ground_01.dds
+     }
+    AdditionalRenderState {
+    }
+}
