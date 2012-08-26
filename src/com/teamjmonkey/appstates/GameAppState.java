@@ -3,13 +3,17 @@ package com.teamjmonkey.appstates;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.collision.PhysicsCollisionEvent;
+import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.scene.Spatial;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.animation.AnimManager;
+import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.level.LevelCommon;
 import com.teamjmonkey.level.LevelManager;
 import com.teamjmonkey.ui.UIManager;
@@ -19,7 +23,7 @@ import de.lessvoid.nifty.input.keyboard.KeyboardInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
-public class GameAppState extends AbstractAppState implements ScreenController {
+public class GameAppState extends AbstractAppState implements ScreenController, PhysicsCollisionListener {
 
     private GameNameGoesHere myApp = GameNameGoesHere.getApp();
     private InputManager inputManager = myApp.getInputManager();
@@ -33,6 +37,8 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     private final String PAUSE = "Pause";
     private final String NEXT_LEVEL = "NextLevel";
     private final String PREVIOUS_LEVEL = "PreviousLevel";
+    private final String MAIN_CHARACTER = "mainCharacter";
+    private final String ENEMY = "enemy";
 
     public GameAppState() {
         nifty.registerScreenController(this);
@@ -44,6 +50,8 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         super.stateAttached(stateManager);
         GameState.setGameState(GameState.RUNNING);
         showHud();
+
+        myApp.getBulletAppState().getPhysicsSpace().addCollisionListener(this);
 
         myApp.getStateManager().attach(new NewFlyCamAppState());
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LevelCommon.class));
@@ -57,6 +65,8 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     public void stateDetached(AppStateManager stateManager) {
         super.stateDetached(stateManager);
         removeDesktopInputs();
+
+        myApp.getBulletAppState().getPhysicsSpace().removeCollisionListener(this);
 
         // deatch all Level States
         myApp.getStateManager().detach(myApp.getStateManager().getState(LevelCommon.class));
@@ -91,10 +101,10 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         inputManager.addListener(actionListener, PAUSE, NEXT_LEVEL, PREVIOUS_LEVEL);
 
         // add mappings
-       // inputManager.addMapping(LEFT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, true));
-      //  inputManager.addMapping(RIGHT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, false));
-      //  inputManager.addMapping(FORWARD_MOVE, new MouseAxisTrigger(MouseInput.AXIS_Y, false));
-      //  inputManager.addMapping(BACKWARD_MOVE, new MouseAxisTrigger(MouseInput.AXIS_Y, true));
+        // inputManager.addMapping(LEFT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, true));
+        //  inputManager.addMapping(RIGHT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, false));
+        //  inputManager.addMapping(FORWARD_MOVE, new MouseAxisTrigger(MouseInput.AXIS_Y, false));
+        //  inputManager.addMapping(BACKWARD_MOVE, new MouseAxisTrigger(MouseInput.AXIS_Y, true));
 
         inputManager.addListener(analogListener, new String[]{LEFT_MOVE, RIGHT_MOVE, FORWARD_MOVE, BACKWARD_MOVE});
     }
@@ -107,10 +117,10 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     private void removeDesktopInputs() {
 
         //remove mappings
-     //   inputManager.deleteMapping(LEFT_MOVE);
-     //   inputManager.deleteMapping(RIGHT_MOVE);
-    //    inputManager.deleteMapping(FORWARD_MOVE);
-    //    inputManager.deleteMapping(BACKWARD_MOVE);
+        //   inputManager.deleteMapping(LEFT_MOVE);
+        //   inputManager.deleteMapping(RIGHT_MOVE);
+        //    inputManager.deleteMapping(FORWARD_MOVE);
+        //    inputManager.deleteMapping(BACKWARD_MOVE);
 
         inputManager.deleteMapping(PAUSE);
         inputManager.deleteMapping(NEXT_LEVEL);
@@ -128,11 +138,11 @@ public class GameAppState extends AbstractAppState implements ScreenController {
             }
 
             //move main Character
-         //   if (name.equals(LEFT_MOVE)) {
-        //    } else if (name.equals(RIGHT_MOVE)) {
-        //    } else if (name.equals(FORWARD_MOVE)) {
-        //    } else if (name.equals(BACKWARD_MOVE)) {
-        //    }
+            //   if (name.equals(LEFT_MOVE)) {
+            //    } else if (name.equals(RIGHT_MOVE)) {
+            //    } else if (name.equals(FORWARD_MOVE)) {
+            //    } else if (name.equals(BACKWARD_MOVE)) {
+            //    }
         }
     };
     private ActionListener actionListener = new ActionListener() {
@@ -158,6 +168,42 @@ public class GameAppState extends AbstractAppState implements ScreenController {
             }
         }
     };
+
+    public void collision(PhysicsCollisionEvent event) {
+
+        Spatial a = event.getNodeA();
+        Spatial b = event.getNodeB();
+
+        if (a == null || b == null) {
+            return;
+        }
+
+        String aName = event.getNodeA().getName();
+        String bName = event.getNodeB().getName();
+
+        // success they have collide
+
+        if ((aName.equals(MAIN_CHARACTER) && bName.equals(ENEMY))
+                || (bName.equals(MAIN_CHARACTER) && aName.equals(ENEMY))) {
+
+            Spatial enemy = aName.equals(ENEMY) ? a : b;
+            Spatial mainCharacter = aName.equals(ENEMY) ? b : a;
+
+            // check if the enemy is in wait state
+
+            // check if the enemy is in attack state
+
+            // note the use of getParent, this was used to line the collision shapes
+            MoveRandomControl control = enemy.getParent().getControl(MoveRandomControl.class);
+            if (control != null) {
+                control.setEnabled(false);
+            }
+
+            // THIS MUST BE CALLED SOMEWHERE
+            //  MovementControl.setEnabled(true);
+            //  MovementControl.resume(); // if neccessary
+        }
+    }
 
     // ==== nifty ====
     public void bind(Nifty nifty, Screen screen) {
