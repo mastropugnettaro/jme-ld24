@@ -64,7 +64,7 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
                         if (channel.getAnimationName() != null) {
                             ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setLoopMode(curAnimInfo.loop);
                             ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setSpeed(0f);
-                            ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setAnim(curAnimInfo.name, curAnimInfo.blendTime);                
+                            ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setAnim(curAnimInfo.name, curAnimInfo.blendTime);
                         }
                     }
                 }
@@ -83,7 +83,7 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
 
     @Override
     public void cleanup() {
-        entList.clear();
+        entList = null;
         it = null;
         map.clear();
     }

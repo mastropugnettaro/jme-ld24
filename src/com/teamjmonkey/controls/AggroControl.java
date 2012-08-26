@@ -116,6 +116,11 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
     }
 
     public void collision(PhysicsCollisionEvent event) {
+
+        if(spatial == null || event.getNodeA() == null || event.getNodeB() == null) {
+            return;
+        }
+
         if (event.getObjectA() instanceof CharacterControl && event.getObjectB() instanceof GhostControl) {
             if (event.getNodeB().equals(spatial)) {
                 aggro(myApp.getCamera().getLocation());
@@ -130,11 +135,12 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
     @Override
     public void cleanup() {
         spatial.removeControl(losGhost);
+
+        myApp.getBulletAppState().getPhysicsSpace().removeCollisionListener(this);
+
         myApp.getBulletAppState().getPhysicsSpace().remove(losGhost);
         spatial.removeControl(fightGhost);
         myApp.getBulletAppState().getPhysicsSpace().remove(fightGhost);
-
-        myApp.getBulletAppState().getPhysicsSpace().removeCollisionListener(this);
 
         spatial.removeControl(this);
     }
