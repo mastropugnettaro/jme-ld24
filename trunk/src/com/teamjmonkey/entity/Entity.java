@@ -16,9 +16,9 @@ public enum Entity {
                 entity = new MainCharacter();
                 break;
             case BULL:
-                entity = new TestPlatform();
+                entity = new Bull();
                 break;
-            case STATIC_BLOCK:
+            case STATIC_BLOCK:  
                 entity = new StaticBlock();
                 break;
             case SPEAR:
