@@ -55,11 +55,14 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
     @Override
     public void setSpatial(Spatial spatial) {
         super.setSpatial(spatial);
-        losGhost = new GhostControl(new CapsuleCollisionShape(losRadius, 4f));
-        fightGhost = new GhostControl(entity.getCollisionShape());
-        addGhost(losGhost);
-        addGhost(fightGhost);
-        fireInit();
+
+        if (spatial != null) {
+            losGhost = new GhostControl(new CapsuleCollisionShape(losRadius, 4f));
+            fightGhost = new GhostControl(entity.getCollisionShape());
+            addGhost(losGhost);
+            addGhost(fightGhost);
+            fireInit();
+        }
     }
 
     private void addGhost(GhostControl ghost) {
@@ -126,12 +129,13 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
 
     @Override
     public void cleanup() {
-        spatial.removeControl(this);
         myApp.getBulletAppState().getPhysicsSpace().removeCollisionListener(this);
 
         spatial.removeControl(losGhost);
         myApp.getBulletAppState().getPhysicsSpace().remove(losGhost);
         spatial.removeControl(fightGhost);
         myApp.getBulletAppState().getPhysicsSpace().remove(fightGhost);
+
+        spatial.removeControl(this);
     }
 }
