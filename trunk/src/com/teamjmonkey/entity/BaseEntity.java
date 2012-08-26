@@ -43,7 +43,7 @@ public abstract class BaseEntity {
     public BaseEntity() {
     }
 
-    protected abstract CollisionShape getCollisionShape();
+    public abstract CollisionShape getCollisionShape();
 
     protected abstract void addMaterial();
 

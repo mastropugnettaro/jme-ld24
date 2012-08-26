@@ -17,7 +17,7 @@ public class Spear extends BaseEntity {
     }
 
     @Override
-    protected CollisionShape getCollisionShape() {
+    public CollisionShape getCollisionShape() {
         return createNewSphereCollisionShape();
     }
 

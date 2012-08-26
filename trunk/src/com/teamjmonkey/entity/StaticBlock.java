@@ -34,7 +34,7 @@ public class StaticBlock extends BaseEntity {
     }
 
     @Override
-    protected CollisionShape getCollisionShape() {
+    public CollisionShape getCollisionShape() {
         return createNewBoxCollisionShape();
     }
 
