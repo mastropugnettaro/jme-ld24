@@ -23,7 +23,7 @@ import de.lessvoid.nifty.input.keyboard.KeyboardInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
-public class GameAppState extends AbstractAppState implements ScreenController, PhysicsCollisionListener {
+public class GameAppState extends AbstractAppState implements ScreenController {
 
     private GameNameGoesHere myApp = GameNameGoesHere.getApp();
     private InputManager inputManager = myApp.getInputManager();
@@ -64,7 +64,7 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
         initialized = true;
 
         myApp.getBulletAppState().setEnabled(true);
-        myApp.getBulletAppState().getPhysicsSpace().addCollisionListener(this);
+       // myApp.getBulletAppState().getPhysicsSpace().addCollisionListener(this);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
         super.stateDetached(stateManager);
         removeDesktopInputs();
 
-        myApp.getBulletAppState().getPhysicsSpace().removeCollisionListener(this);
+      //  myApp.getBulletAppState().getPhysicsSpace().removeCollisionListener(this);
 
         // deatch all Level States
         myApp.getStateManager().detach(myApp.getStateManager().getState(LevelCommon.class));
@@ -140,6 +140,7 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
         }
     };
 
+    /*
     public void collision(PhysicsCollisionEvent event) {
 
         Spatial a = event.getNodeA();
@@ -169,6 +170,8 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
             }
         }
     }
+     *
+     */
 
     // ==== nifty ====
     public void bind(Nifty nifty, Screen screen) {
