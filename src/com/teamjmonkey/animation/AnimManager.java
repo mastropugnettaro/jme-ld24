@@ -41,10 +41,9 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
     public void update(float tpf) {
         super.update(tpf);
 
-        if (GameState.getGameState() == GameState.PAUSED || !isEnabled()) {
+        if (!isEnabled()) {
             return;
         }
-
         it = entList.iterator();
         while (it.hasNext()) {
             BaseEntity ent = (BaseEntity) it.next();
@@ -52,16 +51,26 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
                 if (ent.getAnimComponent().getCurAnim() != null) {
                     AnimInfo curAnimInfo = map.get(ent.getAnimComponent().getCurAnim());
                     AnimChannel channel = ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY);
-                    if (channel.getAnimationName() != null) {
-                        if (!channel.getAnimationName().equals(curAnimInfo.name)) {
+
+                    if (GameState.getGameState() == GameState.RUNNING) {
+                        if (channel.getAnimationName() != null) {
+                            if (!channel.getAnimationName().equals(curAnimInfo.name)) {
+                                ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setLoopMode(curAnimInfo.loop);
+                                ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setSpeed(curAnimInfo.speed);
+                                ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setAnim(curAnimInfo.name, curAnimInfo.blendTime);
+                            }
+                        }
+                    }else if (GameState.getGameState() == GameState.PAUSED) {
+                        if (channel.getAnimationName() != null) {
                             ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setLoopMode(curAnimInfo.loop);
-                            ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setSpeed(curAnimInfo.speed);
-                            ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setAnim(curAnimInfo.name, curAnimInfo.blendTime);
+                            ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setSpeed(0f);
+                            ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setAnim(curAnimInfo.name, curAnimInfo.blendTime);                
                         }
                     }
                 }
             }
         }
+
     }
 
     @Override
