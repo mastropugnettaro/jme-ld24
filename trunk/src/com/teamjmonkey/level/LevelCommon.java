@@ -49,6 +49,7 @@ public class LevelCommon extends AbstractAppState {
     private WaterFilter water;
     private AudioNode waves;
     private LowPassFilter aboveWaterAudioFilter = new LowPassFilter(1, 1);
+    private float counter = 0;
 
     public LevelCommon() {
         myApp = GameNameGoesHere.getApp();
@@ -156,7 +157,18 @@ public class LevelCommon extends AbstractAppState {
         if (!water.isUnderWater() && uw) {
             uw = false;
             waves.setDryFilter(new LowPassFilter(1, 1f));
+        }
 
+        if (water.isUnderWater()) {
+            counter += tpf;
+
+            if (counter > 1) { //1 second underwater kill
+                counter = 0;
+                myApp.getLevelManager().restartLevel();
+            }
+
+        } else {
+            counter = 0;
         }
     }
 }
