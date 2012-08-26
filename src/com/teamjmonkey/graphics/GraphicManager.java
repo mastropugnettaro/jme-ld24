@@ -37,6 +37,5 @@ public class GraphicManager implements Manager {
 
     public void cleanup() {
         graphicMap.clear();
-
     }
 }

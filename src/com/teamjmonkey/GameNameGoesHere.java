@@ -3,6 +3,7 @@ package com.teamjmonkey;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.bullet.BulletAppState;
+import com.teamjmonkey.animation.AnimManager;
 import com.teamjmonkey.appstates.MonkeyAppStateManager;
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.effects.EffectsManager;
@@ -34,6 +35,7 @@ public class GameNameGoesHere extends SimpleApplication {
     private MonkeyAppStateManager monkeyAppStateManager;
     private PhysicsManager physicsManager;
     private SoundManager soundManager;
+    private AnimManager animManager;
 
     public GameNameGoesHere() {
         super(new StatsAppState());
@@ -61,6 +63,7 @@ public class GameNameGoesHere extends SimpleApplication {
         monkeyAppStateManager = new MonkeyAppStateManager();
         physicsManager = new PhysicsManager();
         soundManager = new SoundManager();
+        animManager = new AnimManager();
 
         levelManager = new LevelManager();
         bulletAppState.getPhysicsSpace().enableDebug(assetManager);
@@ -126,5 +129,9 @@ public class GameNameGoesHere extends SimpleApplication {
 
     public SoundManager getSoundManager() {
         return soundManager;
+    }
+
+    public AnimManager getAnimManager() {
+        return animManager;
     }
 }

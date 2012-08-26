@@ -13,6 +13,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.teamjmonkey.GameNameGoesHere;
+import com.teamjmonkey.animation.AnimComponent;
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.graphics.GraphicManager;
 import com.teamjmonkey.graphics.Graphics;
@@ -33,6 +34,7 @@ public abstract class BaseEntity {
     protected MaterialManager materialManager = myApp.getMaterialManager();
     protected ControlManager controlManager = myApp.getControlManager();
     protected Spatial spatial;
+    protected AnimComponent animComponent;
 
     public BaseEntity(Graphics graphic) {
         spatial = graphicManager.createSpatial(graphic);
@@ -50,6 +52,10 @@ public abstract class BaseEntity {
     public abstract void cleanup();
 
     public abstract void finalise();
+
+    public AnimComponent getAnimComponent() {
+        return animComponent;
+    }
 
     protected void addPhysicsControl() {
         RigidBodyControl rigidBodyControl = new RigidBodyControl(getCollisionShape(), 1);

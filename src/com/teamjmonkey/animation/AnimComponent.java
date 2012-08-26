@@ -5,68 +5,65 @@ import com.jme3.scene.Spatial;
 
 public class AnimComponent {
 
-	
-	private String curAnim;
-	private String prevAnim;
-	private AnimControl animControl; 
-	private Spatial model;
-	
-	
-	public AnimComponent(Spatial model){
-		this.model = model;
-		if(model != null){
-			this.animControl = model.getControl(AnimControl.class);
-			createChannels();
-			animControl.getChannel(AnimConf.UPPER_BODY).setAnim("Stand"); //need init animation
-		}
+    private String curAnim;
+    private String prevAnim;
+    private AnimControl animControl;
+    private Spatial model;
 
-	}
-	
-	public AnimComponent(String curAnim){
-		this.curAnim = curAnim;
-		this.prevAnim = curAnim;
-	}
+    public AnimComponent(Spatial model) {
+        this.model = model;
+        if (model != null) {
+            this.animControl = model.getControl(AnimControl.class);
+            createChannels();
 
-	public String getCurAnim() {
-		return curAnim;
-	}
+            animControl.getChannel(AnimConf.UPPER_BODY).setAnim("Walk");
 
-	public void setCurAnim(String curAnim) {
-		setPrevAnim(this.curAnim);
-		this.curAnim = curAnim;
-	}
+           // animControl.getChannel(AnimConf.UPPER_BODY).setAnim("Idle"); //need init animation
+        }
 
-	public String getPrevAnim() {
-		return prevAnim;
-	}
+    }
 
-	public void setPrevAnim(String prevAnim) {
-		this.prevAnim = prevAnim;
-	}
+    public AnimComponent(String curAnim) {
+        this.curAnim = curAnim;
+        this.prevAnim = curAnim;
+    }
 
-	public AnimControl getAnimControl() {
-		return animControl;
-	}
+    public String getCurAnim() {
+        return curAnim;
+    }
 
-	public void setAnimControl(AnimControl animControl) {
-		this.animControl = animControl;
-	}
-	
-	public void createChannels(){
+    public void setCurAnim(String curAnim) {
+        setPrevAnim(this.curAnim);
+        this.curAnim = curAnim;
+    }
 
-		getAnimControl().createChannel();
-		getAnimControl().createChannel();
-		getAnimControl().createChannel();
+    public String getPrevAnim() {
+        return prevAnim;
+    }
 
-	}
+    public void setPrevAnim(String prevAnim) {
+        this.prevAnim = prevAnim;
+    }
 
-	public Spatial getModel() {
-		return model;
-	}
+    public AnimControl getAnimControl() {
+        return animControl;
+    }
 
-	public void setModel(Spatial model) {
-		this.model = model;
-	}
+    public void setAnimControl(AnimControl animControl) {
+        this.animControl = animControl;
+    }
 
-	
+    public void createChannels() {
+        getAnimControl().createChannel();
+        getAnimControl().createChannel();
+        getAnimControl().createChannel();
+    }
+
+    public Spatial getModel() {
+        return model;
+    }
+
+    public void setModel(Spatial model) {
+        this.model = model;
+    }
 }
