@@ -1,11 +1,13 @@
 package com.teamjmonkey.entity;
 
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.teamjmonkey.animation.AnimComponent;
+import com.teamjmonkey.controls.AggroControl;
 import com.teamjmonkey.graphics.Graphics;
 
 public class Bull extends BaseEntity {
@@ -23,13 +25,17 @@ public class Bull extends BaseEntity {
         Spatial tempSpatial = spatial;
         tempSpatial.move(0, -getYExtent, 0);
         spatial = new Node("enemy");
-        ((Node)spatial).attachChild(tempSpatial);
+        ((Node) spatial).attachChild(tempSpatial);
 
         Node tempNode = (Node) spatial;
         tempNode.move(0, getYExtent, 0);
         addPhysicsControl();
+
+        ghostControl.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_02);
+        ghostControl.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_03);
+
         spatial = new Node("enemy");
-        ((Node)spatial).attachChild(tempNode);
+        ((Node) spatial).attachChild(tempNode);
     }
 
     @Override
@@ -60,7 +66,12 @@ public class Bull extends BaseEntity {
 
         //remove ghost controls
         bulletAppState.getPhysicsSpace().remove(ghostControl);
-        spatial.removeControl(ghostControl);
+        //spatial.removeControl(ghostControl);
+
+        ((Node)spatial).getChild(0).removeControl(ghostControl);
+
+        spatial.getControl(AggroControl.class).cleanup();
+        //spatial.removeControl(AggroControl.class);
     }
 
     @Override
