@@ -1,19 +1,22 @@
 package com.teamjmonkey.ai.aggro;
 
 import com.jme3.math.Vector3f;
+import com.teamjmonkey.ai.areas.WalkableArea;
 import com.teamjmonkey.controls.MoveRandomControl;
 
-public class AggroBehaviorStare extends AggroBehaviorBase {
+public class AggroBehaviorChase extends AggroBehaviorBase {
 
+    private WalkableArea area;
     private float speed;
 
-    public AggroBehaviorStare(float speed) {
+    public AggroBehaviorChase(WalkableArea area, float speed) {
+        this.area = area;
         this.speed = speed;
     }
 
     public void onAggro(Vector3f target) {
         interruptOtherActions();
-        entity.lookAt(target, speed);
+        entity.moveTo(target, speed, 1f);
     }
 
     private void interruptOtherActions() {
@@ -36,7 +39,11 @@ public class AggroBehaviorStare extends AggroBehaviorBase {
 
     public void update(float tpf, Vector3f target, boolean hasOtherAggroType) {
         if (!hasOtherAggroType) {
-            entity.lookAt(target, speed);
+            if (area.isLocationInside(target)) {
+                entity.moveTo(target, speed, 1f);
+            } else {
+                entity.stop();
+            }
         }
     }
 }

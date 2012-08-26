@@ -1,5 +1,7 @@
 package com.teamjmonkey.controls;
 
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
@@ -11,45 +13,57 @@ import com.jme3.scene.Spatial;
 import com.teamjmonkey.ai.aggro.AggroBehavior;
 import com.teamjmonkey.entity.MovableEntity;
 
-public class AggroControl extends BaseControl implements PhysicsCollisionListener {
+public class AggroControl extends BaseControl implements PhysicsCollisionListener, PhysicsTickListener {
 
     private MovableEntity entity;
     private GhostControl losGhost;
-    private GhostControl fightGhost;
-    private static final float CHASE_TIME = 1f;
+    private GhostControl attackGhost;
     private final float losRadius;
     private final float fightRadius;
-    private boolean isChasing;
-    private float chaseTimer;
+    private boolean hasLosAggro;
+    private boolean hadLosAggro;
+    private boolean hasAttackAggro;
+    private boolean hadAttackAggro;
+    private Vector3f losTarget;
+    private Vector3f attackTarget;
     private AggroBehavior[] losBehaviors;
     private AggroBehavior[] attackBehaviors;
 
-    public AggroControl(MovableEntity entity, float losRadius, float fightRadius, AggroBehavior losBehavior, AggroBehavior fightBehavior) {
+    public AggroControl(MovableEntity entity, float losRadius, float fightRadius, AggroBehavior losBehavior, AggroBehavior attackBehavior) {
         this(entity, losRadius, fightRadius,
-                losBehavior == null ? new AggroBehavior[0] : new AggroBehavior[]{losBehavior},
-                fightBehavior == null ? new AggroBehavior[0] : new AggroBehavior[]{fightBehavior});
+                losBehavior == null ? null : new AggroBehavior[]{losBehavior},
+                attackBehavior == null ? null : new AggroBehavior[]{attackBehavior});
     }
 
-    public AggroControl(MovableEntity entity, float losRadius, float fightRadius, AggroBehavior[] losBehaviors, AggroBehavior[] fightBehaviors) {
+    public AggroControl(MovableEntity entity, float losRadius, float fightRadius, AggroBehavior[] losBehaviors, AggroBehavior[] attackBehaviors) {
         this.entity = entity;
         this.losBehaviors = losBehaviors == null ? new AggroBehavior[0] : losBehaviors;
-        this.attackBehaviors = fightBehaviors == null ? new AggroBehavior[0] : fightBehaviors;
+        this.attackBehaviors = attackBehaviors == null ? new AggroBehavior[0] : attackBehaviors;
         this.losRadius = losRadius;
         this.fightRadius = fightRadius;
         myApp.getBulletAppState().getPhysicsSpace().addCollisionListener(this);
+        myApp.getBulletAppState().getPhysicsSpace().addTickListener(this);
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (isChasing) {
-            if (chaseTimer > 0f) {
-                chaseTimer -= tpf;
-                fireLosUpdate(tpf);
-            } else {
-                isChasing = false;
-                fireLosAggroLoss();
-            }
+        if (hasLosAggro && hadLosAggro) {
+            fireLosUpdate(tpf, losTarget);
+        } else if (!hasLosAggro && hadLosAggro) {
+            fireLosAggroLoss();
+        } else if (hasLosAggro && !hadLosAggro) {
+            fireLosOnAggro(losTarget);
         }
+        hadLosAggro = hasLosAggro;
+
+        if (hasAttackAggro && hadAttackAggro) {
+            fireAttackUpdate(tpf, attackTarget);
+        } else if (!hasAttackAggro && hadAttackAggro) {
+            fireAttackAggroLoss();
+        } else if (hasAttackAggro && !hadAttackAggro) {
+            fireAttackOnAggro(attackTarget);
+        }
+        hadAttackAggro = hasAttackAggro;
     }
 
     @Override
@@ -57,10 +71,10 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
         super.setSpatial(spatial);
 
         if (spatial != null) {
-            losGhost = new GhostControl(new CapsuleCollisionShape(losRadius, 4f));
-            fightGhost = new GhostControl(entity.getCollisionShape());
+            losGhost = new GhostControl(new CapsuleCollisionShape(losRadius, 5f));
+            attackGhost = new GhostControl(new CapsuleCollisionShape(fightRadius, 4f));
             addGhost(losGhost);
-            addGhost(fightGhost);
+            addGhost(attackGhost);
             fireInit();
         }
     }
@@ -72,16 +86,6 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
         myApp.getBulletAppState().getPhysicsSpace().add(ghost);
     }
 
-    public void aggro(Vector3f target) {
-        chaseTimer = CHASE_TIME;
-        if (isChasing) {
-            fireLosUpdateTarget(target);
-        } else {
-            isChasing = true;
-            fireLosOnAggro(target);
-        }
-    }
-
     private void fireInit() {
         for (AggroBehavior ab : losBehaviors) {
             ab.init(myApp, entity, spatial);
@@ -91,20 +95,26 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
         }
     }
 
-    private void fireLosUpdate(float tpf) {
+    private void fireLosUpdate(float tpf, Vector3f target) {
         for (AggroBehavior ab : losBehaviors) {
-            ab.update(tpf);
+            ab.update(tpf, target, hasAttackAggro && attackBehaviors.length > 0);
         }
     }
 
-    private void fireLosUpdateTarget(Vector3f target) {
-        for (AggroBehavior ab : losBehaviors) {
-            ab.updateTarget(target);
+    private void fireAttackUpdate(float tpf, Vector3f target) {
+        for (AggroBehavior ab : attackBehaviors) {
+            ab.update(tpf, target, hasLosAggro && losBehaviors.length > 0);
         }
     }
 
     private void fireLosOnAggro(Vector3f target) {
         for (AggroBehavior ab : losBehaviors) {
+            ab.onAggro(target);
+        }
+    }
+
+    private void fireAttackOnAggro(Vector3f target) {
+        for (AggroBehavior ab : attackBehaviors) {
             ab.onAggro(target);
         }
     }
@@ -115,21 +125,42 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
         }
     }
 
-    public void collision(PhysicsCollisionEvent event) {
+    private void fireAttackAggroLoss() {
+        for (AggroBehavior ab : attackBehaviors) {
+            ab.onAggroLoss();
+        }
+    }
 
-        if(spatial == null || event.getNodeA() == null || event.getNodeB() == null) {
+    public void collision(PhysicsCollisionEvent event) {
+        if (spatial == null || event.getNodeA() == null || event.getNodeB() == null) {
             return;
         }
 
-        if (event.getObjectA() instanceof CharacterControl && event.getObjectB() instanceof GhostControl) {
+        PhysicsCollisionObject object = null;
+        if (event.getObjectA() instanceof CharacterControl) {
             if (event.getNodeB().equals(spatial)) {
-                aggro(myApp.getCamera().getLocation());
+                object = event.getObjectB();
             }
-        } else if (event.getObjectB() instanceof CharacterControl && event.getObjectA() instanceof GhostControl) {
+        } else if (event.getObjectB() instanceof CharacterControl) {
             if (event.getNodeA().equals(spatial)) {
-                aggro(myApp.getCamera().getLocation());
+                object = event.getObjectA();
             }
         }
+        if (object != null && object.equals(losGhost)) {
+            hasLosAggro = true;
+            losTarget = myApp.getCamera().getLocation();
+        } else if (object != null && object.equals(attackGhost)) {
+            hasAttackAggro = true;
+            attackTarget = myApp.getCamera().getLocation();
+        }
+    }
+
+    public void prePhysicsTick(PhysicsSpace space, float tpf) {
+        hasLosAggro = false;
+        hasAttackAggro = false;
+    }
+
+    public void physicsTick(PhysicsSpace space, float tpf) {
     }
 
     @Override
@@ -139,8 +170,8 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
         myApp.getBulletAppState().getPhysicsSpace().removeCollisionListener(this);
 
         myApp.getBulletAppState().getPhysicsSpace().remove(losGhost);
-        spatial.removeControl(fightGhost);
-        myApp.getBulletAppState().getPhysicsSpace().remove(fightGhost);
+        spatial.removeControl(attackGhost);
+        myApp.getBulletAppState().getPhysicsSpace().remove(attackGhost);
 
         spatial.removeControl(this);
     }

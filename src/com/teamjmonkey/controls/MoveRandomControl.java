@@ -73,7 +73,6 @@ public class MoveRandomControl extends BaseControl {
         } else {
             waitTimer = maxWaitTime * random.nextFloat();
             isWaiting = true;
-            entity.getAnimComponent().setCurAnim(AnimType.IDLE);
         }
     }
 
@@ -82,7 +81,6 @@ public class MoveRandomControl extends BaseControl {
                 baseSpeed * (random.nextFloat() * 2.0f + 0.5f),
                 TURN_SPEED_MULTIPLIER);
         currentChanceToWait = chanceToWait;
-        entity.getAnimComponent().setCurAnim(AnimType.WALK);
     }
 
     public void pause(float time) {
