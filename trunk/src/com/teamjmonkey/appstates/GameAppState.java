@@ -1,19 +1,13 @@
 package com.teamjmonkey.appstates;
 
-import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.bullet.collision.PhysicsCollisionEvent;
-import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.scene.Spatial;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.animation.AnimManager;
-import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.level.LevelCommon;
 import com.teamjmonkey.level.LevelManager;
 import com.teamjmonkey.ui.UIManager;
@@ -30,15 +24,9 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     private UIManager uiManager = myApp.getUIManager();
     private LevelManager levelManager = myApp.getLevelManager();
     private Nifty nifty = uiManager.getNifty();
-    private final String LEFT_MOVE = "LeftMove";
-    private final String RIGHT_MOVE = "RightMove";
-    private final String FORWARD_MOVE = "UpMove";
-    private final String BACKWARD_MOVE = "BackMove";
     private final String PAUSE = "Pause";
     private final String NEXT_LEVEL = "NextLevel";
     private final String PREVIOUS_LEVEL = "PreviousLevel";
-    private final String MAIN_CHARACTER = "mainCharacter";
-    private final String ENEMY = "enemy";
 
     public GameAppState() {
         nifty.registerScreenController(this);
@@ -51,7 +39,7 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         GameState.setGameState(GameState.RUNNING);
         showHud();
 
-        myApp.getStateManager().attach(new NewFlyCamAppState());
+        myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(NewFlyCamAppState.class));
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LevelCommon.class));
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(AnimManager.class));
         myApp.getBulletAppState().setEnabled(true);
@@ -60,23 +48,14 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     }
 
     @Override
-    public void initialize(AppStateManager stateManager, Application app) {
-        initialized = true;
-
-        myApp.getBulletAppState().setEnabled(true);
-       // myApp.getBulletAppState().getPhysicsSpace().addCollisionListener(this);
-    }
-
-    @Override
     public void stateDetached(AppStateManager stateManager) {
         super.stateDetached(stateManager);
         removeDesktopInputs();
 
-      //  myApp.getBulletAppState().getPhysicsSpace().removeCollisionListener(this);
-
         // deatch all Level States
         myApp.getStateManager().detach(myApp.getStateManager().getState(LevelCommon.class));
         myApp.getStateManager().detach(myApp.getStateManager().getState(AnimManager.class));
+        myApp.getStateManager().detach(myApp.getStateManager().getState(NewFlyCamAppState.class));
         myApp.getBulletAppState().setEnabled(false);
 
         // TODO: pause any playing music
