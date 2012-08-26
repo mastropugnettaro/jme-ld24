@@ -3,6 +3,7 @@ package com.teamjmonkey.entity;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.teamjmonkey.animation.AnimType;
 import com.teamjmonkey.controls.BaseControl;
 import com.teamjmonkey.graphics.Graphics;
 
@@ -55,6 +56,7 @@ public abstract class MovableEntity extends BaseEntity {
     public void moveTo(Vector3f target, float speed, float turnSpeedMultiplier) {
         this.speed = speed;
         isMoving = true;
+        animComponent.setCurAnim(AnimType.WALK);
         lookAt(target, turnSpeedMultiplier);
     }
 
@@ -67,6 +69,7 @@ public abstract class MovableEntity extends BaseEntity {
 
         if (FastMath.abs(deltaX) < MOVEMENT_ACCURACY && FastMath.abs(deltaZ) < MOVEMENT_ACCURACY) {
             isMoving = false;
+            animComponent.setCurAnim(AnimType.IDLE);
         } else {
             if (delta <= speed * tpf) {
                 moveX = deltaX;
@@ -111,6 +114,7 @@ public abstract class MovableEntity extends BaseEntity {
             lerpIncrease = (180f / angleDelta) * turnSpeedMultiplier;
             lerpAmount = 0f;
             isTurning = true;
+            animComponent.setCurAnim(AnimType.WALK);
         } else {
             isTurned = true;
         }
@@ -128,6 +132,9 @@ public abstract class MovableEntity extends BaseEntity {
             } else {
                 isTurning = false;
                 isTurned = true;
+                if (!isMoving) {
+                    animComponent.setCurAnim(AnimType.IDLE);
+                }
             }
         }
     }
@@ -145,6 +152,7 @@ public abstract class MovableEntity extends BaseEntity {
         isTurning = false;
         isTurned = false;
         isPaused = false;
+        animComponent.setCurAnim(AnimType.IDLE);
     }
 
     public boolean isPaused() {
