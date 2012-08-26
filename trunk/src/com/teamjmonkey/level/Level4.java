@@ -5,7 +5,6 @@
 package com.teamjmonkey.level;
 
 import com.jme3.bullet.BulletAppState;
-import com.jme3.math.Vector3f;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.entity.Entity;
@@ -21,7 +20,7 @@ import com.teamjmonkey.entity.BaseEntity;
 import com.teamjmonkey.entity.Spear;
 import java.util.LinkedList;
 
-public class Level1 implements Level {
+public class Level4 implements Level {
 
     private GameNameGoesHere myApp;
     private Node rootNode;
@@ -34,7 +33,7 @@ public class Level1 implements Level {
     private BulletAppState bulletAppState;
     private LinkedList<BaseEntity> allEntities;
 
-    public Level1() {
+    public Level4() {
         myApp = GameNameGoesHere.getApp();
         rootNode = myApp.getRootNode();
         controlManager = myApp.getControlManager();
@@ -51,7 +50,6 @@ public class Level1 implements Level {
 
     @Override
     public void load() {
-        
         TestPlatform testPlatform = (TestPlatform) entityManager.create(Entity.TEST_FLOOR);
         testPlatform.finalise();
         rootNode.attachChild(testPlatform.getSpatial());
@@ -62,6 +60,11 @@ public class Level1 implements Level {
         mainCharacter.finalise();
         rootNode.attachChild(mainCharacter.getSpatial());
         allEntities.add(mainCharacter);
+
+        Spear spear = (Spear) entityManager.create(Entity.SPEAR);
+        spear.finalise();
+        rootNode.attachChild(spear.getSpatial());
+        allEntities.add(spear);
     }
 
     @Override
@@ -69,7 +72,7 @@ public class Level1 implements Level {
 
         for (BaseEntity baseEntity : getAllEntities()) {
             baseEntity.cleanup(); // should remove all physics and controls
-            rootNode.detachChild(baseEntity.getSpatial()); // remove from scene graph
+            baseEntity.getSpatial().removeFromParent(); // remove from scene graph
         }
 
         allEntities.clear();

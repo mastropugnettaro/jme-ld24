@@ -2,7 +2,12 @@ package com.teamjmonkey.controls;
 
 public enum MonkeyControl {
 
-    LOOK_AT(LookAtControl.class);
+    LOOK_AT(LookAtControl.class),
+    SET_TO_CAM(MainCharacterControl.class),
+    WEAPON_FOLLOW_CAM(WeaponFollowCamControl.class),
+    BOB_CONTROL(BobControl.class),
+    WEAPON_ATTACK_CONTROL(WeaponAttackControl.class);
+
     private Class<? extends BaseControl> clazz;
 
     MonkeyControl(Class<? extends BaseControl> control) {

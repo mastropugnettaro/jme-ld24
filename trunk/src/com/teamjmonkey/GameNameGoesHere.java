@@ -53,8 +53,8 @@ public class GameNameGoesHere extends SimpleApplication {
         fileManager = new FileManager(assetManager);
         effectsManager = new EffectsManager();
         controlManager = new ControlManager();
-        graphicManager = new GraphicManager();
         preloadManager = new PreloadManager();
+        graphicManager = new GraphicManager();
         materialManager = new MaterialManager();
         entityManager = new EntityManager();
         userSettings = new UserSettings();
@@ -127,6 +127,4 @@ public class GameNameGoesHere extends SimpleApplication {
     public SoundManager getSoundManager() {
         return soundManager;
     }
-
-
 }

@@ -29,11 +29,12 @@ public class PhysicsManager implements Manager {
         return rigidBodyControl;
     }
 
-    public CollisionShape getCollisionShape(MonkeyCollisionShape neoCollisionShape) {
-        return collisionShapeMap.get(neoCollisionShape);
+    public CollisionShape getCollisionShape(MonkeyCollisionShape monkeyCollisionShape) {
+        return collisionShapeMap.get(monkeyCollisionShape);
     }
 
     public void cleanup() {
         collisionShapeMap.clear();
     }
+
 }

@@ -1,16 +1,15 @@
 package com.teamjmonkey.appstates;
 
 import com.jme3.app.Application;
-import com.jme3.app.FlyCamAppState;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
-import com.jme3.input.MouseInput;
+import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseAxisTrigger;
 import com.teamjmonkey.GameNameGoesHere;
+import com.teamjmonkey.level.LevelCommon;
 import com.teamjmonkey.level.LevelManager;
 import com.teamjmonkey.ui.UIManager;
 import com.teamjmonkey.util.GameState;
@@ -45,7 +44,8 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         GameState.setGameState(GameState.RUNNING);
         showHud();
 
-        myApp.getStateManager().attach(new FlyCamAppState());
+        myApp.getStateManager().attach(new NewFlyCamAppState());
+        myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LevelCommon.class));
 
         loadDesktopInputs();
     }
@@ -54,6 +54,9 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     public void stateDetached(AppStateManager stateManager) {
         super.stateDetached(stateManager);
         removeDesktopInputs();
+
+        // deatch all Level States
+        myApp.getStateManager().detach(myApp.getStateManager().getState(LevelCommon.class));
 
         // TODO: pause any playing music
     }
@@ -74,19 +77,19 @@ public class GameAppState extends AbstractAppState implements ScreenController {
             inputManager.deleteMapping("SIMPLEAPP_Exit");
         }
 
-        inputManager.addMapping(PAUSE, new KeyTrigger(KeyboardInputEvent.KEY_ESCAPE),
+        inputManager.addMapping(PAUSE, new KeyTrigger(KeyInput.KEY_ESCAPE),
                 new KeyTrigger(KeyboardInputEvent.KEY_PAUSE),
                 new KeyTrigger(KeyboardInputEvent.KEY_P));
-        inputManager.addMapping(NEXT_LEVEL, new KeyTrigger(KeyboardInputEvent.KEY_F2));
-        inputManager.addMapping(PREVIOUS_LEVEL, new KeyTrigger(KeyboardInputEvent.KEY_F1));
+        inputManager.addMapping(NEXT_LEVEL, new KeyTrigger(KeyInput.KEY_F2));
+        inputManager.addMapping(PREVIOUS_LEVEL, new KeyTrigger(KeyInput.KEY_F1));
 
         inputManager.addListener(actionListener, PAUSE, NEXT_LEVEL, PREVIOUS_LEVEL);
 
         // add mappings
-        inputManager.addMapping(LEFT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, true));
-        inputManager.addMapping(RIGHT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, false));
-        inputManager.addMapping(FORWARD_MOVE, new MouseAxisTrigger(MouseInput.AXIS_Y, false));
-        inputManager.addMapping(BACKWARD_MOVE, new MouseAxisTrigger(MouseInput.AXIS_Y, true));
+       // inputManager.addMapping(LEFT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, true));
+      //  inputManager.addMapping(RIGHT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, false));
+      //  inputManager.addMapping(FORWARD_MOVE, new MouseAxisTrigger(MouseInput.AXIS_Y, false));
+      //  inputManager.addMapping(BACKWARD_MOVE, new MouseAxisTrigger(MouseInput.AXIS_Y, true));
 
         inputManager.addListener(analogListener, new String[]{LEFT_MOVE, RIGHT_MOVE, FORWARD_MOVE, BACKWARD_MOVE});
     }
@@ -99,10 +102,10 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     private void removeDesktopInputs() {
 
         //remove mappings
-        inputManager.deleteMapping(LEFT_MOVE);
-        inputManager.deleteMapping(RIGHT_MOVE);
-        inputManager.deleteMapping(FORWARD_MOVE);
-        inputManager.deleteMapping(BACKWARD_MOVE);
+     //   inputManager.deleteMapping(LEFT_MOVE);
+     //   inputManager.deleteMapping(RIGHT_MOVE);
+    //    inputManager.deleteMapping(FORWARD_MOVE);
+    //    inputManager.deleteMapping(BACKWARD_MOVE);
 
         inputManager.deleteMapping(PAUSE);
         inputManager.deleteMapping(NEXT_LEVEL);
@@ -120,16 +123,20 @@ public class GameAppState extends AbstractAppState implements ScreenController {
             }
 
             //move main Character
-            if (name.equals(LEFT_MOVE)) {
-            } else if (name.equals(RIGHT_MOVE)) {
-            } else if (name.equals(FORWARD_MOVE)) {
-            } else if (name.equals(BACKWARD_MOVE)) {
-            }
+         //   if (name.equals(LEFT_MOVE)) {
+        //    } else if (name.equals(RIGHT_MOVE)) {
+        //    } else if (name.equals(FORWARD_MOVE)) {
+        //    } else if (name.equals(BACKWARD_MOVE)) {
+        //    }
         }
     };
     private ActionListener actionListener = new ActionListener() {
 
         public void onAction(String name, boolean isPressed, float tpf) {
+
+            if (GameState.getGameState() != GameState.RUNNING) {
+                return;
+            }
 
             if (!isPressed) {
 

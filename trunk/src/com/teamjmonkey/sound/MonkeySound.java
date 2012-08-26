@@ -3,7 +3,8 @@ package com.teamjmonkey.sound;
 public enum MonkeySound {
 
         TEST_MUSIC("ahem.ogg", true),
-        TEST_SOUND("ahem.ogg", false);
+        TEST_SOUND("ahem.ogg", false),
+        OCEAN("Environment/Ocean Waves.ogg", true);
 
         private final String path;
         private final boolean music;
