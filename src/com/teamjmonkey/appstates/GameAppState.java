@@ -46,6 +46,7 @@ public class GameAppState extends AbstractAppState implements ScreenController {
 
         myApp.getStateManager().attach(new NewFlyCamAppState());
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LevelCommon.class));
+        myApp.getBulletAppState().setEnabled(true);
 
         loadDesktopInputs();
     }
@@ -57,6 +58,7 @@ public class GameAppState extends AbstractAppState implements ScreenController {
 
         // deatch all Level States
         myApp.getStateManager().detach(myApp.getStateManager().getState(LevelCommon.class));
+        myApp.getBulletAppState().setEnabled(false);
 
         // TODO: pause any playing music
     }

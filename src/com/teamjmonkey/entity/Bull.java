@@ -1,51 +1,67 @@
 package com.teamjmonkey.entity;
 
 import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.teamjmonkey.controls.MonkeyControl;
+import com.jme3.bullet.collision.shapes.SphereCollisionShape;
+import com.jme3.bullet.control.GhostControl;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.teamjmonkey.graphics.Graphics;
-import java.io.IOException;
 
 public class Bull extends BaseEntity {
 
-    private RigidBodyControl rigidBodyControl;
+    private GhostControl ghostControl;
 
-    public Bull () {
+    public Bull() {
         super(Graphics.BULL);
-        spatial.setName("bull");
+        spatial.setName("enemy");
+
+        //this to to align the controls better
+        float getYExtent = getExtents().getY();
+        Spatial tempSpatial = spatial;
+        tempSpatial.move(0, -getYExtent, 0);
+        spatial = new Node("enemy");
+        ((Node)spatial).attachChild(tempSpatial);
+
+        Node tempNode = (Node) spatial;
+        tempNode.move(0, getYExtent, 0);
+        addPhysicsControl();
+        spatial = new Node("enemy");
+        ((Node)spatial).attachChild(tempNode);
     }
 
     @Override
     protected CollisionShape getCollisionShape() {
-        return createNewSphereCollisionShape();
+        return new SphereCollisionShape(getExtents().z);
     }
 
     @Override
     public void addPhysicsControl() {
-        rigidBodyControl = new RigidBodyControl(getCollisionShape(), 0.2f);
-        spatial.addControl(rigidBodyControl);
-        bulletAppState.getPhysicsSpace().add(rigidBodyControl);
+        ghostControl = new GhostControl(getCollisionShape());
+        spatial.addControl(ghostControl);
+        bulletAppState.getPhysicsSpace().add(ghostControl);
     }
 
     @Override
-    public void addMaterial() { }
+    public void addMaterial() {
+    }
 
     @Override
     public void addControl() {
-       // spatial.addControl(controlManager.getControl(MonkeyControl.LOOK_AT_ORIGIN));
+        // spatial.addControl(controlManager.getControl(MonkeyControl.LOOK_AT_ORIGIN));
     }
 
     @Override
     public void cleanup() {
-        bulletAppState.getPhysicsSpace().remove(rigidBodyControl);
-        spatial.removeControl(rigidBodyControl);
+        //bulletAppState.getPhysicsSpace().remove(characterControl);
+        //spatial.removeControl(characterControl);
+
+        //remove ghost controls
+        bulletAppState.getPhysicsSpace().remove(ghostControl);
+        spatial.removeControl(ghostControl);
     }
 
     @Override
     public void finalise() {
-        addPhysicsControl();
         addControl();
     }
 }

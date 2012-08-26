@@ -43,15 +43,15 @@ public abstract class BaseEntity {
 
     protected abstract CollisionShape getCollisionShape();
 
-    public abstract void addMaterial();
+    protected abstract void addMaterial();
 
-    public abstract void addControl();
+    protected abstract void addControl();
 
     public abstract void cleanup();
 
     public abstract void finalise();
 
-    public void addPhysicsControl() {
+    protected void addPhysicsControl() {
         RigidBodyControl rigidBodyControl = new RigidBodyControl(getCollisionShape(), 1);
         rigidBodyControl.setKinematic(true);
         spatial.addControl(rigidBodyControl);
@@ -74,7 +74,7 @@ public abstract class BaseEntity {
         return new SphereCollisionShape(getExtents().x);
     }
 
-    private Vector3f getExtents() {
+    protected Vector3f getExtents() {
         return ((BoundingBox) spatial.getWorldBound()).getExtent(null);
     }
 }
