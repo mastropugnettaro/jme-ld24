@@ -69,13 +69,16 @@ public class Level1 implements Level {
             Bull bull = (Bull) entityManager.create(Entity.BULL);
             bull.getSpatial().addControl(new MoveRandomControl(field));
             bull.getSpatial().setLocalTranslation(field.getRandomPointInside());
+            bull.finalise();
             rootNode.attachChild(bull.getSpatial());
             allEntities.add(bull);
         }
+
         for (int i = 0; i < 5; i++) {
             Bull bull = (Bull) entityManager.create(Entity.BULL);
             bull.getSpatial().addControl(new MoveRandomControl(midCircle));
             bull.getSpatial().setLocalTranslation(midCircle.getRandomPointInside());
+            bull.finalise();
             rootNode.attachChild(bull.getSpatial());
             allEntities.add(bull);
         }

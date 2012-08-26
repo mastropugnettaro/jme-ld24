@@ -1,19 +1,19 @@
 package com.teamjmonkey.controls;
 
+import com.jme3.bullet.collision.PhysicsCollisionEvent;
+import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Spatial;
 import com.teamjmonkey.entity.MainCharacter;
 import com.teamjmonkey.util.GameState;
 
-public class MainCharacterControl extends BaseControl implements ActionListener {
+public class MainCharacterControl extends BaseControl implements ActionListener, PhysicsCollisionListener {
 
     private Vector3f walkDirection = new Vector3f();
     private boolean left = false, right = false, up = false, down = false;
@@ -25,9 +25,12 @@ public class MainCharacterControl extends BaseControl implements ActionListener 
     private final String FORWARD_MOVE = "UpMove";
     private final String BACKWARD_MOVE = "BackMove";
     private final String JUMP = "Jump";
+    private final String MAIN_CHARACTER = "mainCharacter";
+    private final String ENEMY = "enemy";
 
     public MainCharacterControl() {
         addDesktopInputs();
+        myApp.getBulletAppState().getPhysicsSpace().addCollisionListener(this);
     }
 
     @Override
@@ -63,7 +66,7 @@ public class MainCharacterControl extends BaseControl implements ActionListener 
     public void setSpatial(Spatial spatial) {
         super.setSpatial(spatial);
 
-        if(spatial != null) {
+        if (spatial != null) {
             player = ((MainCharacter) spatial.getUserData("entity")).getCharacterControl();
         }
     }
@@ -71,7 +74,7 @@ public class MainCharacterControl extends BaseControl implements ActionListener 
     public void cleanUp() {
         spatial.removeControl(this);
         removeDesktopInput();
-        
+
         GameState.setMoving(false);
     }
 
@@ -102,8 +105,7 @@ public class MainCharacterControl extends BaseControl implements ActionListener 
         inputManager.addMapping(BACKWARD_MOVE, new KeyTrigger(KeyInput.KEY_S));
         inputManager.addMapping(JUMP, new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addListener(this, LEFT_MOVE, RIGHT_MOVE, FORWARD_MOVE, BACKWARD_MOVE, JUMP);
-
-   }
+    }
 
     private void removeDesktopInput() {
         inputManager.deleteMapping(LEFT_MOVE);
@@ -112,5 +114,39 @@ public class MainCharacterControl extends BaseControl implements ActionListener 
         inputManager.deleteMapping(BACKWARD_MOVE);
         inputManager.deleteMapping(JUMP);
         inputManager.removeListener(this);
+    }
+
+    public void collision(PhysicsCollisionEvent event) {
+
+        Spatial a = event.getNodeA();
+        Spatial b = event.getNodeB();
+
+        if (a == null || b == null) {
+            return;
+        }
+
+        String aName = event.getNodeA().getName();
+        String bName = event.getNodeB().getName();
+
+       // success they have collide
+
+        if ((aName.equals(MAIN_CHARACTER) && bName.equals(ENEMY))
+                || (bName.equals(MAIN_CHARACTER) && aName.equals(ENEMY))) {
+
+            Spatial enemy = aName.equals(ENEMY) ? a : b;
+            Spatial mainCharacter = aName.equals(ENEMY) ? b : a;
+
+            // check if the enemy is in wait state
+
+            // check if the enemy is in attack state
+
+            // note the use of getParent, this was used to line the collision shapes
+            MoveRandomControl control = enemy.getParent().getControl(MoveRandomControl.class);
+            control.setEnabled(false);
+
+            // THIS MUST BE CALLED SOMEWHERE
+            //  MovementControl.setEnabled(true);
+            //  MovementControl.resume(); // if neccessary
+        }
     }
 }

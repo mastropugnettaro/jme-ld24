@@ -56,7 +56,7 @@ public class LevelManager implements Manager {
     public void initialiseGameStatesOnce() {
 
         // Load LevelCommon
-       
+
     }
 
     public void load(int level) {
@@ -90,8 +90,6 @@ public class LevelManager implements Manager {
     }
 
     public void restartLevel() {
-
-        // cleanup() doesn't need to be called here as the same sounds can be used
         cleanup();
 
         //this calls currentLevel.load() inside

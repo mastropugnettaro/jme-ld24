@@ -3,6 +3,7 @@ package com.teamjmonkey.entity;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
+import com.jme3.bullet.control.GhostControl;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class MainCharacter extends BaseEntity implements Savable {
 
     private CharacterControl player;
+    private GhostControl control;
 
     public MainCharacter() {
         super();
@@ -36,6 +38,14 @@ public class MainCharacter extends BaseEntity implements Savable {
         player.setGravity(30);
         player.setPhysicsLocation(new Vector3f(0, 10, 0));
         bulletAppState.getPhysicsSpace().add(player);
+
+        spatial.addControl(player);
+
+      //  control = new GhostControl(getCollisionShape());
+     //   spatial.addControl(control);
+      //  bulletAppState.getPhysicsSpace().add(control);
+
+
     }
 
     public CharacterControl getCharacterControl() {
