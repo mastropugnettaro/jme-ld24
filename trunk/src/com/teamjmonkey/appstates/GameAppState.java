@@ -51,14 +51,20 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
         GameState.setGameState(GameState.RUNNING);
         showHud();
 
-        myApp.getBulletAppState().getPhysicsSpace().addCollisionListener(this);
-
         myApp.getStateManager().attach(new NewFlyCamAppState());
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LevelCommon.class));
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(AnimManager.class));
         myApp.getBulletAppState().setEnabled(true);
 
         loadDesktopInputs();
+    }
+
+    @Override
+    public void initialize(AppStateManager stateManager, Application app) {
+        initialized = true;
+
+        myApp.getBulletAppState().setEnabled(true);
+        myApp.getBulletAppState().getPhysicsSpace().addCollisionListener(this);
     }
 
     @Override
@@ -74,11 +80,6 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
         myApp.getBulletAppState().setEnabled(false);
 
         // TODO: pause any playing music
-    }
-
-    @Override
-    public void initialize(AppStateManager stateManager, Application app) {
-        super.initialize(stateManager, app);
     }
 
     @Override
@@ -100,13 +101,6 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
 
         inputManager.addListener(actionListener, PAUSE, NEXT_LEVEL, PREVIOUS_LEVEL);
 
-        // add mappings
-        // inputManager.addMapping(LEFT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, true));
-        //  inputManager.addMapping(RIGHT_MOVE, new MouseAxisTrigger(MouseInput.AXIS_X, false));
-        //  inputManager.addMapping(FORWARD_MOVE, new MouseAxisTrigger(MouseInput.AXIS_Y, false));
-        //  inputManager.addMapping(BACKWARD_MOVE, new MouseAxisTrigger(MouseInput.AXIS_Y, true));
-
-        inputManager.addListener(analogListener, new String[]{LEFT_MOVE, RIGHT_MOVE, FORWARD_MOVE, BACKWARD_MOVE});
     }
 
     @Override
@@ -116,35 +110,12 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
 
     private void removeDesktopInputs() {
 
-        //remove mappings
-        //   inputManager.deleteMapping(LEFT_MOVE);
-        //   inputManager.deleteMapping(RIGHT_MOVE);
-        //    inputManager.deleteMapping(FORWARD_MOVE);
-        //    inputManager.deleteMapping(BACKWARD_MOVE);
-
         inputManager.deleteMapping(PAUSE);
         inputManager.deleteMapping(NEXT_LEVEL);
         inputManager.deleteMapping(PREVIOUS_LEVEL);
 
-        inputManager.removeListener(analogListener);
         inputManager.removeListener(actionListener);
     }
-    private AnalogListener analogListener = new AnalogListener() {
-
-        public void onAnalog(String name, float value, float tpf) {
-
-            if (GameState.getGameState() != GameState.RUNNING) {
-                return;
-            }
-
-            //move main Character
-            //   if (name.equals(LEFT_MOVE)) {
-            //    } else if (name.equals(RIGHT_MOVE)) {
-            //    } else if (name.equals(FORWARD_MOVE)) {
-            //    } else if (name.equals(BACKWARD_MOVE)) {
-            //    }
-        }
-    };
     private ActionListener actionListener = new ActionListener() {
 
         public void onAction(String name, boolean isPressed, float tpf) {
@@ -178,6 +149,8 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
             return;
         }
 
+        System.out.println(a + " " + b);
+
         String aName = event.getNodeA().getName();
         String bName = event.getNodeB().getName();
 
@@ -195,9 +168,9 @@ public class GameAppState extends AbstractAppState implements ScreenController, 
 
             // note the use of getParent, this was used to line the collision shapes
             MoveRandomControl control = enemy.getParent().getControl(MoveRandomControl.class);
-            if (control != null) {
-                control.setEnabled(false);
-            }
+  //          if (control != null) {
+  //              control.setEnabled(false);
+  //          }
 
             // THIS MUST BE CALLED SOMEWHERE
             //  MovementControl.setEnabled(true);

@@ -4,7 +4,9 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.bullet.BulletAppState;
 import com.teamjmonkey.animation.AnimManager;
+import com.teamjmonkey.appstates.GameAppState;
 import com.teamjmonkey.appstates.MonkeyAppStateManager;
+import com.teamjmonkey.appstates.PauseMenuAppState;
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.effects.EffectsManager;
 import com.teamjmonkey.entity.EntityManager;
@@ -16,6 +18,7 @@ import com.teamjmonkey.level.LevelManager;
 import com.teamjmonkey.physics.PhysicsManager;
 import com.teamjmonkey.sound.SoundManager;
 import com.teamjmonkey.ui.UIManager;
+import com.teamjmonkey.util.GameState;
 import com.teamjmonkey.util.PreloadManager;
 
 public class GameNameGoesHere extends SimpleApplication {
@@ -133,5 +136,21 @@ public class GameNameGoesHere extends SimpleApplication {
 
     public AnimManager getAnimManager() {
         return animManager;
+    }
+
+    @Override
+    public void loseFocus() {
+        //super.loseFocus();
+
+        if (GameState.getGameState() == GameState.RUNNING) {
+            stateManager.detach(monkeyAppStateManager.getAppState(GameAppState.class));
+            stateManager.attach(monkeyAppStateManager.getAppState(PauseMenuAppState.class));
+        }
+
+    }
+
+    @Override
+    public void gainFocus() {
+        super.gainFocus();
     }
 }

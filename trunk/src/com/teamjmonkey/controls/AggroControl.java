@@ -17,6 +17,7 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
     private boolean isChasing;
     private float chaseTimer;
     private AggroBehavior[] behaviors;
+    private GhostControl ghost;
 
     public AggroControl(AggroBehavior... behaviors) {
         this.behaviors = behaviors;
@@ -43,7 +44,7 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
     @Override
     public void setSpatial(Spatial spatial) {
         super.setSpatial(spatial);
-        GhostControl ghost = new GhostControl(new CapsuleCollisionShape(aggroRadius, 4f));
+        ghost = new GhostControl(new CapsuleCollisionShape(aggroRadius, 4f));
         ghost.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_02);
         ghost.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_03);
         spatial.addControl(ghost);
@@ -78,5 +79,14 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
                 aggro(myApp.getCamera().getLocation());
             }
         }
+    }
+
+    @Override
+    public void cleanup() {
+        spatial.removeControl(this);
+        myApp.getBulletAppState().getPhysicsSpace().removeCollisionListener(this);
+
+        spatial.removeControl(ghost);
+        myApp.getBulletAppState().getPhysicsSpace().remove(ghost);
     }
 }
