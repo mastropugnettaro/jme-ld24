@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.teamjmonkey.level;
 
-/**
- *
- * @author Wesley
- */
-public interface Level {
+import com.teamjmonkey.entity.BaseEntity;
+import java.util.LinkedList;
+
+public interface Level  {
 
     public void load();
     public void cleanup();
+    public LinkedList<BaseEntity> getAllEntities();
 }

@@ -5,10 +5,12 @@ import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.appstates.LoadingScreenAppState;
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.entity.EntityManager;
+import com.teamjmonkey.graphics.GraphicManager;
 import com.teamjmonkey.graphics.MaterialManager;
 import com.teamjmonkey.physics.PhysicsManager;
 import com.teamjmonkey.sound.SoundManager;
 import com.teamjmonkey.util.Manager;
+import com.teamjmonkey.util.PreloadManager;
 
 public class LevelManager implements Manager {
 
@@ -19,7 +21,10 @@ public class LevelManager implements Manager {
     private MaterialManager materialManager;
     private PhysicsManager physicsManager;
     private SoundManager soundManager;
+    private GraphicManager graphicsManager;
+    private PreloadManager preloadManager;
     private boolean stateInitialised;
+
     private Level currentLevel;
     private int currentIntLevel;
     private final int NUM_LEVELS;
@@ -32,9 +37,11 @@ public class LevelManager implements Manager {
         materialManager = myApp.getMaterialManager();
         physicsManager = myApp.getPhysicsManager();
         soundManager = myApp.getSoundManager();
+        preloadManager = myApp.getPreloadManager();
+        graphicsManager = myApp.getGraphicManager();
         stateInitialised = false;
         currentIntLevel = 1;
-        NUM_LEVELS = 2;
+        NUM_LEVELS = 5;
     }
 
     public int getCurrentIntLevel() {
@@ -47,6 +54,9 @@ public class LevelManager implements Manager {
 
     // only call this once during the first ever level
     public void initialiseGameStatesOnce() {
+
+        // Load LevelCommon
+       
     }
 
     public void load(int level) {
@@ -57,8 +67,8 @@ public class LevelManager implements Manager {
 
         materialManager.load(level);
         physicsManager.load(level);
-        
         soundManager.load(level);
+        graphicsManager.load(level);
 
         switch (level) {
             case 1:
@@ -67,16 +77,25 @@ public class LevelManager implements Manager {
             case 2:
                 currentLevel = new Level2();
                 break;
+            case 3:
+                currentLevel = new Level3(); // new part of the map
+                break;
+            case 4:
+                currentLevel = new Level4(); // new part of the map
+                break;
+            case 5:
+                currentLevel = new Level5(); // new part of the map opens
+                break;
         }
     }
 
     public void restartLevel() {
 
-        currentLevel.cleanup();
+        // cleanup() doesn't need to be called here as the same sounds can be used
+        cleanup();
 
         //this calls currentLevel.load() inside
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
-        currentLevel.load();
     }
 
     public void loadNextLevel() {
@@ -86,9 +105,8 @@ public class LevelManager implements Manager {
             currentIntLevel++;
         }
 
-        currentLevel.cleanup();
+        cleanup();
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
-        load(currentIntLevel);
     }
 
     public void loadPreviousLevel() {
@@ -98,15 +116,15 @@ public class LevelManager implements Manager {
             currentIntLevel--;
         }
 
-        currentLevel.cleanup();
+        cleanup();
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
-        load(currentIntLevel);
     }
 
     public void cleanup() {
         materialManager.cleanup();
         physicsManager.cleanup();
         soundManager.cleanup();
+        graphicsManager.cleanup();
 
         currentLevel.cleanup();
     }

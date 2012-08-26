@@ -35,7 +35,7 @@ public class UIManager implements Manager {
 
         nifty.enableAutoScaling(1280, 720);
         myApp.getGuiViewPort().addProcessor(niftyDisplay);
-        nifty.setDebugOptionPanelColors(true);
+        //nifty.setDebugOptionPanelColors(true);
     }
 
     public Nifty getNifty() {

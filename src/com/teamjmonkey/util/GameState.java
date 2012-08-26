@@ -18,4 +18,14 @@ public enum GameState {
     public static GameState getPreviousGameState() {
         return previousGameState;
     }
+
+    private static boolean moving = false;
+
+    public static boolean isMoving() {
+        return moving;
+    }
+
+    public static void setMoving(boolean moving) {
+        GameState.moving = moving;
+    }
 }

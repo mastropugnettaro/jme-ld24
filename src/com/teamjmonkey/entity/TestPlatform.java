@@ -2,19 +2,16 @@ package com.teamjmonkey.entity;
 
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.teamjmonkey.controls.MonkeyControl;
 import com.teamjmonkey.graphics.Graphics;
-import java.io.IOException;
 
-public class Bull extends BaseEntity {
+public class TestPlatform extends BaseEntity {
 
     private RigidBodyControl rigidBodyControl;
 
-    public Bull () {
-        super(Graphics.BULL);
-        spatial.setName("bull");
+    public TestPlatform () {
+        super(Graphics.TEST_PLATFORM);
+        spatial.setName("test");
+        spatial.scale(30, 1, 30);
     }
 
     @Override
@@ -24,9 +21,10 @@ public class Bull extends BaseEntity {
 
     @Override
     public void addPhysicsControl() {
-        rigidBodyControl = new RigidBodyControl(getCollisionShape(), 0.2f);
+
+        rigidBodyControl = new RigidBodyControl(0);
         spatial.addControl(rigidBodyControl);
-        bulletAppState.getPhysicsSpace().add(rigidBodyControl);
+        bulletAppState.getPhysicsSpace().add(spatial);
     }
 
     @Override
@@ -46,6 +44,5 @@ public class Bull extends BaseEntity {
     @Override
     public void finalise() {
         addPhysicsControl();
-        addControl();
     }
 }

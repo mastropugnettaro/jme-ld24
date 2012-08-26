@@ -37,6 +37,10 @@ public abstract class BaseControl implements Control {
         return enabled;
     }
 
+    public void cleanup() {
+        spatial.removeControl(this);
+    }
+
     /**
      * To be implemented in subclass.
      */

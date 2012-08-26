@@ -11,7 +11,7 @@ public class LookAtControl extends BaseControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        cam.lookAt(location, Vector3f.UNIT_Y);
+        cam.setLocation(location);
     }
 
     @Override

@@ -39,10 +39,6 @@ public class MaterialManager implements Manager {
 
     // remove all entries to the materialMap
     public void cleanup() {
-        Iterator it = materialMap.keySet().iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
-        }
+        materialMap.clear();
     }
 }

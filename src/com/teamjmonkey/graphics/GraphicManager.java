@@ -17,15 +17,17 @@ public class GraphicManager implements Manager {
     public void load(int level) {
         //load all needed graphics
         if (level == 1) {
-            loadGraphics(new Graphics[]{Graphics.MAIN_CHARACTER, Graphics.ANOTHER_OBJECT});
+            loadGraphics(new Graphics[]{Graphics.TEST_PLATFORM});
         } else if (level == 2) {
-            loadGraphics(new Graphics[]{Graphics.MAIN_CHARACTER});
+            loadGraphics(new Graphics[]{Graphics.TEST_PLATFORM});
         }
     }
 
     private void loadGraphics(Graphics[] graphics) {
         for (Graphics graphic : graphics) {
-            preloadManager.preload(createSpatial(graphic));
+            Spatial s = createSpatial(graphic);
+            preloadManager.preload(s);
+            graphicMap.put(graphic, s);
         }
     }
 
@@ -34,6 +36,7 @@ public class GraphicManager implements Manager {
     }
 
     public void cleanup() {
-        // nothing ?
+        graphicMap.clear();
+
     }
 }
