@@ -146,11 +146,10 @@ public class GameNameGoesHere extends SimpleApplication {
             stateManager.detach(monkeyAppStateManager.getAppState(GameAppState.class));
             stateManager.attach(monkeyAppStateManager.getAppState(PauseMenuAppState.class));
         }
-
     }
 
     @Override
     public void gainFocus() {
-        super.gainFocus();
+        //super.gainFocus();
     }
 }
