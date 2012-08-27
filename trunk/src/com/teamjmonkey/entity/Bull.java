@@ -11,7 +11,7 @@ public class Bull extends MovableEntity {
 
     public Bull() {
         super(Graphics.BULL);
-        spatial.setName("enemy");
+        spatial.setName("bull");
 
         animComponent = new AnimComponent(spatial);
     }

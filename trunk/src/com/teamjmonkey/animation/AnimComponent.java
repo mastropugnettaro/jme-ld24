@@ -5,6 +5,7 @@ import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.Savable;
 import com.jme3.scene.Spatial;
+import com.teamjmonkey.GameNameGoesHere;
 import java.io.IOException;
 
 public class AnimComponent implements Savable {
@@ -17,7 +18,10 @@ public class AnimComponent implements Savable {
     public AnimComponent(Spatial model) {
         this.model = model;
         if (model != null) {
-            this.animControl = model.getControl(AnimControl.class);
+            AnimControl control = model.getControl(AnimControl.class);
+            this.animControl = control;
+            GameNameGoesHere app = GameNameGoesHere.getApp();
+            control.addListener(app.getAnimManager());
             createChannels();
 
             animControl.getChannel(AnimConf.UPPER_BODY).setAnim("Walk");
