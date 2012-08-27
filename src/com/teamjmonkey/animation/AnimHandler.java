@@ -14,11 +14,11 @@ public class AnimHandler {
         map.put(AnimType.WALK, new AnimInfo("Walk", 1.0f, 1f, LoopMode.Loop, AnimConf.UPPER_BODY));
         map.put(AnimType.STAND, new AnimInfo("Stand", 1.0f, 1f, LoopMode.Loop, AnimConf.UPPER_BODY));
         map.put(AnimType.EAT, new AnimInfo("Eat", 1.0f, 1f, LoopMode.DontLoop, AnimConf.UPPER_BODY));
-        map.put(AnimType.JUMP, new AnimInfo("Jump", 1.0f, 0.1f, LoopMode.DontLoop, AnimConf.LOWER_BODY));
+        map.put(AnimType.JUMP, new AnimInfo("Jump", 1.0f, 0.1f, LoopMode.DontLoop, AnimConf.UPPER_BODY));
 
-        map.put(AnimType.IDLE, new AnimInfo("Idle", 1.0f, 0.1f, LoopMode.DontLoop, AnimConf.LOWER_BODY));
-        map.put(AnimType.ATTACK_STAB, new AnimInfo("Stab", 1.0f, 0.1f, LoopMode.DontLoop, AnimConf.LOWER_BODY));
-        map.put(AnimType.FIRE, new AnimInfo("Fire", 1.0f, 0.1f, LoopMode.DontLoop, AnimConf.LOWER_BODY));
+        map.put(AnimType.IDLE, new AnimInfo("Idle", 1.0f, 0.1f, LoopMode.DontLoop, AnimConf.UPPER_BODY));
+        map.put(AnimType.ATTACK_STAB, new AnimInfo("Stab", 1.0f, 0.1f, LoopMode.DontLoop, AnimConf.UPPER_BODY));
+        map.put(AnimType.FIRE, new AnimInfo("Fire", 1.0f, 0.1f, LoopMode.DontLoop, AnimConf.UPPER_BODY));
 
         return map;
     }
