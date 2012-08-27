@@ -79,7 +79,7 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
     
     @Override
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animation) {
-        if (!animation.equals(AnimType.STAND) && channel.getLoopMode() != LoopMode.Loop) {
+        if (!channel.getLoopMode().equals(LoopMode.Loop)) {
             if (control.getSpatial().getName().equals("bull")) {
                 channel.setLoopMode(LoopMode.Loop);
                 channel.setSpeed(1f);
