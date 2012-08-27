@@ -90,8 +90,9 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
             BaseEntity ent = (BaseEntity) it2.next();
             if (ent.getAnimComponent() != null) {
                 if (ent.getAnimComponent().getCurAnim() != null) {
-                    System.out.println(channel.getLoopMode());
-                    if (channel.getLoopMode() == LoopMode.DontLoop) {
+                   //System.out.println(channel.getLoopMode());
+                    String animName = channel.getAnimationName();
+                    if (animName.equals("Jump") || animName.equals("Attack") || animName.equals("Eat")  ) {
                         if (control.getSpatial().getName().equals("bull")) {
                             ent.getAnimComponent().setCurAnim(AnimType.STAND);
                         } else {
