@@ -91,13 +91,13 @@ public class Level1 implements Level {
 //        }
 
         Creature c = new CreatureElephant();
-        c.getSpatial().setLocalTranslation(60f, 0f, 0f);
+        c.getSpatial().setLocalTranslation(0f, 0f, 0f);
         c.finalise();
         rootNode.attachChild(c.getSpatial());
         allEntities.add(c);
 
         MainCharacter mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
-        mainCharacter.getSpatial().move(0, 10, 0);
+        mainCharacter.getSpatial().move(60, 10, 0);
         mainCharacter.finalise();
         rootNode.attachChild(mainCharacter.getSpatial());
         allEntities.add(mainCharacter);

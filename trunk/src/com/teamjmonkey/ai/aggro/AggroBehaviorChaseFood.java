@@ -47,8 +47,8 @@ public class AggroBehaviorChaseFood extends AggroBehaviorBase {
                 if (area.isLocationInside(target.getLocalTranslation())) {
                     entity.moveTo(target.getLocalTranslation(), speed, 1f);
                 } else {
-                    entity.stop();
-                    //System.out.println("out of range");
+                    entity.lookAt(target.getLocalTranslation(), 1f, false);
+                    //System.out.println("out of range: " + target.getLocalTranslation());
                 }
             } else {
                 if (entity.getAnimComponent().getCurAnim().equals(AnimType.IDLE)) {

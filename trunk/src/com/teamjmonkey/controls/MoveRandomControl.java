@@ -1,7 +1,6 @@
 package com.teamjmonkey.controls;
 
 import com.teamjmonkey.ai.areas.WalkableArea;
-import com.teamjmonkey.animation.AnimType;
 import com.teamjmonkey.entity.MovableEntity;
 import java.util.Random;
 

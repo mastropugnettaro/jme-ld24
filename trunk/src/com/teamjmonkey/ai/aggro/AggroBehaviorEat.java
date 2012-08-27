@@ -37,8 +37,8 @@ public class AggroBehaviorEat extends AggroBehaviorBase {
         FoodControl fc = target.getControl(FoodControl.class);
         FoodEntity fe = (FoodEntity)target.getUserData("entity");
         if (fc != null && fe != null) {
-            creature.eat(fc);
             creature.stop();
+            creature.eat(fc);
             fe.remove();
             done = true;
         }

@@ -43,7 +43,7 @@ public class AggroBehaviorChase extends AggroBehaviorBase {
             if (area.isLocationInside(target.getLocalTranslation())) {
                 entity.moveTo(target.getLocalTranslation(), speed, 1f);
             } else {
-                entity.stop();
+                entity.lookAt(target.getLocalTranslation(), 1f, false);
                 //System.out.println("out of range");
             }
         }

@@ -113,7 +113,7 @@ public abstract class MovableEntity extends BaseEntity {
         if (angleDelta > 180f) {
             angleDelta = FastMath.abs(angleDelta - 360f);
         }
-        if (angleDelta != 0f) {
+        if (angleDelta > 1f) {
             lerpIncrease = (180f / angleDelta) * turnSpeedMultiplier;
             lerpAmount = 0f;
             isTurning = true;
@@ -173,8 +173,8 @@ public abstract class MovableEntity extends BaseEntity {
     public abstract void idleAnim();
 
     public abstract void moveAnim();
-    
+
     public abstract void jumpAnim();
-    
+
     public abstract void attackAnim();
 }
