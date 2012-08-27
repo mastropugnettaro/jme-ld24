@@ -34,7 +34,7 @@ public class WalkableRectangle implements WalkableArea {
                 && location.getY() >= startY && location.getY() <= endY;
     }
 
-    public Vector3f getRandomPointInside() {
-        return new Vector3f(random.nextFloat() * (endX + FastMath.abs(startX)) - FastMath.abs(startX), 0f, random.nextFloat() * (endY + FastMath.abs(startX)) - FastMath.abs(startY));
+    public Vector3f getRandomPointInside(float yOffset) {
+        return new Vector3f(random.nextFloat() * (endX + FastMath.abs(startX)) - FastMath.abs(startX), yOffset, random.nextFloat() * (endY + FastMath.abs(startX)) - FastMath.abs(startY));
     }
 }

@@ -17,6 +17,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture2D;
 import com.jme3.util.SkyFactory;
 import com.jme3.water.WaterFilter;
+import com.teamjmonkey.appstates.BackgroundMusicAppState;
 import com.teamjmonkey.cinematic.CinematicComposition;
 import com.teamjmonkey.cinematic.GameStartCinematic;
 

@@ -4,11 +4,13 @@ import com.teamjmonkey.entity.food.Apple;
 import com.teamjmonkey.entity.weapons.Gun;
 import com.teamjmonkey.entity.weapons.Spear;
 import com.teamjmonkey.entity.weapons.Sword;
+import com.teamjmonkey.graphics.Graphics;
 
 public enum Entity {
 
-    TEST_FLOOR, MAIN_CHARACTER, BULL, BLOB, ARMADILO, ELEPHANT, OCTOPUS,
-        STATIC_BLOCK, SPEAR, SWORD, GUN, APPLE;
+    TEST_FLOOR, MAIN_CHARACTER, BULL, CREATURE_BLOB, CREATURE_ARMADILO,
+    CREATURE_ELEPHANT, CREATURE_OCTOPUS, ENEMY_BLOB, ENEMY_ARMADILO,
+    ENEMY_ELEPHANT, STATIC_BLOCK, SPEAR, SWORD, GUN, APPLE;
 
     public BaseEntity createEntity() {
 
@@ -24,17 +26,26 @@ public enum Entity {
             case BULL:
                 entity = new Bull();
                 break;
-            case BLOB:
+            case CREATURE_BLOB:
                 entity = new CreatureBlob();
                 break;
-            case ARMADILO:
+            case CREATURE_ARMADILO:
                 entity = new CreatureArmadilo();
                 break;
-            case ELEPHANT:
+            case CREATURE_ELEPHANT:
                 entity = new CreatureElephant();
                 break;
-            case OCTOPUS:
+            case CREATURE_OCTOPUS:
                 entity = new CreatureOctopus();
+                break;
+            case ENEMY_BLOB:
+                entity = new Enemy(Graphics.BLOB);
+                break;
+            case ENEMY_ARMADILO:
+                entity = new Enemy(Graphics.ARMADILO);
+                break;
+            case ENEMY_ELEPHANT:
+                entity = new Enemy(Graphics.ELEPHANT);
                 break;
             case STATIC_BLOCK:
                 entity = new StaticBlock();

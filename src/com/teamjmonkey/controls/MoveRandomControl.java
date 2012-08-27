@@ -76,7 +76,7 @@ public class MoveRandomControl extends BaseControl {
     }
 
     private void calculateNewTarget() {
-        entity.moveTo(this.area.getRandomPointInside(),
+        entity.moveTo(this.area.getRandomPointInside(spatial.getLocalTranslation().getY()),
                 baseSpeed * (random.nextFloat() * 2.0f + 0.5f),
                 TURN_SPEED_MULTIPLIER);
         currentChanceToWait = chanceToWait;

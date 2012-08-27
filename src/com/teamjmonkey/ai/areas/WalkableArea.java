@@ -6,5 +6,5 @@ public interface WalkableArea {
 
     public boolean isLocationInside(Vector3f location);
 
-    public Vector3f getRandomPointInside();
+    public Vector3f getRandomPointInside(float yOffset);
 }

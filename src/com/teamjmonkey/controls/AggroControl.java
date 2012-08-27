@@ -5,7 +5,6 @@ import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
-import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.scene.Spatial;
@@ -18,6 +17,7 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
     private GhostControl losGhost;
     private GhostControl attackGhost;
     private int collideWithGroup;
+    private int ownCollisionGroup;
     private final float losRadius;
     private final float fightRadius;
     private boolean hasLosAggro;
@@ -30,20 +30,23 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
     private AggroBehavior[] attackBehaviors;
 
     public AggroControl(MovableEntity entity, float losRadius, float fightRadius,
-            int collideWithGroup, AggroBehavior losBehavior, AggroBehavior attackBehavior) {
-        this(entity, losRadius, fightRadius, collideWithGroup,
+            int ownCollisionGroup, int collideWithGroup, AggroBehavior losBehavior,
+            AggroBehavior attackBehavior) {
+        this(entity, losRadius, fightRadius, collideWithGroup, ownCollisionGroup,
                 losBehavior == null ? null : new AggroBehavior[]{losBehavior},
                 attackBehavior == null ? null : new AggroBehavior[]{attackBehavior});
     }
 
     public AggroControl(MovableEntity entity, float losRadius, float fightRadius,
-            int collideWithGroup, AggroBehavior[] losBehaviors, AggroBehavior[] attackBehaviors) {
+            int collideWithGroup, int ownCollisionGroup,
+            AggroBehavior[] losBehaviors, AggroBehavior[] attackBehaviors) {
         this.entity = entity;
         this.losBehaviors = losBehaviors == null ? new AggroBehavior[0] : losBehaviors;
         this.attackBehaviors = attackBehaviors == null ? new AggroBehavior[0] : attackBehaviors;
         this.losRadius = losRadius;
         this.fightRadius = fightRadius;
         this.collideWithGroup = collideWithGroup;
+        this.ownCollisionGroup = ownCollisionGroup;
         myApp.getBulletAppState().getPhysicsSpace().addCollisionListener(this);
         myApp.getBulletAppState().getPhysicsSpace().addTickListener(this);
     }
@@ -83,7 +86,7 @@ public class AggroControl extends BaseControl implements PhysicsCollisionListene
     }
 
     private void addGhost(GhostControl ghost) {
-        ghost.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_02);
+        ghost.setCollisionGroup(ownCollisionGroup);
         ghost.setCollideWithGroups(collideWithGroup);
         spatial.addControl(ghost);
         myApp.getBulletAppState().getPhysicsSpace().add(ghost);

@@ -22,9 +22,9 @@ public class WalkableCircle implements WalkableArea {
                 + FastMath.sqr(location.getX() - centerY)) <= radius;
     }
 
-    public Vector3f getRandomPointInside() {
+    public Vector3f getRandomPointInside(float yOffset) {
         float rAngle = random.nextFloat() * FastMath.TWO_PI;
         float rRadius = random.nextFloat() * radius;
-        return new Vector3f(FastMath.cos(rAngle) * rRadius, 0f, FastMath.sin(rAngle) * rRadius);
+        return new Vector3f(FastMath.cos(rAngle) * rRadius, yOffset, FastMath.sin(rAngle) * rRadius);
     }
 }
