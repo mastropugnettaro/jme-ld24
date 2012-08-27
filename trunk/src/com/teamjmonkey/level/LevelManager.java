@@ -1,12 +1,23 @@
 package com.teamjmonkey.level;
 
+import com.jme3.bullet.collision.PhysicsCollisionObject;
+import com.jme3.math.Transform;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.teamjmonkey.GameNameGoesHere;
+import com.teamjmonkey.ai.aggro.AggroBehaviorChase;
+import com.teamjmonkey.ai.aggro.AggroBehaviorFight;
+import com.teamjmonkey.ai.areas.WalkableArea;
+import com.teamjmonkey.ai.areas.WalkableRectangle;
 import com.teamjmonkey.animation.AnimManager;
 import com.teamjmonkey.appstates.LoadingScreenAppState;
+import com.teamjmonkey.controls.AggroControl;
 import com.teamjmonkey.controls.ControlManager;
+import com.teamjmonkey.controls.MoveRandomControl;
+import com.teamjmonkey.entity.Creature;
+import com.teamjmonkey.entity.CreatureElephant;
+import com.teamjmonkey.entity.Enemy;
 import com.teamjmonkey.entity.Entity;
 import com.teamjmonkey.entity.EntityManager;
 import com.teamjmonkey.entity.MainCharacter;
@@ -75,10 +86,42 @@ public class LevelManager implements Manager {
         myApp.getBulletAppState().getPhysicsSpace().addAll(island);
 
         island.getChild("SpawningPoints").setCullHint(Spatial.CullHint.Always);
+
+        //Spawning enemies
+        Node level2enemie = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("2")).getChild("Enemy");
+        Node level3enemie = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("3")).getChild("Enemy");
+        Node level4enemie = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("4")).getChild("Enemy");
+
+        //Blobs
+        for (Spatial point : level2enemie.getChildren()) {
+            addEnemy((Enemy) Entity.ENEMY_BLOB.createEntity(), 2f, point.getWorldTranslation().add(0f, -15.4556f, 0f));
+        }
+        //Armadilos
+        for (Spatial point : level3enemie.getChildren()) {
+            addEnemy((Enemy) Entity.ENEMY_ARMADILO.createEntity(), 4f, point.getWorldTranslation().add(0f, -15.4556f, 0f));
+        }
+        //Elephants
+        for (Spatial point : level4enemie.getChildren()) {
+            addEnemy((Enemy) Entity.ENEMY_ELEPHANT.createEntity(), 6f, point.getWorldTranslation().add(0f, -15.4556f, 0f));
+        }
+    }
+
+    private void addEnemy(Enemy enemy, float enemySize, Vector3f spawn) {
+        float areaSizeX = 20f;
+        float areaSizeZ = 20f;
+        WalkableArea wa = new WalkableRectangle(spawn.getX() - (areaSizeX / 2f), spawn.getZ() - (areaSizeZ / 2f), 20f, 20f);
+        enemy.getSpatial().addControl(new MoveRandomControl(enemy, wa));
+        enemy.getSpatial().addControl(new AggroControl(enemy, 25f, enemySize,
+                PhysicsCollisionObject.COLLISION_GROUP_02,
+                PhysicsCollisionObject.COLLISION_GROUP_03,
+                new AggroBehaviorChase(wa, 6f),
+                new AggroBehaviorFight(1f, 2f)));
+        enemy.finalise();
+        enemy.getSpatial().setLocalTranslation(wa.getRandomPointInside(spawn.getY()));
+        rootNode.attachChild(enemy.getSpatial());
     }
 
     public void initialiseEachLevel() {
-
         Node level1Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("1")).getChild("Food");
         Node level2Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("2")).getChild("Food");
         Node level3Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("3")).getChild("Food");
@@ -87,7 +130,6 @@ public class LevelManager implements Manager {
         Node[] foodSpawnLocations = new Node[]{level1Food, level2Food, level3Food, level4Food};
 
         for (Node node : foodSpawnLocations) {
-
             for (Spatial point : node.getChildren()) {
                 Vector3f worldTranslation = point.getWorldTranslation();
 
@@ -97,13 +139,13 @@ public class LevelManager implements Manager {
                 rootNode.attachChild(apple.getSpatial());
                 currentLevel.getAllEntities().add(apple);
             }
-
-            MainCharacter mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
-            mainCharacter.getSpatial().move(-130, 40, -60);
-            mainCharacter.finalise();
-            rootNode.attachChild(mainCharacter.getSpatial());
-            currentLevel.getAllEntities().add(mainCharacter);
         }
+
+        MainCharacter mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
+        mainCharacter.getSpatial().move(-130, 40, -60);
+        mainCharacter.finalise();
+        rootNode.attachChild(mainCharacter.getSpatial());
+        currentLevel.getAllEntities().add(mainCharacter);
     }
 
     public Node getIsland() {

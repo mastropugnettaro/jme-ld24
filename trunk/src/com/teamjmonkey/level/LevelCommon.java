@@ -49,7 +49,7 @@ public class LevelCommon extends AbstractAppState {
     private AudioNode waves;
     private LowPassFilter aboveWaterAudioFilter = new LowPassFilter(1, 1);
     private float counter = 0;
-
+    
     public LevelCommon() {
         myApp = GameNameGoesHere.getApp();
         rootNode = myApp.getRootNode();
@@ -63,51 +63,52 @@ public class LevelCommon extends AbstractAppState {
     // Load common sounds
     // Load filters for it
     public void loadCommon() {
-
+        
         Node mainScene = new Node("Main Scene");
         rootNode.attachChild(mainScene);
-
+        
         DirectionalLight sun = new DirectionalLight();
         sun.setDirection(lightDir);
         sun.setColor(ColorRGBA.White.clone().multLocal(1.7f));
         rootNode.addLight(sun);
-
+        
         Spatial sky = SkyFactory.createSky(assetManager, "Scenes/Beach/FullskiesSunset0068.dds", false);
         sky.setLocalScale(350);
-
+        
         mainScene.attachChild(sky);
-
+        
         water = new WaterFilter(rootNode, lightDir);
-
+        
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-
+        
         fpp.addFilter(water);
         BloomFilter bloom = new BloomFilter();
-
+        
         bloom.setExposurePower(55);
         bloom.setBloomIntensity(1.0f);
-
+        
         fpp.addFilter(bloom);
         LightScatteringFilter lsf = new LightScatteringFilter(lightDir.mult(-300));
         lsf.setLightDensity(1.0f);
         fpp.addFilter(lsf);
-
+        
         DepthOfFieldFilter dof = new DepthOfFieldFilter();
         dof.setFocusDistance(0);
         dof.setFocusRange(100);
         fpp.addFilter(dof);
-
+        
         water.setWaveScale(0.003f);
         water.setMaxAmplitude(1f);
         water.setFoamExistence(new Vector3f(1f, 4, 0.5f));
         water.setFoamTexture((Texture2D) assetManager.loadTexture("Common/MatDefs/Water/Textures/foam2.jpg"));
-
+        
         water.setRefractionStrength(0.2f);
-
+        
         water.setWaterHeight(initialWaterHeight);
         uw = cam.getLocation().y < waterHeight;
-
+        
         waves = new AudioNode(assetManager, "Sounds/Environment/Ocean Waves.ogg", false);
+        waves.setVolume(0.15f);
         waves.setLooping(true);
         waves.setReverbEnabled(true);
         if (uw) {
@@ -115,42 +116,42 @@ public class LevelCommon extends AbstractAppState {
         } else {
             waves.setDryFilter(aboveWaterAudioFilter);
         }
-
+        
         myApp.getViewPort().addProcessor(fpp);
     }
-
+    
     @Override
     public void stateAttached(AppStateManager stateManager) {
         super.stateAttached(stateManager);
         cam.setLocation(new Vector3f(0, 10, 0));
     }
-
+    
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-
+        
         app.getAudioRenderer().playSource(waves);
     }
-
+    
     @Override
     public void stateDetached(AppStateManager stateManager) {
         super.stateDetached(stateManager);
         myApp.getAudioRenderer().stopSource(waves);
     }
-
+    
     @Override
     public void update(float tpf) {
-
+        
         if (GameState.getGameState() == GameState.PAUSED) {
             return;
         }
-
+        
         super.update(tpf);
         time += tpf;
         waterHeight = (float) Math.cos(((time * 0.6f) % FastMath.TWO_PI)) * 1.5f;
         water.setWaterHeight(initialWaterHeight + waterHeight);
         if (water.isUnderWater() && !uw) {
-
+            
             waves.setDryFilter(new LowPassFilter(0.5f, 0.1f));
             uw = true;
         }
@@ -158,15 +159,15 @@ public class LevelCommon extends AbstractAppState {
             uw = false;
             waves.setDryFilter(new LowPassFilter(1, 1f));
         }
-
+        
         if (water.isUnderWater()) {
             counter += tpf;
-
+            
             if (counter > 1) { //1 second underwater kill
                 counter = 0;
                 myApp.getLevelManager().restartLevel();
             }
-
+            
         } else {
             counter = 0;
         }

@@ -70,8 +70,8 @@ public class Level1 implements Level {
         rootNode.attachChild(testPlatform.getSpatial());
         allEntities.add(testPlatform);
          */
-        WalkableArea field = new WalkableRectangle(-156f, -156f, 312f, 312f);
-        WalkableArea midCircle = new WalkableCircle(0f, 0f, 20f);
+//        WalkableArea field = new WalkableRectangle(-156f, -156f, 312f, 312f);
+//        WalkableArea midCircle = new WalkableCircle(0f, 0f, 20f);
 //        for (int i = 0; i < 5; i++) {
 //            Bull bull = (Bull) entityManager.create(Entity.BULL);
 //            bull.getSpatial().addControl(new MoveRandomControl(bull, field));
@@ -96,16 +96,15 @@ public class Level1 implements Level {
 //            allEntities.add(bull);
 //        }
 
-        Creature c = new CreatureElephant();
-        c.getSpatial().setLocalTranslation(0f, 0f, 0f);
-        c.finalise();
-        rootNode.attachChild(c.getSpatial());
-        allEntities.add(c);
+//        Creature c = new CreatureElephant();
+//        c.getSpatial().setLocalTranslation(0f, 0f, 0f);
+//        c.finalise();
+//        rootNode.attachChild(c.getSpatial());
+//        allEntities.add(c);
     }
 
     @Override
     public void cleanup() {
-
         for (BaseEntity baseEntity : getAllEntities()) {
             baseEntity.cleanup(); // should remove all physics and controls
             rootNode.detachChild(baseEntity.getSpatial()); // remove from scene graph

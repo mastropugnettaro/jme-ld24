@@ -54,7 +54,7 @@ public class FoodThrowControl extends BaseControl implements ActionListener {
             // apply a force in the cam direction
             RigidBodyControl rbc = new RigidBodyControl(1);
             rbc.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_04);
-            rbc.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_02);
+            rbc.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_06);
             spatial.addControl(rbc);
             myApp.getBulletAppState().getPhysicsSpace().add(spatial);
             spatial.getControl(RigidBodyControl.class).setLinearVelocity(cam.getDirection().mult(25));
