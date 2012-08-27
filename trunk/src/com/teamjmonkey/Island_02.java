@@ -1,10 +1,8 @@
 package com.teamjmonkey;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.LowPassFilter;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
@@ -12,8 +10,6 @@ import com.jme3.post.filters.BloomFilter;
 import com.jme3.post.filters.DepthOfFieldFilter;
 import com.jme3.post.filters.FadeFilter;
 import com.jme3.post.filters.LightScatteringFilter;
-import com.jme3.renderer.Camera;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture2D;
@@ -21,17 +17,12 @@ import com.jme3.util.SkyFactory;
 import com.jme3.water.WaterFilter;
 import com.teamjmonkey.cinematic.CinematicComposition;
 import com.teamjmonkey.cinematic.GameStartCinematic;
-import com.teamjmonkey.controls.ControlManager;
-import com.teamjmonkey.entity.EntityManager;
-import com.teamjmonkey.graphics.MaterialManager;
-import com.teamjmonkey.physics.PhysicsManager;
-import com.teamjmonkey.sound.SoundManager;
 
 public class Island_02 extends SimpleApplication {
 
     private float time = 0.0f;
     private float waterHeight = 0.0f;
-    private float initialWaterHeight = 16f;
+    private float initialWaterHeight = 15.5f;
     private boolean uw = false;
     private Vector3f lightDir = new Vector3f(-4.9236743f, -1.27054665f, 5.896916f);
     private WaterFilter water;
@@ -111,7 +102,7 @@ public class Island_02 extends SimpleApplication {
 
         cam.setLocation(new Vector3f(-186.47707f, 19.662216f, -72.307915f));
         cam.lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
-        
+
         cc = new GameStartCinematic(this, fade);
         cc.attach();
         fade.setValue(0f);
