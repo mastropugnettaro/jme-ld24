@@ -18,6 +18,7 @@ public class Main {
         AppSettings appSettings = new AppSettings(true);
         appSettings.setVSync(true);
         appSettings.setTitle("Time to Grow up!");
+        appSettings.setFullscreen(true);
 
         try {
             appSettings.setIcons(new BufferedImage[]{ImageIO.read(new File("assets/Interface/icon.png"))});

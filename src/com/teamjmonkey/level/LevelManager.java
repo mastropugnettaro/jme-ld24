@@ -2,7 +2,7 @@ package com.teamjmonkey.level;
 
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
-import com.jme3.math.Transform;
+import com.jme3.math.Quaternion;
 
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
@@ -24,11 +24,10 @@ import com.teamjmonkey.controls.AggroControl;
 
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.controls.MoveRandomControl;
-import com.teamjmonkey.entity.Creature;
-import com.teamjmonkey.entity.CreatureElephant;
 import com.teamjmonkey.entity.Enemy;
 import com.teamjmonkey.entity.Entity;
 import com.teamjmonkey.entity.EntityManager;
+import com.teamjmonkey.entity.MainCharacter;
 import com.teamjmonkey.entity.food.Apple;
 import com.teamjmonkey.graphics.GraphicManager;
 import com.teamjmonkey.graphics.MaterialManager;
@@ -56,6 +55,7 @@ public class LevelManager extends AbstractAppState implements Manager {
     private Node island;
     private CinematicComposition cc;
     private FadeFilter fade;
+    private MainCharacter mainCharacter;
 
     public LevelManager() {
         myApp = GameNameGoesHere.getApp();
@@ -133,11 +133,11 @@ public class LevelManager extends AbstractAppState implements Manager {
 
     public void initialiseEachLevel() {
         Node level1Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("1")).getChild("Food");
-        Node level2Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("2")).getChild("Food");
-        Node level3Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("3")).getChild("Food");
-        Node level4Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("4")).getChild("Food");
+        //Node level2Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("2")).getChild("Food");
+        //Node level3Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("3")).getChild("Food");
+        //Node level4Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("4")).getChild("Food");
 
-        Node[] foodSpawnLocations = new Node[]{level1Food, level2Food, level3Food, level4Food};
+        Node[] foodSpawnLocations = new Node[]{level1Food}; //level2Food, level3Food, level4Food};
 
         for (Node node : foodSpawnLocations) {
             for (Spatial point : node.getChildren()) {
@@ -151,15 +151,7 @@ public class LevelManager extends AbstractAppState implements Manager {
             }
         }
 
-
         /*
-        MainCharacter mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
-        mainCharacter.getSpatial().move(-130, 40, -60);
-        mainCharacter.finalise();
-        rootNode.attachChild(mainCharacter.getSpatial());
-        currentLevel.getAllEntities().add(mainCharacter);
-         *
-         */
         FilterPostProcessor fpp = myApp.getFpp();
         myApp.getCamera().setLocation(new Vector3f(-186.47707f, 19.662216f, -72.307915f));
         myApp.getCamera().lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
@@ -172,7 +164,12 @@ public class LevelManager extends AbstractAppState implements Manager {
         fade.setValue(0f);
 
         myApp.getStateManager().attach(this);
-
+         */
+        mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
+        mainCharacter.getSpatial().move(-130, 40, -60);
+        mainCharacter.finalise();
+        rootNode.attachChild(mainCharacter.getSpatial());
+        currentLevel.getAllEntities().add(mainCharacter);
     }
     private float time = 0;
     private boolean run = true;
@@ -187,7 +184,6 @@ public class LevelManager extends AbstractAppState implements Manager {
             run = false;
             myApp.getStateManager().detach(this);
         }
-
     }
 
     public Node getIsland() {
@@ -227,10 +223,13 @@ public class LevelManager extends AbstractAppState implements Manager {
     }
 
     public void restartLevel() {
-        cleanup();
+
+        mainCharacter.getCharacterControl().setPhysicsLocation(new Vector3f(-130, 40, -60));
+
+        // cleanup();
 
         //this calls currentLevel.load() inside
-        myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
+      //  myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
     }
 
     public void loadNextLevel() {
@@ -258,15 +257,14 @@ public class LevelManager extends AbstractAppState implements Manager {
     @Override
     public void cleanup() {
 
-        /*
+
         materialManager.cleanup();
         physicsManager.cleanup();
         soundManager.cleanup();
         graphicsManager.cleanup();
 
-        currentLevel.cleanup();
+//        currentLevel.cleanup();
         //  animManager.cleanup();
-         *
-         */
+
     }
 }

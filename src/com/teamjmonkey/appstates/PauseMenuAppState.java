@@ -121,6 +121,9 @@ public class PauseMenuAppState extends AbstractAppState implements ScreenControl
 
     public void restart() {
         myApp.getStateManager().detach(this);
+
+        /* remove this later */
+        myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(GameAppState.class));
         levelManager.restartLevel();
     }
 
