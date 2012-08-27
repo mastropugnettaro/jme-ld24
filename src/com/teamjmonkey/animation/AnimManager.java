@@ -13,7 +13,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.entity.BaseEntity;
 import com.teamjmonkey.util.GameState;
-import sun.security.krb5.SCDynamicStoreConfig;
 
 public class AnimManager extends AbstractAppState implements AnimEventListener {
 
@@ -32,8 +31,8 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
 
         this.entList = myApp.getLevelManager().getCurrentLevel().getAllEntities();
         this.map = AnimHandler.loadAnimationSet();
-       
-        
+
+
     }
 
     @Override
@@ -71,12 +70,12 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
         }
 
     }
-    
-    
+
+
     @Override
     public void onAnimChange(AnimControl arg0, AnimChannel arg1, String arg2) {
     }
-    
+
     @Override
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animation) {
         Collection<?> list = myApp.getLevelManager().getCurrentLevel().getAllEntities();
@@ -101,7 +100,7 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
         }
 
     }
-    
+
     public void freezeAnimations() {
         it = entList.iterator();
         while (it.hasNext()) {

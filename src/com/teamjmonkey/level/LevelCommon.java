@@ -6,7 +6,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.LowPassFilter;
-import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
@@ -34,7 +33,7 @@ public class LevelCommon extends AbstractAppState {
     // This part is to emulate tides, slightly varrying the height of the water plane
     private float time = 0.0f;
     private float waterHeight = 0.0f;
-    private float initialWaterHeight = -3f;
+    private float initialWaterHeight = 0f;
     private boolean uw = false;
     private GameNameGoesHere myApp;
     private Node rootNode;
@@ -56,6 +55,7 @@ public class LevelCommon extends AbstractAppState {
         rootNode = myApp.getRootNode();
         cam = myApp.getCamera();
         assetManager = myApp.getAssetManager();
+        entityManager = myApp.getEntityManager();
         loadCommon();
     }
 

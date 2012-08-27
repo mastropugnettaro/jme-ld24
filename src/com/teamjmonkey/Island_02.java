@@ -3,6 +3,8 @@ package com.teamjmonkey;
 import com.jme3.app.SimpleApplication;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.LowPassFilter;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
@@ -21,8 +23,8 @@ import com.teamjmonkey.cinematic.GameStartCinematic;
 public class Island_02 extends SimpleApplication {
 
     private float time = 0.0f;
-    private float waterHeight = 0.0f;
-    private float initialWaterHeight = 15.5f;
+    private float waterHeight = 0f;
+    private float initialWaterHeight = 0f;
     private boolean uw = false;
     private Vector3f lightDir = new Vector3f(-4.9236743f, -1.27054665f, 5.896916f);
     private WaterFilter water;
@@ -41,9 +43,16 @@ public class Island_02 extends SimpleApplication {
     @Override
     public void simpleInitApp() {
 
+        BulletAppState bulletAppState = new BulletAppState();
+        stateManager.attach(bulletAppState);
+
         // Load Island
         Node island = (Node) assetManager.loadModel("Scenes/island2_1.j3o");
         rootNode.attachChild(island);
+
+        bulletAppState.getPhysicsSpace().addAll(island);
+
+        island.getChild("SpawningPoints").setCullHint(Spatial.CullHint.Always);
 
         Node mainScene = new Node("Main Scene");
         rootNode.attachChild(mainScene);
@@ -106,6 +115,9 @@ public class Island_02 extends SimpleApplication {
         cc = new GameStartCinematic(this, fade);
         cc.attach();
         fade.setValue(0f);
+
+        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+
     }
     private boolean run = true;
 

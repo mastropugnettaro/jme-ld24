@@ -1,28 +1,22 @@
 package com.teamjmonkey.level;
 
 import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.collision.PhysicsCollisionObject;
+import com.jme3.math.Vector3f;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.entity.Entity;
 import com.teamjmonkey.entity.EntityManager;
 import com.teamjmonkey.entity.MainCharacter;
-import com.teamjmonkey.entity.TestPlatform;
 import com.teamjmonkey.graphics.MaterialManager;
 import com.teamjmonkey.physics.PhysicsManager;
 import com.teamjmonkey.sound.SoundManager;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
-import com.teamjmonkey.ai.aggro.AggroBehaviorChase;
-import com.teamjmonkey.ai.aggro.AggroBehaviorFight;
-import com.teamjmonkey.ai.aggro.AggroBehaviorStare;
+import com.jme3.scene.Spatial;
 import com.teamjmonkey.ai.areas.WalkableArea;
 import com.teamjmonkey.ai.areas.WalkableCircle;
 import com.teamjmonkey.ai.areas.WalkableRectangle;
-import com.teamjmonkey.controls.AggroControl;
-import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.entity.BaseEntity;
-import com.teamjmonkey.entity.Bull;
 import com.teamjmonkey.entity.Creature;
 import com.teamjmonkey.entity.CreatureElephant;
 import com.teamjmonkey.entity.food.Apple;
@@ -59,11 +53,23 @@ public class Level1 implements Level {
     @Override
     public void load() {
 
-        TestPlatform testPlatform = (TestPlatform) entityManager.create(Entity.TEST_FLOOR);
+        // add apples to all the places
+
+        // get all level foods
+
+       /*  Apple apple = (Apple) entityManager.create(Entity.APPLE);
+        apple.finalise();
+        rootNode.attachChild(apple.getSpatial());
+        System.out.println(apple.getColor());
+        allEntities.add(apple);
+         *
+         */
+
+        /*  TestPlatform testPlatform = (TestPlatform) entityManager.create(Entity.TEST_FLOOR);
         testPlatform.finalise();
         rootNode.attachChild(testPlatform.getSpatial());
         allEntities.add(testPlatform);
-
+         */
         WalkableArea field = new WalkableRectangle(-156f, -156f, 312f, 312f);
         WalkableArea midCircle = new WalkableCircle(0f, 0f, 20f);
 //        for (int i = 0; i < 5; i++) {
@@ -95,17 +101,6 @@ public class Level1 implements Level {
         c.finalise();
         rootNode.attachChild(c.getSpatial());
         allEntities.add(c);
-
-        MainCharacter mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
-        mainCharacter.getSpatial().move(60, 10, 0);
-        mainCharacter.finalise();
-        rootNode.attachChild(mainCharacter.getSpatial());
-        allEntities.add(mainCharacter);
-
-        Apple apple = (Apple) entityManager.create(Entity.APPLE);
-        apple.finalise();
-        rootNode.attachChild(apple.getSpatial());
-        allEntities.add(apple);
     }
 
     @Override

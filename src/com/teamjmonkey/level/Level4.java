@@ -56,7 +56,7 @@ public class Level4 implements Level {
         allEntities.add(testPlatform);
 
         MainCharacter mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
-        mainCharacter.getSpatial().move(0, 10, 0);
+        mainCharacter.getSpatial().move(-130, 40, -60);
         mainCharacter.finalise();
         rootNode.attachChild(mainCharacter.getSpatial());
         allEntities.add(mainCharacter);

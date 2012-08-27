@@ -17,7 +17,7 @@ public class Main {
         // load the application settings
         AppSettings appSettings = new AppSettings(true);
         appSettings.setVSync(true);
-        appSettings.setTitle("Team Monkey Game Name Goes Here");
+        appSettings.setTitle("Time to Grow up!");
 
         try {
             appSettings.setIcons(new BufferedImage[]{ImageIO.read(new File("assets/Interface/icon.png"))});

@@ -1,11 +1,16 @@
 package com.teamjmonkey.level;
 
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.animation.AnimManager;
 import com.teamjmonkey.appstates.LoadingScreenAppState;
 import com.teamjmonkey.controls.ControlManager;
+import com.teamjmonkey.entity.Entity;
 import com.teamjmonkey.entity.EntityManager;
+import com.teamjmonkey.entity.MainCharacter;
+import com.teamjmonkey.entity.food.Apple;
 import com.teamjmonkey.graphics.GraphicManager;
 import com.teamjmonkey.graphics.MaterialManager;
 import com.teamjmonkey.physics.PhysicsManager;
@@ -29,6 +34,7 @@ public class LevelManager implements Manager {
     private Level currentLevel;
     private int currentIntLevel;
     private final int NUM_LEVELS;
+    private Node island;
 
     public LevelManager() {
         myApp = GameNameGoesHere.getApp();
@@ -61,6 +67,47 @@ public class LevelManager implements Manager {
     // only call this once during the first ever level
     public void initialiseGameStatesOnce() {
         // Load LevelCommon
+
+        // Load Island
+        island = (Node) myApp.getAssetManager().loadModel("Scenes/island2_1.j3o");
+        rootNode.attachChild(island);
+
+        myApp.getBulletAppState().getPhysicsSpace().addAll(island);
+
+        island.getChild("SpawningPoints").setCullHint(Spatial.CullHint.Always);
+    }
+
+    public void initialiseEachLevel() {
+
+        Node level1Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("1")).getChild("Food");
+        Node level2Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("2")).getChild("Food");
+        Node level3Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("3")).getChild("Food");
+        Node level4Food = (Node) ((Node) ((Node) island.getChild("SpawningPoints")).getChild("4")).getChild("Food");
+
+        Node[] foodSpawnLocations = new Node[]{level1Food, level2Food, level3Food, level4Food};
+
+        for (Node node : foodSpawnLocations) {
+
+            for (Spatial point : node.getChildren()) {
+                Vector3f worldTranslation = point.getWorldTranslation();
+
+                Apple apple = (Apple) entityManager.create(Entity.APPLE);
+                apple.getSpatial().setLocalTranslation(worldTranslation.add(0, -15f, 0));
+                apple.finalise();
+                rootNode.attachChild(apple.getSpatial());
+                currentLevel.getAllEntities().add(apple);
+            }
+
+            MainCharacter mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
+            mainCharacter.getSpatial().move(-130, 40, -60);
+            mainCharacter.finalise();
+            rootNode.attachChild(mainCharacter.getSpatial());
+            currentLevel.getAllEntities().add(mainCharacter);
+        }
+    }
+
+    public Node getIsland() {
+        return island;
     }
 
     public void load(int level) {
@@ -92,7 +139,7 @@ public class LevelManager implements Manager {
                 break;
         }
 
-      //  animManager.load(level);
+        initialiseEachLevel();
     }
 
     public void restartLevel() {
@@ -131,6 +178,6 @@ public class LevelManager implements Manager {
         graphicsManager.cleanup();
 
         currentLevel.cleanup();
-      //  animManager.cleanup();
+        //  animManager.cleanup();
     }
 }

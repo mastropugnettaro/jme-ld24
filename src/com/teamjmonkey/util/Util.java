@@ -1,7 +1,6 @@
 package com.teamjmonkey.util;
 
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.jme3.scene.SceneGraphVisitor;
 import com.jme3.scene.Spatial;
 
@@ -11,11 +10,8 @@ public class Util {
 
     public static Geometry getGeometryFromNode(Spatial s) {
 
-        if (s instanceof Node) {
-            s.depthFirstTraversal(sgv);
-            return geometry;
-        }
-        return null;
+        s.depthFirstTraversal(sgv);
+        return geometry;
     }
     
     private static SceneGraphVisitor sgv = new SceneGraphVisitor() {
