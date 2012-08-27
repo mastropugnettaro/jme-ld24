@@ -3,12 +3,16 @@ package com.teamjmonkey.graphics;
 public enum Graphics {
 
     BULL("bull.j3o"),
+    BLOB("blob.j3o"),
+    ARMADILO("armadillo.j3o"),
+    ELEPHANT("elephant.j3o"),
+    OCTOPUS("octopus.j3o"),
     TEST_PLATFORM("testFloor.j3o"),
     SPEAR("Weapons/spear.j3o"),
     GUN("Weapons/gun.j3o"),
     SWORD("Weapons/sword.j3o"),
     APPLE("Food/apple.j3o");
-
+    
     private String fileLocation;
     private String pathToModel = "Models/";
 

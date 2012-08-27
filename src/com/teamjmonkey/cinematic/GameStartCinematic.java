@@ -19,7 +19,7 @@ public class GameStartCinematic implements CinematicComposition {
     private FadeFilter fade;
     private MotionEvent seagullCamMotion1;
     private MotionEvent seagullCamMotion2;
-    private final float overallTime = 40f;
+    private final float overallTime = 36f;
 
     public GameStartCinematic(Island_02 myApp, FadeFilter fade) {
         this.myApp = myApp;

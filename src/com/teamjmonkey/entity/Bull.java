@@ -3,6 +3,7 @@ package com.teamjmonkey.entity;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.teamjmonkey.animation.AnimComponent;
+import com.teamjmonkey.animation.AnimType;
 import com.teamjmonkey.controls.AggroControl;
 import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.graphics.Graphics;
@@ -43,5 +44,25 @@ public class Bull extends MovableEntity {
     @Override
     public void finalise() {
         addControl();
+    }
+
+    @Override
+    public void idleAnim() {
+        animComponent.setCurAnim(AnimType.STAND);
+    }
+
+    @Override
+    public void moveAnim() {
+        animComponent.setCurAnim(AnimType.WALK);
+    }
+
+    @Override
+    public void jumpAnim() {
+        animComponent.setCurAnim(AnimType.JUMP);
+    }
+
+    @Override
+    public void attackAnim() {
+        animComponent.setCurAnim(AnimType.ATTACK);
     }
 }

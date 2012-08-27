@@ -1,5 +1,6 @@
 package com.teamjmonkey.controls;
 
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.shapes.HullCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.InputManager;
@@ -51,8 +52,10 @@ public class FoodThrowControl extends BaseControl implements ActionListener {
         if (!isPressed && name.equals(LEFT_CLICK)) {
 
             // apply a force in the cam direction
-
-            spatial.addControl(new RigidBodyControl(1));
+            RigidBodyControl rbc = new RigidBodyControl(1);
+            rbc.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_04);
+            rbc.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_02);
+            spatial.addControl(rbc);
             myApp.getBulletAppState().getPhysicsSpace().add(spatial);
             spatial.getControl(RigidBodyControl.class).setLinearVelocity(cam.getDirection().mult(25));
         }

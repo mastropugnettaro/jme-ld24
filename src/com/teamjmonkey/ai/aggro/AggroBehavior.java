@@ -9,9 +9,9 @@ public interface AggroBehavior {
 
     public void init(GameNameGoesHere myApp, MovableEntity entity, Spatial spatial);
 
-    public void update(float tpf, Vector3f target, boolean hasPtherAggroType);
+    public void update(float tpf, Spatial target, boolean hasPtherAggroType);
 
-    public void onAggro(Vector3f target);
+    public void onAggro(Spatial target);
 
     public void onAggroLoss();
 }
