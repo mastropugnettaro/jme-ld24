@@ -10,6 +10,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
 import com.jme3.post.filters.DepthOfFieldFilter;
+import com.jme3.post.filters.FadeFilter;
 import com.jme3.post.filters.LightScatteringFilter;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
@@ -18,6 +19,8 @@ import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture2D;
 import com.jme3.util.SkyFactory;
 import com.jme3.water.WaterFilter;
+import com.teamjmonkey.cinematic.CinematicComposition;
+import com.teamjmonkey.cinematic.GameStartCinematic;
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.entity.EntityManager;
 import com.teamjmonkey.graphics.MaterialManager;
@@ -35,6 +38,9 @@ public class Island_02 extends SimpleApplication {
     private AudioNode waves;
     private LowPassFilter aboveWaterAudioFilter = new LowPassFilter(1, 1);
     private float counter = 0;
+    private CinematicComposition cc;
+    private FilterPostProcessor fpp;
+    private FadeFilter fade;
 
     public static void main(String[] args) {
         Island_02 app = new Island_02();
@@ -76,6 +82,9 @@ public class Island_02 extends SimpleApplication {
         dof.setFocusRange(100);
         fpp.addFilter(dof);
 
+        fade = new FadeFilter();
+        fpp.addFilter(fade);
+
         water.setWaveScale(0.003f);
         water.setMaxAmplitude(1f);
         water.setFoamExistence(new Vector3f(1f, 4, 0.5f));
@@ -100,12 +109,23 @@ public class Island_02 extends SimpleApplication {
 
         flyCam.setMoveSpeed(100);
 
+        cam.setLocation(new Vector3f(-186.47707f, 19.662216f, -72.307915f));
+        cam.lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
+        
+        cc = new GameStartCinematic(this, fade);
+        cc.attach();
+        fade.setValue(0f);
     }
+    private boolean run = true;
 
     @Override
     public void simpleUpdate(float tpf) {
-
         time += tpf;
+        if (time > 7f && run) {
+            cc.play();
+            run = false;
+        }
+        //System.out.println(cam.getLocation() + " - " + time + " | " + fade.getValue());
         waterHeight = (float) Math.cos(((time * 0.6f) % FastMath.TWO_PI)) * 1.5f;
         water.setWaterHeight(initialWaterHeight + waterHeight);
         if (water.isUnderWater() && !uw) {
