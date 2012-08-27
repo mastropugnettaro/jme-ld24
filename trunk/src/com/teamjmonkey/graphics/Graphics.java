@@ -4,7 +4,6 @@ public enum Graphics {
 
     BULL("bull.j3o"),
     TEST_PLATFORM("testFloor.j3o"),
-    SPEAR_OLD("Weapons/Spear1.j3o"),
     SPEAR("Weapons/spear.j3o"),
     GUN("Weapons/gun.j3o"),
     SWORD("Weapons/sword.j3o");
