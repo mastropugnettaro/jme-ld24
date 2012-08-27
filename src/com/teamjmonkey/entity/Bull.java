@@ -63,6 +63,6 @@ public class Bull extends MovableEntity {
 
     @Override
     public void attackAnim() {
-        animComponent.setCurAnim(AnimType.ATTACK);
+        animComponent.setCurAnim(AnimType.JUMP);
     }
 }
