@@ -48,8 +48,6 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
         if (!isEnabled()) {
             return;
         }
-              GameNameGoesHere app = GameNameGoesHere.getApp();
-        //System.out.println(entList);
         it = entList.iterator();
         while (it.hasNext()) {
             BaseEntity ent = (BaseEntity) it.next();
@@ -81,7 +79,6 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
     
     @Override
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animation) {
-        GameNameGoesHere app = GameNameGoesHere.getApp();
         Collection<?> list = myApp.getLevelManager().getCurrentLevel().getAllEntities();
         
         if(list == null) return;
@@ -90,7 +87,6 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
             BaseEntity ent = (BaseEntity) it2.next();
             if (ent.getAnimComponent() != null) {
                 if (ent.getAnimComponent().getCurAnim() != null) {
-                   //System.out.println(channel.getLoopMode());
                     String animName = channel.getAnimationName();
                     if (animName.equals("Jump") || animName.equals("Attack") || animName.equals("Eat")  ) {
                         if (control.getSpatial().getName().equals("bull")) {
