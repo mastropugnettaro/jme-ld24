@@ -22,6 +22,7 @@ import com.teamjmonkey.controls.AggroControl;
 import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.entity.BaseEntity;
 import com.teamjmonkey.entity.Bull;
+import com.teamjmonkey.entity.food.Apple;
 import java.util.LinkedList;
 
 public class Level1 implements Level {
@@ -87,6 +88,11 @@ public class Level1 implements Level {
         mainCharacter.finalise();
         rootNode.attachChild(mainCharacter.getSpatial());
         allEntities.add(mainCharacter);
+
+        Apple apple = (Apple) entityManager.create(Entity.APPLE);
+        apple.finalise();
+        rootNode.attachChild(apple.getSpatial());
+        allEntities.add(apple);
     }
 
     @Override
