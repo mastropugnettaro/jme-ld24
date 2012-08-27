@@ -24,12 +24,6 @@
                 <control id="main_menu" name ="label"  style="main" text="NEW GAME" backgroundColor="#090f">
                     <interact onClick="showLoadingScreen()" />
                 </control>
-                <control id="main_continue" name ="label" style="main" text="CONTINUE">
-                    <interact onClick="hud()" />
-                </control>
-                <control id="main_level_select" name ="label" style="main" text="LEVEL">
-                    <interact onClick="quit()"/>
-                </control>
                 <control id="main_exit" name ="label" style="main" text="EXIT">
                     <interact onClick="showExitDialog()"/>
                 </control>
