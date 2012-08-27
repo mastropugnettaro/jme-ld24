@@ -30,12 +30,6 @@
                 <control id="main_level_select" name ="label" style="main" text="LEVEL">
                     <interact onClick="quit()"/>
                 </control>
-                <control id="main_options" name = "label" style="main" text="OPTIONS">
-                    <interact onClick="showOptionsScreen()" />
-                </control>
-                <control id="main_credits" name = "label" style="main" text="CREDITS">
-                    <interact onClick="hud()" />
-                </control>
                 <control id="main_exit" name ="label" style="main" text="EXIT">
                     <interact onClick="showExitDialog()"/>
                 </control>

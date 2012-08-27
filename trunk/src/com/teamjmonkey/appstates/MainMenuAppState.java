@@ -28,7 +28,7 @@ public class MainMenuAppState extends AbstractAppState implements ScreenControll
 
     public MainMenuAppState() {
         nifty.fromXml("Interface/Nifty/MainMenu.xml", "start", this, new OptionsScreen());
-        nifty.addXml("Interface/Nifty/OptionsMenu.xml");
+        //nifty.addXml("Interface/Nifty/OptionsMenu.xml");
 
         nifty.getSoundSystem().addSound("titleSound", "Sounds/ahem.ogg");
 
@@ -93,9 +93,9 @@ public class MainMenuAppState extends AbstractAppState implements ScreenControll
         popupElement = nifty.createPopup("popupExit");
     }
 
-    public void showOptionsScreen() {
-        nifty.gotoScreen("options");
-    }
+    //public void showOptionsScreen() {
+      //  nifty.gotoScreen("options");
+    //}
 
     public void closePopup() {
         nifty.closePopup(popupElement.getId());

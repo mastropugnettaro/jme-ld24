@@ -66,10 +66,10 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     public void stateDetached(AppStateManager stateManager) {
         super.stateDetached(stateManager);
         removeDesktopInputs();
-
         // deatch all Level States
         myApp.getStateManager().detach(myApp.getStateManager().getState(LevelCommon.class));
-        myApp.getStateManager().detach(myApp.getStateManager().getState(AnimManager.class));
+        myApp.getStateManager().getState(AnimManager.class).freezeAnimations();
+        myApp.getStateManager().detach(myApp.getStateManager().getState(AnimManager.class));      
         myApp.getStateManager().detach(myApp.getStateManager().getState(NewFlyCamAppState.class));
         myApp.getBulletAppState().setEnabled(false);
 

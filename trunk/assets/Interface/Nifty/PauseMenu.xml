@@ -27,9 +27,6 @@
                 <control id="pause_main_menu" name ="label" style="pauseStyle" text="MAIN MENU">
                     <interact onClick="showMainMenu()"/>
                 </control>
-                <control id="pause_options" name = "label" style="pauseStyle" text="OPTIONS">
-                    <interact onClick="showOptionsScreen()" />
-                </control>
                 <control id="pause_exit" name ="label" style="pauseStyle" text="LEAVE">
                     <interact onClick="exit()"/>
                 </control>
