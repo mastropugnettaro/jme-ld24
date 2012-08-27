@@ -1,0 +1,9 @@
+Material My Material : Common/MatDefs/Light/Lighting.j3md {
+     MaterialParameters {
+        Diffuse : 1.0 0.0 0.0 1.0
+        Ambient : 0.8 0.0 0.0 1.0
+        DiffuseMap : Models/Food/redDiffuse.png
+     }
+    AdditionalRenderState {
+    }
+}
