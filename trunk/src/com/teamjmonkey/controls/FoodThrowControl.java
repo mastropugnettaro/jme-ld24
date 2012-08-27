@@ -1,15 +1,13 @@
 package com.teamjmonkey.controls;
 
-import com.jme3.bullet.collision.PhysicsCollisionObject;
-import com.jme3.bullet.collision.shapes.HullCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Spatial;
+import com.teamjmonkey.entity.food.Apple;
 import com.teamjmonkey.util.GameState;
 
 public class FoodThrowControl extends BaseControl implements ActionListener {
@@ -50,14 +48,18 @@ public class FoodThrowControl extends BaseControl implements ActionListener {
         }
 
         if (!isPressed && name.equals(LEFT_CLICK)) {
-
             // apply a force in the cam direction
-            RigidBodyControl rbc = new RigidBodyControl(1);
-            rbc.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_04);
-            rbc.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_06);
-            spatial.addControl(rbc);
-            myApp.getBulletAppState().getPhysicsSpace().add(spatial);
+
+            ((Apple)(spatial.getUserData("entity"))).addPhysicsControl();
+
+          //  RigidBodyControl control = spatial.getControl(RigidBodyControl.class);
+          //  control.setEnabled(true);
+           // FoodEntity
+       //     control.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_04);
+   //         control.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_03);
+
             spatial.getControl(RigidBodyControl.class).setLinearVelocity(cam.getDirection().mult(25));
+            cleanup();
         }
     }
 

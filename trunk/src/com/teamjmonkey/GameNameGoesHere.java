@@ -4,6 +4,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.font.BitmapFont;
+import com.jme3.post.FilterPostProcessor;
 import com.jme3.system.AppSettings;
 import com.teamjmonkey.animation.AnimManager;
 import com.teamjmonkey.appstates.BackgroundMusicAppState;
@@ -27,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameNameGoesHere extends SimpleApplication {
-    
+
     private static GameNameGoesHere thisApp;
     private UIManager uiManager;
     private FileManager fileManager;
@@ -44,14 +45,18 @@ public class GameNameGoesHere extends SimpleApplication {
     private PhysicsManager physicsManager;
     private SoundManager soundManager;
     private AnimManager animManager;
-    
+
+    private FilterPostProcessor fpp;
+
     public GameNameGoesHere() {
         super(new StatsAppState());
     }
-    
+
     @Override
     public void simpleInitApp() {
         thisApp = this;
+
+        fpp = new FilterPostProcessor(assetManager);
 
         // == Move a lot of these into the "initialise once" level === //
         bulletAppState = new BulletAppState();
@@ -59,7 +64,7 @@ public class GameNameGoesHere extends SimpleApplication {
 
         // load needed managers now
         uiManager = new UIManager();
-        
+
         fileManager = new FileManager(assetManager);
         effectsManager = new EffectsManager();
         controlManager = new ControlManager();
@@ -72,87 +77,87 @@ public class GameNameGoesHere extends SimpleApplication {
         physicsManager = new PhysicsManager();
         soundManager = new SoundManager();
         animManager = new AnimManager();
-        
+
         levelManager = new LevelManager();
         bulletAppState.getPhysicsSpace().enableDebug(assetManager);
-        
+
         uiManager.showMainMenu();
         inputManager.setCursorVisible(true);
         stateManager.detach(stateManager.getState(StatsAppState.class));
         stateManager.attach(new BackgroundMusicAppState(this));
-        
+
         Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE);
         Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE);
     }
-    
+
     public PreloadManager getPreloadManager() {
         return preloadManager;
     }
-    
+
     public static GameNameGoesHere getApp() {
         return thisApp;
     }
-    
+
     public UIManager getUIManager() {
         return uiManager;
     }
-    
+
     public LevelManager getLevelManager() {
         return levelManager;
     }
-    
+
     public ControlManager getControlManager() {
         return controlManager;
     }
-    
+
     public GraphicManager getGraphicManager() {
         return graphicManager;
     }
-    
+
     public MaterialManager getMaterialManager() {
         return materialManager;
     }
-    
+
     public BulletAppState getBulletAppState() {
         return bulletAppState;
     }
-    
+
     public EntityManager getEntityManager() {
         return entityManager;
     }
-    
+
     public EffectsManager getEffectsManager() {
         return effectsManager;
     }
-    
+
     public FileManager getFileManager() {
         return fileManager;
     }
-    
+
     public UserSettings getUserSettings() {
         return userSettings;
     }
-    
+
     public MonkeyAppStateManager getMonkeyAppStateManager() {
         return monkeyAppStateManager;
     }
-    
+
     public PhysicsManager getPhysicsManager() {
         return physicsManager;
     }
-    
+
     public SoundManager getSoundManager() {
         return soundManager;
     }
-    
+
     public AnimManager getAnimManager() {
         return animManager;
     }
-    
+
     public AppSettings getSettings() {
         return settings;
     }
-    
+
     @Override
     public void loseFocus() {
         //super.loseFocus();
@@ -162,7 +167,7 @@ public class GameNameGoesHere extends SimpleApplication {
             stateManager.attach(monkeyAppStateManager.getAppState(PauseMenuAppState.class));
         }
     }
-    
+
     @Override
     public void gainFocus() {
         //super.gainFocus();
@@ -171,5 +176,7 @@ public class GameNameGoesHere extends SimpleApplication {
     public BitmapFont getFont() {
         return guiFont;
     }
+    public FilterPostProcessor getFpp() {
+        return fpp;
+    }
 }
-

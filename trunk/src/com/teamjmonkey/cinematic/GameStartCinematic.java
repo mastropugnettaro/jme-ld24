@@ -1,6 +1,7 @@
 package com.teamjmonkey.cinematic;
 
 import com.jme3.animation.LoopMode;
+import com.jme3.app.SimpleApplication;
 import com.jme3.cinematic.Cinematic;
 import com.jme3.cinematic.MotionPath;
 import com.jme3.cinematic.PlayState;
@@ -9,19 +10,17 @@ import com.jme3.math.Spline.SplineType;
 import com.jme3.math.Vector3f;
 import com.jme3.post.filters.FadeFilter;
 import com.jme3.scene.CameraNode;
-import com.teamjmonkey.GameNameGoesHere;
-import com.teamjmonkey.Island_02;
 
 public class GameStartCinematic implements CinematicComposition {
 
-    private Island_02 myApp;
+    private SimpleApplication myApp;
     private Cinematic cinematic;
     private FadeFilter fade;
     private MotionEvent seagullCamMotion1;
     private MotionEvent seagullCamMotion2;
     private final float overallTime = 36f;
 
-    public GameStartCinematic(Island_02 myApp, FadeFilter fade) {
+    public GameStartCinematic(SimpleApplication myApp, FadeFilter fade) {
         this.myApp = myApp;
         this.fade = fade;
         this.cinematic = new Cinematic(myApp.getRootNode(), overallTime, LoopMode.DontLoop);
@@ -53,7 +52,7 @@ public class GameStartCinematic implements CinematicComposition {
         seagullCamMotion1.setLookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
         seagullCamMotion1.setDirectionType(MotionEvent.Direction.LookAt);
         seagullCamMotion1.setLoopMode(LoopMode.DontLoop);
-        
+
         //Motion2
         MotionPath path2 = new MotionPath();
         path2.addWayPoint(new Vector3f(69.37767f, 282.1654f, -395.867f));
@@ -68,7 +67,7 @@ public class GameStartCinematic implements CinematicComposition {
         path2.addWayPoint(new Vector3f(-96.421425f, 27.326252f, -49.235554f));
         path2.addWayPoint(new Vector3f(-186.47707f, 19.662216f, -72.307915f));
         path2.addWayPoint(new Vector3f(-187f, 19.808556f, -72.36449f));
-        
+
         path2.setCurveTension(0.6f);
         path2.setPathSplineType(SplineType.CatmullRom);
         seagullCamMotion2 = new MotionEvent(seagull, path2, 24f);

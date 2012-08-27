@@ -39,7 +39,7 @@ public class MainCharacter extends BaseEntity implements Savable {
         player.setGravity(30);
         player.setPhysicsLocation(new Vector3f(0, 10, 0));
         player.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_03);
-        player.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_02);
+        player.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_02 | PhysicsCollisionObject.COLLISION_GROUP_04);
         bulletAppState.getPhysicsSpace().add(player);
 
         spatial.addControl(player);

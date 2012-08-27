@@ -1,8 +1,12 @@
 package com.teamjmonkey.level;
 
+import com.jme3.app.state.AbstractAppState;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.math.Transform;
+
 import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.filters.FadeFilter;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.teamjmonkey.GameNameGoesHere;
@@ -12,7 +16,12 @@ import com.teamjmonkey.ai.areas.WalkableArea;
 import com.teamjmonkey.ai.areas.WalkableRectangle;
 import com.teamjmonkey.animation.AnimManager;
 import com.teamjmonkey.appstates.LoadingScreenAppState;
+
+import com.teamjmonkey.cinematic.CinematicComposition;
+import com.teamjmonkey.cinematic.GameStartCinematic;
+
 import com.teamjmonkey.controls.AggroControl;
+
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.entity.Creature;
@@ -20,7 +29,6 @@ import com.teamjmonkey.entity.CreatureElephant;
 import com.teamjmonkey.entity.Enemy;
 import com.teamjmonkey.entity.Entity;
 import com.teamjmonkey.entity.EntityManager;
-import com.teamjmonkey.entity.MainCharacter;
 import com.teamjmonkey.entity.food.Apple;
 import com.teamjmonkey.graphics.GraphicManager;
 import com.teamjmonkey.graphics.MaterialManager;
@@ -29,7 +37,7 @@ import com.teamjmonkey.sound.SoundManager;
 import com.teamjmonkey.util.Manager;
 import com.teamjmonkey.util.PreloadManager;
 
-public class LevelManager implements Manager {
+public class LevelManager extends AbstractAppState implements Manager {
 
     private GameNameGoesHere myApp;
     private Node rootNode;
@@ -46,6 +54,8 @@ public class LevelManager implements Manager {
     private int currentIntLevel;
     private final int NUM_LEVELS;
     private Node island;
+    private CinematicComposition cc;
+    private FadeFilter fade;
 
     public LevelManager() {
         myApp = GameNameGoesHere.getApp();
@@ -141,11 +151,43 @@ public class LevelManager implements Manager {
             }
         }
 
+
+        /*
         MainCharacter mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
         mainCharacter.getSpatial().move(-130, 40, -60);
         mainCharacter.finalise();
         rootNode.attachChild(mainCharacter.getSpatial());
         currentLevel.getAllEntities().add(mainCharacter);
+         *
+         */
+        FilterPostProcessor fpp = myApp.getFpp();
+        myApp.getCamera().setLocation(new Vector3f(-186.47707f, 19.662216f, -72.307915f));
+        myApp.getCamera().lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
+
+        fade = new FadeFilter();
+        fpp.addFilter(fade);
+
+        cc = new GameStartCinematic(myApp, fade);
+        cc.attach();
+        fade.setValue(0f);
+
+        myApp.getStateManager().attach(this);
+
+    }
+    private float time = 0;
+    private boolean run = true;
+
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+
+        time += tpf;
+        if (time > 7f && run) {
+            cc.play();
+            run = false;
+            myApp.getStateManager().detach(this);
+        }
+
     }
 
     public Node getIsland() {
@@ -213,7 +255,10 @@ public class LevelManager implements Manager {
         myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
     }
 
+    @Override
     public void cleanup() {
+
+        /*
         materialManager.cleanup();
         physicsManager.cleanup();
         soundManager.cleanup();
@@ -221,5 +266,7 @@ public class LevelManager implements Manager {
 
         currentLevel.cleanup();
         //  animManager.cleanup();
+         *
+         */
     }
 }
