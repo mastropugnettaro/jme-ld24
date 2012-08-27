@@ -24,9 +24,6 @@
                 <control id="pause_restart" name ="label" style="pauseStyle" text="RESTART LEVEL">
                     <interact onClick="restart()" />
                 </control>
-                <control id="pause_main_menu" name ="label" style="pauseStyle" text="MAIN MENU">
-                    <interact onClick="showMainMenu()"/>
-                </control>
                 <control id="pause_exit" name ="label" style="pauseStyle" text="LEAVE">
                     <interact onClick="exit()"/>
                 </control>
