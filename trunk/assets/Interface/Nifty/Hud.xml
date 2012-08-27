@@ -3,14 +3,19 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
 
+    <controlDefinition name = "health">
+        <image filename="Interface/border.png" childLayout="absolute"
+               imageMode="resize:4,2,4,4,4,2,4,22,4,2,4,4">
+            <image id="healthBar" x="0" y="0" filename="Interface/inner.png" width="100%" height="100%"
+                   imageMode="resize:4,2,4,4,4,2,4,22,4,2,4,4" />
+        </image>
+    </controlDefinition>
+
     <screen id="hud" controller="com.teamjmonkey.appstates.GameAppState">
         <layer id="layer" childLayout="vertical">
-            <image filename="Interface/health_bar.jpg" height="100px" width="200px" align = "left" valign="top" />
+            <control name="health" align = "left" valign="top" width="30%" height="5%" />
             <panel height="*" />
             <panel childLayout="horizontal">
-            <control name="label" text="HELLLLLOOO" font="Interface/Fonts/Forte.fnt" color="#897f" height="90px" width="350px" valign="bottom" />
-            <panel width="*" height="0"/>
-            <image filename="Interface/face.jpg" height="200px" width="250px" align = "left" valign="top" />
             </panel>
         </layer>
     </screen>

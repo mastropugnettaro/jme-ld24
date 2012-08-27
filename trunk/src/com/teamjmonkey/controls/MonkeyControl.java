@@ -6,7 +6,8 @@ public enum MonkeyControl {
     SET_TO_CAM(MainCharacterControl.class),
     WEAPON_FOLLOW_CAM(WeaponFollowCamControl.class),
     BOB_CONTROL(BobControl.class),
-    WEAPON_ATTACK_CONTROL(WeaponAttackControl.class);
+    WEAPON_ATTACK_CONTROL(WeaponAttackControl.class),
+    FOOD_THROW_CONTROL(FoodThrowControl.class);
 
     private Class<? extends BaseControl> clazz;
 

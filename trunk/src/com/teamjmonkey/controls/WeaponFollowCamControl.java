@@ -27,6 +27,8 @@ public class WeaponFollowCamControl extends BaseControl {
             spatial.move(cam.getLeft().mult(-1f));
             spatial.rotate(0.3f, FastMath.PI, 0);
 
+        } else if (spatial.getName().equals("apple")) {
+            spatial.move(cam.getDirection().mult(3));
         } else {
             spatial.move(cam.getDirection().mult(2));
             spatial.move(cam.getUp().mult(-1.5f));

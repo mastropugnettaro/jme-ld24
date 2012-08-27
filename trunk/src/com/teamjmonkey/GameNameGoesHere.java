@@ -3,6 +3,7 @@ package com.teamjmonkey;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.system.AppSettings;
 import com.teamjmonkey.animation.AnimManager;
 import com.teamjmonkey.appstates.GameAppState;
 import com.teamjmonkey.appstates.MonkeyAppStateManager;
@@ -72,6 +73,8 @@ public class GameNameGoesHere extends SimpleApplication {
         bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
         uiManager.showMainMenu();
+        inputManager.setCursorVisible(true);
+        stateManager.detach(stateManager.getState(StatsAppState.class));
     }
 
     public PreloadManager getPreloadManager() {
@@ -136,6 +139,10 @@ public class GameNameGoesHere extends SimpleApplication {
 
     public AnimManager getAnimManager() {
         return animManager;
+    }
+
+    public AppSettings getSettings() {
+        return settings;
     }
 
     @Override

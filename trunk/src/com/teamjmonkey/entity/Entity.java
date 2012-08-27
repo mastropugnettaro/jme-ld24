@@ -1,12 +1,14 @@
 package com.teamjmonkey.entity;
 
+import com.teamjmonkey.entity.food.Apple;
 import com.teamjmonkey.entity.weapons.Gun;
 import com.teamjmonkey.entity.weapons.Spear;
 import com.teamjmonkey.entity.weapons.Sword;
 
 public enum Entity {
 
-    TEST_FLOOR, MAIN_CHARACTER, BULL, STATIC_BLOCK, SPEAR, SWORD, GUN;
+    TEST_FLOOR, MAIN_CHARACTER, BULL, STATIC_BLOCK, SPEAR, SWORD, GUN,
+    APPLE;
 
     public BaseEntity createEntity() {
 
@@ -33,6 +35,9 @@ public enum Entity {
                 break;
             case GUN:
                 entity = new Gun();
+                break;
+            case APPLE:
+                entity = new Apple();
                 break;
             default:
                 entity = new MainCharacter();

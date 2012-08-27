@@ -6,16 +6,26 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector2f;
+import com.jme3.scene.Node;
+import com.jme3.ui.Picture;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.animation.AnimManager;
+import com.teamjmonkey.entity.BaseEntity;
+import com.teamjmonkey.entity.food.FoodEntity;
+import com.teamjmonkey.entity.weapons.WeaponEntity;
 import com.teamjmonkey.level.LevelCommon;
 import com.teamjmonkey.level.LevelManager;
 import com.teamjmonkey.ui.UIManager;
 import com.teamjmonkey.util.GameState;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.input.keyboard.KeyboardInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import de.lessvoid.nifty.tools.SizeValue;
 
 public class GameAppState extends AbstractAppState implements ScreenController {
 
@@ -27,6 +37,9 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     private final String PAUSE = "Pause";
     private final String NEXT_LEVEL = "NextLevel";
     private final String PREVIOUS_LEVEL = "PreviousLevel";
+    private Element healthBar;
+    private TextRenderer text;
+    private int health = 100;
 
     public GameAppState() {
         nifty.registerScreenController(this);
@@ -45,6 +58,8 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         myApp.getBulletAppState().setEnabled(true);
 
         loadDesktopInputs();
+
+        createUIProducts();
     }
 
     @Override
@@ -59,6 +74,7 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         myApp.getBulletAppState().setEnabled(false);
 
         // TODO: pause any playing music
+        myApp.getGuiNode().detachAllChildren();
     }
 
     @Override
@@ -85,6 +101,9 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     @Override
     public void update(float tpf) {
         //update loop
+        super.update(tpf);
+
+        setHealth(0.2f);
     }
 
     private void removeDesktopInputs() {
@@ -119,41 +138,9 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         }
     };
 
-    /*
-    public void collision(PhysicsCollisionEvent event) {
-
-        Spatial a = event.getNodeA();
-        Spatial b = event.getNodeB();
-
-        if (a == null || b == null) {
-            return;
-        }
-
-        System.out.println(a + " " + b);
-
-        String aName = event.getNodeA().getName();
-        String bName = event.getNodeB().getName();
-
-        // success they have collide
-
-        if ((aName.equals(MAIN_CHARACTER) && bName.equals(ENEMY))
-                || (bName.equals(MAIN_CHARACTER) && aName.equals(ENEMY))) {
-
-            Spatial enemy = aName.equals(ENEMY) ? a : b;
-            Spatial mainCharacter = aName.equals(ENEMY) ? b : a;
-
-            // note the use of getParent, this was used to line the collision shapes
-            MoveRandomControl control = enemy.getParent().getControl(MoveRandomControl.class);
-            if (control != null) {
-                control.setEnabled(false);
-            }
-        }
-    }
-     *
-     */
-
     // ==== nifty ====
     public void bind(Nifty nifty, Screen screen) {
+        healthBar = nifty.getScreen("hud").findElementByName("healthBar");
     }
 
     public void onStartScreen() {
@@ -169,4 +156,98 @@ public class GameAppState extends AbstractAppState implements ScreenController {
     public void removeHud() {
         nifty.gotoScreen("end");
     }
+
+    public void setHealth(final float health) {
+        final int MIN_WIDTH = 10; //10 pixels
+        int pixelWidth = (int) (MIN_WIDTH + (healthBar.getParent().getWidth() - MIN_WIDTH) * health);
+        healthBar.setConstraintWidth(new SizeValue(pixelWidth + "px"));
+        healthBar.getParent().layoutElements();
+
+        this.health = (int) health;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    private Picture border;
+    private float WIDTH = myApp.getSettings().getWidth()*0.15f;
+    private Vector2f initialFoodHUDPosition = new Vector2f(myApp.getSettings().getWidth()*0.2f, myApp.getSettings().getHeight()*0.05f);
+    private Node products = new Node("products");
+
+    private void createBorder(Vector2f position) {
+        border = new Picture("border");
+        border.setImage(myApp.getAssetManager(), "Interface/inventoryBorder.png", true);
+
+        border.setWidth(WIDTH);
+        border.setHeight(WIDTH);
+
+        border.setPosition(position.getX(), position.getY());
+        myApp.getGuiNode().attachChild(border);
+    }
+
+    private void createUIProducts() {
+
+        String[] fileNames = {"appleImg.png", "appleImg.png", "appleImg.png"};
+        ColorRGBA[] colors = {ColorRGBA.Pink, ColorRGBA.Green, ColorRGBA.Red};
+        String location = "Interface/";
+
+        Picture p = null;
+        for (int i = 0, length = fileNames.length; i < length; i++) {
+
+            p = new Picture("hudPic");
+            p.setImage(myApp.getAssetManager(), location + fileNames[i], true);
+            p.setWidth(WIDTH);
+            p.setHeight(WIDTH);
+
+            p.getMaterial().setColor("Color", colors[i]);
+
+            Vector2f position = initialFoodHUDPosition.clone();
+            position.setX(position.getX() + (WIDTH * i) + (myApp.getSettings().getWidth()*0.08f * i));
+            p.setPosition(position.getX(), position.getY());
+            createBorder(position);
+
+            products.attachChild(p);
+        }
+
+        myApp.getGuiNode().attachChild(products);
+    }
+
+    // between 0 and 2
+    public void setImageToIndex(Picture image, int index) {
+
+        if(index < 0) {
+            index = 0;
+        } else if (index > 2) {
+            index = 2;
+        }
+
+        // find the position to put the image
+
+    }
+
+
+
+
+
+    public void equipItem(BaseEntity entity) {
+
+        if (entity instanceof FoodEntity) {
+
+
+
+        } else if (entity instanceof WeaponEntity) {
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
 }
