@@ -4,11 +4,11 @@ import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
-import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Spatial;
+import com.teamjmonkey.animation.AnimComponent;
+import com.teamjmonkey.entity.weapons.WeaponEntity;
 import com.teamjmonkey.util.GameState;
 
 public class WeaponAttackControl extends BaseControl {
@@ -22,26 +22,42 @@ public class WeaponAttackControl extends BaseControl {
     private final String LEFT_CLICK = "LeftClick";
     private InputManager inputManager = myApp.getInputManager();
     private boolean isAttacking = false;
+    private WeaponEntity weaponEntity;
 
     @Override
     protected void controlUpdate(float tpf) {
 
+
         if (isAttacking) {
-            timeCounter += tpf * direction;
 
-            if (timeCounter >= 1) {
-                direction = direction * -1;
-                timeCounter = 1;
-            } else if (timeCounter < 0) {
-                timeCounter = 0;
-                tempRotation.slerp(initialRotation, endRotation, 0);
+            timeCounter += tpf;
+
+            if (timeCounter > 1) {
                 isAttacking = false;
-                direction = direction * -1;
+                timeCounter = 0;
+                weaponEntity.idle();
             }
-
-            tempRotation.slerp(initialRotation, endRotation, timeCounter);
-            spatial.setLocalRotation(tempRotation);
         }
+
+        /*
+        if (isAttacking) {
+        timeCounter += tpf * direction;
+
+        if (timeCounter >= 1) {
+        direction = direction * -1;
+        timeCounter = 1;
+        } else if (timeCounter < 0) {
+        timeCounter = 0;
+        tempRotation.slerp(initialRotation, endRotation, 0);
+
+        direction = direction * -1;
+        }
+
+        tempRotation.slerp(initialRotation, endRotation, timeCounter);
+        spatial.setLocalRotation(tempRotation);
+        }
+         *
+         */
     }
 
     @Override
@@ -53,6 +69,8 @@ public class WeaponAttackControl extends BaseControl {
 
             inputManager.addMapping(LEFT_CLICK, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
             inputManager.addListener(actionListener, LEFT_CLICK);
+
+            weaponEntity = ((WeaponEntity) spatial.getUserData("entity"));
         }
     }
 
@@ -63,7 +81,6 @@ public class WeaponAttackControl extends BaseControl {
         inputManager.deleteMapping(LEFT_CLICK);
         inputManager.removeListener(actionListener);
     }
-
     private ActionListener actionListener = new ActionListener() {
 
         public void onAction(String name, boolean isPressed, float tpf) {
@@ -74,13 +91,8 @@ public class WeaponAttackControl extends BaseControl {
 
             if (!isPressed && name.equals(LEFT_CLICK)) {
                 if (!isAttacking) {
-                    initialRotation = spatial.getLocalRotation().clone();
 
-                    Vector3f crossLocal = cam.getDirection().clone().crossLocal(initialRotation.mult(Vector3f.UNIT_Y)).normalizeLocal();
-                    spatial.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.PI / 2, crossLocal));
-                    endRotation = spatial.getLocalRotation().clone();
-
-                    tempRotation = new Quaternion();
+                    weaponEntity.attack();
                     isAttacking = true;
                 }
             }

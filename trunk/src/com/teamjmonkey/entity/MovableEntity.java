@@ -69,7 +69,7 @@ public abstract class MovableEntity extends BaseEntity {
 
         if (FastMath.abs(deltaX) < MOVEMENT_ACCURACY && FastMath.abs(deltaZ) < MOVEMENT_ACCURACY) {
             isMoving = false;
-            animComponent.setCurAnim(AnimType.IDLE);
+            animComponent.setCurAnim(AnimType.STAND);
         } else {
             if (delta <= speed * tpf) {
                 moveX = deltaX;
@@ -133,7 +133,7 @@ public abstract class MovableEntity extends BaseEntity {
                 isTurning = false;
                 isTurned = true;
                 if (!isMoving) {
-                    animComponent.setCurAnim(AnimType.IDLE);
+                    animComponent.setCurAnim(AnimType.STAND);
                 }
             }
         }
@@ -152,7 +152,7 @@ public abstract class MovableEntity extends BaseEntity {
         isTurning = false;
         isTurned = false;
         isPaused = false;
-        animComponent.setCurAnim(AnimType.IDLE);
+        animComponent.setCurAnim(AnimType.STAND);
     }
 
     public boolean isPaused() {
