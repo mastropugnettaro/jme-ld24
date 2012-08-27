@@ -1,8 +1,8 @@
 Material My Material : Common/MatDefs/Light/Lighting.j3md {
      MaterialParameters {
-        Diffuse : 0.0 1.0 0.0 1.0
-        Ambient : 0.0 0.4 0.0 1.0
-        DiffuseMap : Models/Food/appleDiffuse.png
+        Diffuse : 0.0 0.0 1.0 1.0
+        Ambient : 0.0 0.0 0.6 1.0
+        DiffuseMap : Models/Food/blueDiffuse.png
      }
     AdditionalRenderState {
     }
