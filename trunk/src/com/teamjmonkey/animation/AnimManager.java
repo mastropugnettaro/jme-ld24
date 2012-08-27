@@ -18,7 +18,7 @@ import sun.security.krb5.SCDynamicStoreConfig;
 public class AnimManager extends AbstractAppState implements AnimEventListener {
 
     private GameNameGoesHere myApp = GameNameGoesHere.getApp();
-    private Collection<?> entList;
+    public Collection<?> entList;
     private Iterator<?> it;
     private HashMap<String, AnimInfo> map;
     private Iterator<?> it2;
@@ -48,6 +48,8 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
         if (!isEnabled()) {
             return;
         }
+              GameNameGoesHere app = GameNameGoesHere.getApp();
+        //System.out.println(entList);
         it = entList.iterator();
         while (it.hasNext()) {
             BaseEntity ent = (BaseEntity) it.next();
@@ -79,17 +81,26 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
     
     @Override
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animation) {
-        if (!channel.getLoopMode().equals(LoopMode.Loop)) {
-            if (control.getSpatial().getName().equals("bull")) {
-                channel.setLoopMode(LoopMode.Loop);
-                channel.setSpeed(1f);
-                channel.setAnim("Stand", 0.1f);
-            } else {
-                channel.setLoopMode(LoopMode.Loop);
-                channel.setSpeed(1f);
-                channel.setAnim("Idle", 0.1f);
-            }
+        GameNameGoesHere app = GameNameGoesHere.getApp();
+        Collection<?> list = myApp.getLevelManager().getCurrentLevel().getAllEntities();
+        
+        if(list == null) return;
+        it2 = list.iterator();
+        while (it2.hasNext()) {
+            BaseEntity ent = (BaseEntity) it2.next();
+            if (ent.getAnimComponent() != null) {
+                if (ent.getAnimComponent().getCurAnim() != null) {
+                    System.out.println(channel.getLoopMode());
+                    if (channel.getLoopMode() == LoopMode.DontLoop) {
+                        if (control.getSpatial().getName().equals("bull")) {
+                            ent.getAnimComponent().setCurAnim(AnimType.STAND);
+                        } else {
+                            ent.getAnimComponent().setCurAnim(AnimType.IDLE);                      
+                        }
 
+                    }
+                }
+            }
         }
 
     }
