@@ -30,7 +30,7 @@ public class MainMenuAppState extends AbstractAppState implements ScreenControll
         nifty.fromXml("Interface/Nifty/MainMenu.xml", "start", this, new OptionsScreen());
         //nifty.addXml("Interface/Nifty/OptionsMenu.xml");
 
-        nifty.getSoundSystem().addSound("titleSound", "Sounds/ahem.ogg");
+        nifty.getSoundSystem().addSound("titleSound", "Sounds/click.ogg");
 
         sound = nifty.getSoundSystem().getSound("titleSound");
         sound.setVolume(0.1f);
