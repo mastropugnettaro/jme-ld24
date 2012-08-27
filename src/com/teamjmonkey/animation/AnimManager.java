@@ -8,10 +8,12 @@ import java.util.Iterator;
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
+import com.jme3.animation.LoopMode;
 import com.jme3.app.state.AbstractAppState;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.entity.BaseEntity;
 import com.teamjmonkey.util.GameState;
+import sun.security.krb5.SCDynamicStoreConfig;
 
 public class AnimManager extends AbstractAppState implements AnimEventListener {
 
@@ -19,6 +21,7 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
     private Collection<?> entList;
     private Iterator<?> it;
     private HashMap<String, AnimInfo> map;
+    private Iterator<?> it2;
 
     public AnimManager() {
     }
@@ -29,6 +32,8 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
 
         this.entList = myApp.getLevelManager().getCurrentLevel().getAllEntities();
         this.map = AnimHandler.loadAnimationSet();
+       
+        
     }
 
     @Override
@@ -40,7 +45,6 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-
         if (!isEnabled()) {
             return;
         }
@@ -53,32 +57,56 @@ public class AnimManager extends AbstractAppState implements AnimEventListener {
                     AnimChannel channel = ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY);
 
                     if (GameState.getGameState() == GameState.RUNNING) {
-                        if (channel.getAnimationName() != null) {
-                            if (!channel.getAnimationName().equals(curAnimInfo.name)) {
+                        if (channel.getAnimationName() != null ) {
+                            if (!channel.getAnimationName().equals(curAnimInfo.name) || ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).getSpeed() == 0f) {
                                 ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setLoopMode(curAnimInfo.loop);
                                 ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setSpeed(curAnimInfo.speed);
                                 ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setAnim(curAnimInfo.name, curAnimInfo.blendTime);
                             }
                         }
-                    }else if (GameState.getGameState() == GameState.PAUSED) {
-                        if (channel.getAnimationName() != null) {
-                            ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setLoopMode(curAnimInfo.loop);
-                            ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setSpeed(0f);
-                            ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setAnim(curAnimInfo.name, curAnimInfo.blendTime);
-                        }
                     }
+
                 }
             }
         }
 
     }
-
+    
+    
     @Override
     public void onAnimChange(AnimControl arg0, AnimChannel arg1, String arg2) {
     }
-
+    
     @Override
-    public void onAnimCycleDone(AnimControl arg0, AnimChannel arg1, String arg2) {
+    public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animation) {
+        if (!animation.equals(AnimType.STAND) && channel.getLoopMode() != LoopMode.Loop) {
+            if (control.getSpatial().getName().equals("bull")) {
+                channel.setLoopMode(LoopMode.Loop);
+                channel.setSpeed(1f);
+                channel.setAnim("Stand", 0.1f);
+            } else {
+                channel.setLoopMode(LoopMode.Loop);
+                channel.setSpeed(1f);
+                channel.setAnim("Idle", 0.1f);
+            }
+
+        }
+
+    }
+    
+    public void freezeAnimations() {
+        it = entList.iterator();
+        while (it.hasNext()) {
+            BaseEntity ent = (BaseEntity) it.next();
+            if (ent.getAnimComponent() != null) {
+                if (ent.getAnimComponent().getCurAnim() != null) {
+                    AnimChannel channel = ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY);
+                    if (channel.getAnimationName() != null) {
+                        ent.getAnimComponent().getAnimControl().getChannel(AnimConf.UPPER_BODY).setSpeed(0f);
+                    }
+                }
+            }
+        }
     }
 
     @Override

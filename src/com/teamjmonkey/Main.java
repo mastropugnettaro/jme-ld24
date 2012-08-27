@@ -32,6 +32,10 @@ public class Main {
         app.setSettings(appSettings);
 
         // starts the application (GameNameGoesHere)
+        
+        Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE);
+Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE);
+
         app.start();
     }
 }
