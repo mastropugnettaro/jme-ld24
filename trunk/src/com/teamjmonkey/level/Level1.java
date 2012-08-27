@@ -105,6 +105,7 @@ public class Level1 implements Level {
 
     @Override
     public void cleanup() {
+
         for (BaseEntity baseEntity : getAllEntities()) {
             baseEntity.cleanup(); // should remove all physics and controls
             rootNode.detachChild(baseEntity.getSpatial()); // remove from scene graph

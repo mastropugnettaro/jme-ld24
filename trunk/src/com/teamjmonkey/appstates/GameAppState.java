@@ -128,11 +128,11 @@ public class GameAppState extends AbstractAppState implements ScreenController {
                     myApp.getStateManager().detach(GameAppState.this);
                     myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(PauseMenuAppState.class));
                 } else if (name.equals(NEXT_LEVEL)) {
-                    levelManager.loadNextLevel();
-                    myApp.getStateManager().detach(GameAppState.this);
+                 //   levelManager.loadNextLevel();
+                 //   myApp.getStateManager().detach(GameAppState.this);
                 } else if (name.equals(PREVIOUS_LEVEL)) {
-                    levelManager.loadPreviousLevel();
-                    myApp.getStateManager().detach(GameAppState.this);
+                 //   levelManager.loadPreviousLevel();
+                 //   myApp.getStateManager().detach(GameAppState.this);
                 }
             }
         }
