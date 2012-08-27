@@ -2,8 +2,8 @@ package com.teamjmonkey.sound;
 
 public enum MonkeySound {
 
-        TEST_MUSIC("ahem.ogg", true),
-        TEST_SOUND("ahem.ogg", false),
+        TEST_MUSIC("click.ogg", true),
+        TEST_SOUND("click.ogg", false),
         OCEAN("Environment/Ocean Waves.ogg", true);
 
         private final String path;
