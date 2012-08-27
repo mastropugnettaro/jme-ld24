@@ -3,7 +3,6 @@ package com.teamjmonkey.entity;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.teamjmonkey.animation.AnimType;
 import com.teamjmonkey.controls.BaseControl;
 import com.teamjmonkey.graphics.Graphics;
 
@@ -56,7 +55,7 @@ public abstract class MovableEntity extends BaseEntity {
     public void moveTo(Vector3f target, float speed, float turnSpeedMultiplier) {
         this.speed = speed;
         isMoving = true;
-        animComponent.setCurAnim(AnimType.WALK);
+        moveAnim();
         lookAt(target, turnSpeedMultiplier);
     }
 
@@ -69,7 +68,7 @@ public abstract class MovableEntity extends BaseEntity {
 
         if (FastMath.abs(deltaX) < MOVEMENT_ACCURACY && FastMath.abs(deltaZ) < MOVEMENT_ACCURACY) {
             isMoving = false;
-            animComponent.setCurAnim(AnimType.STAND);
+            idleAnim();
         } else {
             if (delta <= speed * tpf) {
                 moveX = deltaX;
@@ -84,14 +83,18 @@ public abstract class MovableEntity extends BaseEntity {
     }
 
     public void lookAt(Vector3f target, float turnSpeedMultiplier) {
+        lookAt(target, turnSpeedMultiplier, true);
+    }
+
+    public void lookAt(Vector3f target, float turnSpeedMultiplier, boolean useWalkAnimation) {
         this.target = target;
         this.turnSpeedMultiplier = turnSpeedMultiplier;
         isTurning = true;
         isTurned = false;
-        calcTurn();
+        calcTurn(useWalkAnimation);
     }
 
-    private void calcTurn() {
+    private void calcTurn(boolean useWalkAnimation) {
         Vector3f worldTranslation = spatial.getWorldTranslation();
         Vector3f targetVec = new Vector3f(target);
         targetVec.setY(spatial.getLocalTranslation().getY());
@@ -114,7 +117,11 @@ public abstract class MovableEntity extends BaseEntity {
             lerpIncrease = (180f / angleDelta) * turnSpeedMultiplier;
             lerpAmount = 0f;
             isTurning = true;
-            animComponent.setCurAnim(AnimType.WALK);
+            if (useWalkAnimation) {
+                moveAnim();
+            } else {
+                idleAnim();
+            }
         } else {
             isTurned = true;
         }
@@ -133,7 +140,7 @@ public abstract class MovableEntity extends BaseEntity {
                 isTurning = false;
                 isTurned = true;
                 if (!isMoving) {
-                    animComponent.setCurAnim(AnimType.STAND);
+                    idleAnim();
                 }
             }
         }
@@ -152,7 +159,7 @@ public abstract class MovableEntity extends BaseEntity {
         isTurning = false;
         isTurned = false;
         isPaused = false;
-        animComponent.setCurAnim(AnimType.STAND);
+        idleAnim();
     }
 
     public boolean isPaused() {
@@ -162,4 +169,12 @@ public abstract class MovableEntity extends BaseEntity {
     public boolean isMoving() {
         return isMoving || isTurning;
     }
+
+    public abstract void idleAnim();
+
+    public abstract void moveAnim();
+    
+    public abstract void jumpAnim();
+    
+    public abstract void attackAnim();
 }

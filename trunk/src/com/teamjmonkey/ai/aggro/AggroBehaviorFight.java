@@ -1,6 +1,6 @@
 package com.teamjmonkey.ai.aggro;
 
-import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 import com.teamjmonkey.animation.AnimType;
 
 public class AggroBehaviorFight extends AggroBehaviorBase {
@@ -16,7 +16,7 @@ public class AggroBehaviorFight extends AggroBehaviorBase {
         this.cooldown = cooldown;
     }
 
-    public void update(float tpf, Vector3f target, boolean hasOtherAggroType) {
+    public void update(float tpf, Spatial target, boolean hasOtherAggroType) {
         if (cooldownTimer > 0f) {
             cooldownTimer -= tpf;
         } else {
@@ -31,12 +31,12 @@ public class AggroBehaviorFight extends AggroBehaviorBase {
     }
 
     private void attack() {
-        entity.getAnimComponent().setCurAnim(AnimType.JUMP);
+        entity.attackAnim();
         //TODO do some damage!
         cooldownTimer = cooldown;
     }
 
-    public void onAggro(Vector3f target) {
+    public void onAggro(Spatial target) {
         isFighting = true;
         reset();
     }

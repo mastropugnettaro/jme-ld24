@@ -1,6 +1,6 @@
 package com.teamjmonkey.ai.aggro;
 
-import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 import com.teamjmonkey.controls.MoveRandomControl;
 
 public class AggroBehaviorStare extends AggroBehaviorBase {
@@ -11,9 +11,9 @@ public class AggroBehaviorStare extends AggroBehaviorBase {
         this.speed = speed;
     }
 
-    public void onAggro(Vector3f target) {
+    public void onAggro(Spatial target) {
         interruptOtherActions();
-        entity.lookAt(target, speed);
+        entity.lookAt(target.getLocalTranslation(), speed, false);
     }
 
     private void interruptOtherActions() {
@@ -34,9 +34,9 @@ public class AggroBehaviorStare extends AggroBehaviorBase {
         resumeOtherActions();
     }
 
-    public void update(float tpf, Vector3f target, boolean hasOtherAggroType) {
+    public void update(float tpf, Spatial target, boolean hasOtherAggroType) {
         if (!hasOtherAggroType) {
-            entity.lookAt(target, speed);
+            entity.lookAt(target.getLocalTranslation(), speed, false);
         }
     }
 }

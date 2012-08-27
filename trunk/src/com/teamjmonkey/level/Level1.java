@@ -1,6 +1,7 @@
 package com.teamjmonkey.level;
 
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.teamjmonkey.GameNameGoesHere;
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.entity.Entity;
@@ -22,6 +23,8 @@ import com.teamjmonkey.controls.AggroControl;
 import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.entity.BaseEntity;
 import com.teamjmonkey.entity.Bull;
+import com.teamjmonkey.entity.Creature;
+import com.teamjmonkey.entity.CreatureElephant;
 import com.teamjmonkey.entity.food.Apple;
 import java.util.LinkedList;
 
@@ -63,25 +66,35 @@ public class Level1 implements Level {
 
         WalkableArea field = new WalkableRectangle(-156f, -156f, 312f, 312f);
         WalkableArea midCircle = new WalkableCircle(0f, 0f, 20f);
-        for (int i = 0; i < 5; i++) {
-            Bull bull = (Bull) entityManager.create(Entity.BULL);
-            bull.getSpatial().addControl(new MoveRandomControl(bull, field));
-            bull.getSpatial().addControl(new AggroControl(bull, 40f, 7.5f, new AggroBehaviorChase(field, 10f), new AggroBehaviorFight(1f, 2f)));
-            bull.getSpatial().setLocalTranslation(field.getRandomPointInside());
-            bull.finalise();
-            rootNode.attachChild(bull.getSpatial());
-            allEntities.add(bull);
-        }
+//        for (int i = 0; i < 5; i++) {
+//            Bull bull = (Bull) entityManager.create(Entity.BULL);
+//            bull.getSpatial().addControl(new MoveRandomControl(bull, field));
+//            bull.getSpatial().addControl(new AggroControl(bull, 40f, 7.5f,
+//                    PhysicsCollisionObject.COLLISION_GROUP_03,
+//                    new AggroBehaviorChase(field, 10f), new AggroBehaviorFight(1f, 2f)));
+//            bull.getSpatial().setLocalTranslation(field.getRandomPointInside());
+//            bull.finalise();
+//            rootNode.attachChild(bull.getSpatial());
+//            allEntities.add(bull);
+//        }
+//
+//        for (int i = 0; i < 2; i++) {
+//            Bull bull = (Bull) entityManager.create(Entity.BULL);
+//            bull.getSpatial().addControl(new MoveRandomControl(bull, midCircle));
+//            bull.getSpatial().addControl(new AggroControl(bull, 20f, 7.5f,
+//                    PhysicsCollisionObject.COLLISION_GROUP_03,
+//                    new AggroBehaviorStare(0.5f), null));
+//            bull.getSpatial().setLocalTranslation(midCircle.getRandomPointInside());
+//            bull.finalise();
+//            rootNode.attachChild(bull.getSpatial());
+//            allEntities.add(bull);
+//        }
 
-        for (int i = 0; i < 2; i++) {
-            Bull bull = (Bull) entityManager.create(Entity.BULL);
-            bull.getSpatial().addControl(new MoveRandomControl(bull, midCircle));
-            bull.getSpatial().addControl(new AggroControl(bull, 20f, 7.5f, new AggroBehaviorStare(0.5f), null));
-            bull.getSpatial().setLocalTranslation(midCircle.getRandomPointInside());
-            bull.finalise();
-            rootNode.attachChild(bull.getSpatial());
-            allEntities.add(bull);
-        }
+        Creature c = new CreatureElephant();
+        c.getSpatial().setLocalTranslation(60f, 0f, 0f);
+        c.finalise();
+        rootNode.attachChild(c.getSpatial());
+        allEntities.add(c);
 
         MainCharacter mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
         mainCharacter.getSpatial().move(0, 10, 0);

@@ -21,6 +21,8 @@ import com.teamjmonkey.sound.SoundManager;
 import com.teamjmonkey.ui.UIManager;
 import com.teamjmonkey.util.GameState;
 import com.teamjmonkey.util.PreloadManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameNameGoesHere extends SimpleApplication {
 
@@ -75,6 +77,9 @@ public class GameNameGoesHere extends SimpleApplication {
         uiManager.showMainMenu();
         inputManager.setCursorVisible(true);
         stateManager.detach(stateManager.getState(StatsAppState.class));
+
+        Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE);
+        Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE);
     }
 
     public PreloadManager getPreloadManager() {

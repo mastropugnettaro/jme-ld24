@@ -2,21 +2,24 @@ package com.teamjmonkey.ai.aggro;
 
 import com.jme3.scene.Spatial;
 import com.teamjmonkey.ai.areas.WalkableArea;
+import com.teamjmonkey.animation.AnimType;
 import com.teamjmonkey.controls.MoveRandomControl;
 
-public class AggroBehaviorChase extends AggroBehaviorBase {
+public class AggroBehaviorChaseFood extends AggroBehaviorBase {
 
     private WalkableArea area;
     private float speed;
+    private boolean isHappy;
 
-    public AggroBehaviorChase(WalkableArea area, float speed) {
+    public AggroBehaviorChaseFood(WalkableArea area, float speed) {
         this.area = area;
         this.speed = speed;
     }
 
     public void onAggro(Spatial target) {
+        isHappy = false;
         interruptOtherActions();
-        entity.moveTo(target.getLocalTranslation(), speed, 1f);
+        entity.jumpAnim();
     }
 
     private void interruptOtherActions() {
@@ -40,11 +43,17 @@ public class AggroBehaviorChase extends AggroBehaviorBase {
 
     public void update(float tpf, Spatial target, boolean hasOtherAggroType) {
         if (!hasOtherAggroType) {
-            if (area.isLocationInside(target.getLocalTranslation())) {
-                entity.moveTo(target.getLocalTranslation(), speed, 1f);
+            if (isHappy) {
+                if (area.isLocationInside(target.getLocalTranslation())) {
+                    entity.moveTo(target.getLocalTranslation(), speed, 1f);
+                } else {
+                    entity.stop();
+                    //System.out.println("out of range");
+                }
             } else {
-                entity.stop();
-                //System.out.println("out of range");
+                if (entity.getAnimComponent().getCurAnim().equals(AnimType.IDLE)) {
+                    isHappy = true;
+                }
             }
         }
     }
