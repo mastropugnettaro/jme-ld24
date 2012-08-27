@@ -17,7 +17,7 @@ import com.teamjmonkey.sound.SoundManager;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.teamjmonkey.entity.BaseEntity;
-import com.teamjmonkey.entity.Spear;
+import com.teamjmonkey.entity.weapons.Spear;
 import java.util.LinkedList;
 
 public class Level3 implements Level {

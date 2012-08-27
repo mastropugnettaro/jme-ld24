@@ -4,13 +4,18 @@ public class AnimType{
 
         // Common animations
 	public final static String WALK = "Walk";
-	public final static String IDLE = "Idle";
+	public final static String STAND = "Stand";
         public final static String EAT = "Eat";
         public final static String ATTACK = "Attack";
 	public final static String JUMP = "Jump";
+	public final static String IDLE = "Idle";
 
         // Other unique ones
 	public final static String RUN = "run";
+        public final static String ATTACK_STAB = "Stab";
+        public final static String FIRE = "Fire";
+        public final static String PUMP = "Pump";
+
 	public final static String ATTACK1 = "attack1";
 	public final static String ATTACK2 = "attack2";
 	public final static String DIE1 = "die1";

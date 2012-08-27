@@ -17,7 +17,7 @@ import com.teamjmonkey.sound.SoundManager;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.teamjmonkey.entity.BaseEntity;
-import com.teamjmonkey.entity.Spear;
+import com.teamjmonkey.entity.weapons.Gun;
 import java.util.LinkedList;
 
 public class Level4 implements Level {
@@ -61,10 +61,10 @@ public class Level4 implements Level {
         rootNode.attachChild(mainCharacter.getSpatial());
         allEntities.add(mainCharacter);
 
-        Spear spear = (Spear) entityManager.create(Entity.SPEAR);
-        spear.finalise();
-        rootNode.attachChild(spear.getSpatial());
-        allEntities.add(spear);
+        Gun gun = (Gun) entityManager.create(Entity.GUN);
+        gun.finalise();
+        rootNode.attachChild(gun.getSpatial());
+        allEntities.add(gun);
     }
 
     @Override

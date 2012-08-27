@@ -1,8 +1,13 @@
 package com.teamjmonkey.entity;
 
+import com.teamjmonkey.entity.weapons.Gun;
+import com.teamjmonkey.entity.weapons.Spear;
+import com.teamjmonkey.entity.weapons.Sword;
+
 public enum Entity {
 
-    TEST_FLOOR, MAIN_CHARACTER, BULL, STATIC_BLOCK, SPEAR;
+    TEST_FLOOR, MAIN_CHARACTER, BULL, STATIC_BLOCK, SPEAR_OLD,
+    SPEAR, SWORD, GUN;
 
     public BaseEntity createEntity() {
 
@@ -18,11 +23,20 @@ public enum Entity {
             case BULL:
                 entity = new Bull();
                 break;
-            case STATIC_BLOCK:  
+            case STATIC_BLOCK:
                 entity = new StaticBlock();
+                break;
+            case SPEAR_OLD:
+                entity = new SpearOld();
                 break;
             case SPEAR:
                 entity = new Spear();
+                break;
+            case SWORD:
+                entity = new Sword();
+                break;
+            case GUN:
+                entity = new Gun();
                 break;
             default:
                 entity = new MainCharacter();

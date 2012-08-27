@@ -1,9 +1,13 @@
 package com.teamjmonkey.animation;
 
 import com.jme3.animation.AnimControl;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.Savable;
 import com.jme3.scene.Spatial;
+import java.io.IOException;
 
-public class AnimComponent {
+public class AnimComponent implements Savable {
 
     private String curAnim;
     private String prevAnim;
@@ -18,9 +22,18 @@ public class AnimComponent {
 
             animControl.getChannel(AnimConf.UPPER_BODY).setAnim("Walk");
 
-           // animControl.getChannel(AnimConf.UPPER_BODY).setAnim("Idle"); //need init animation
+            // animControl.getChannel(AnimConf.UPPER_BODY).setAnim("Idle"); //need init animation
         }
+    }
 
+    public AnimComponent(Spatial model, String animType) {
+        this.model = model;
+        if (model != null) {
+            this.animControl = model.getControl(AnimControl.class);
+            createChannels();
+
+            animControl.getChannel(AnimConf.UPPER_BODY).setAnim(animType);
+        }
     }
 
     public AnimComponent(String curAnim) {
@@ -65,5 +78,13 @@ public class AnimComponent {
 
     public void setModel(Spatial model) {
         this.model = model;
+    }
+
+    @Override
+    public void write(JmeExporter e) throws IOException {
+    }
+
+    @Override
+    public void read(JmeImporter e) throws IOException {
     }
 }

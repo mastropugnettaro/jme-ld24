@@ -1,5 +1,6 @@
 package com.teamjmonkey.controls;
 
+import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -20,10 +21,19 @@ public class WeaponFollowCamControl extends BaseControl {
         Quaternion worldDiff = new Quaternion(cam.getRotation().subtract(spatial.getWorldRotation()));
         spatial.setLocalRotation(worldDiff.addLocal(spatial.getLocalRotation()));
 
-        spatial.setLocalRotation(spatial.getLocalRotation().mult(new Quaternion().fromAngles(0, 0, 0.2f)));
-        spatial.move(cam.getDirection().mult(3));
-        spatial.move(cam.getLeft().mult(1).negateLocal());
+        if (spatial.getName().equals("gun")) {
+            spatial.move(cam.getDirection().mult(3));
+            spatial.move(cam.getUp().mult(-0.8f));
+            spatial.move(cam.getLeft().mult(-1f));
+            spatial.rotate(0.3f, FastMath.PI, 0);
 
+        } else {
+            spatial.move(cam.getDirection().mult(2));
+            spatial.move(cam.getUp().mult(-1.5f));
+            spatial.move(cam.getLeft().mult(-1f));
+
+            spatial.setLocalRotation(spatial.getLocalRotation().mult(new Quaternion().fromAngles(FastMath.PI - 0.3f, 0, -0.2f)));
+        }
     }
 
     @Override
