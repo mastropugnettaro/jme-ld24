@@ -4,7 +4,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.LowPassFilter;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
@@ -113,7 +112,7 @@ public class Island_02 extends SimpleApplication {
         cam.setLocation(new Vector3f(-186.47707f, 19.662216f, -72.307915f));
         cam.lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
 
-        cc = new GameStartCinematic(this, fade);
+       // cc = new GameStartCinematic(this, fade);
         cc.attach();
         fade.setValue(0f);
 

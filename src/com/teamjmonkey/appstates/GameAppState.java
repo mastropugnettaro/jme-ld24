@@ -59,7 +59,7 @@ public class GameAppState extends AbstractAppState implements ScreenController {
 
         initCrossHairs();
 
-        uiManager.createUIProducts();
+       // uiManager.createUIProducts();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class GameAppState extends AbstractAppState implements ScreenController {
         // deatch all Level States
         myApp.getStateManager().detach(myApp.getStateManager().getState(LevelCommon.class));
         myApp.getStateManager().getState(AnimManager.class).freezeAnimations();
-        myApp.getStateManager().detach(myApp.getStateManager().getState(AnimManager.class));      
+        myApp.getStateManager().detach(myApp.getStateManager().getState(AnimManager.class));
         myApp.getStateManager().detach(myApp.getStateManager().getState(NewFlyCamAppState.class));
         myApp.getBulletAppState().setEnabled(false);
 

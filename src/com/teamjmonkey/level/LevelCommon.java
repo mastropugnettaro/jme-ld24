@@ -79,7 +79,7 @@ public class LevelCommon extends AbstractAppState {
         
         water = new WaterFilter(rootNode, lightDir);
         
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = myApp.getFpp();
         
         fpp.addFilter(water);
         BloomFilter bloom = new BloomFilter();
