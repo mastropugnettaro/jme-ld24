@@ -57,6 +57,7 @@ public class LoadingScreenAppState extends AbstractAppState implements ScreenCon
             stateManager.detach(this);
 
             myApp.getInputManager().setCursorVisible(false);
+            
             levelManager.load(levelManager.getCurrentIntLevel());
             stateManager.attach(myApp.getMonkeyAppStateManager().getAppState(GameAppState.class));
         }

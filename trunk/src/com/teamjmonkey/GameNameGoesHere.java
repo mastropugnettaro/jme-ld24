@@ -3,6 +3,7 @@ package com.teamjmonkey;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.font.BitmapFont;
 import com.jme3.system.AppSettings;
 import com.teamjmonkey.animation.AnimManager;
 import com.teamjmonkey.appstates.GameAppState;
@@ -163,5 +164,9 @@ public class GameNameGoesHere extends SimpleApplication {
     @Override
     public void gainFocus() {
         //super.gainFocus();
+    }
+
+    public BitmapFont getFont() {
+        return guiFont;
     }
 }
