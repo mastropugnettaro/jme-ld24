@@ -113,6 +113,15 @@ public class LevelManager extends AbstractAppState implements Manager {
 
         cc = new GameStartCinematic(myApp);
         cc.attach();
+
+        myApp.getStateManager().detach(this);
+        myApp.getCamera().setRotation(Quaternion.IDENTITY);
+        mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
+        mainCharacter.getSpatial().move(-130, 60, -60);
+        rootNode.attachChild(mainCharacter.getSpatial());
+        //currentLevel.getAllEntities().add(mainCharacter);
+
+        myApp.getStateManager().attach(this);
     }
 
     private void addEnemy(Enemy enemy, float enemySize, Vector3f spawn) {
@@ -149,7 +158,6 @@ public class LevelManager extends AbstractAppState implements Manager {
                 currentLevel.getAllEntities().add(apple);
             }
         }
-        myApp.getStateManager().attach(this);
     }
     private float time = 0;
     private boolean run = true;
@@ -162,13 +170,9 @@ public class LevelManager extends AbstractAppState implements Manager {
             cc.play();
             run = false;
         } else if (!run && !cc.isRunning()) {
-            myApp.getCamera().setRotation(Quaternion.IDENTITY);
-            mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
-            mainCharacter.getSpatial().move(-130, 60, -60);
             mainCharacter.finalise();
-            rootNode.attachChild(mainCharacter.getSpatial());
-            currentLevel.getAllEntities().add(mainCharacter);
             myApp.getStateManager().detach(this);
+
         }
     }
 

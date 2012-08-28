@@ -50,13 +50,13 @@ public class FoodThrowControl extends BaseControl implements ActionListener {
         if (!isPressed && name.equals(LEFT_CLICK)) {
             // apply a force in the cam direction
 
-            ((Apple)(spatial.getUserData("entity"))).addPhysicsControl();
+            ((Apple) (spatial.getUserData("entity"))).addPhysicsControl();
 
-          //  RigidBodyControl control = spatial.getControl(RigidBodyControl.class);
-          //  control.setEnabled(true);
-           // FoodEntity
-       //     control.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_04);
-   //         control.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_03);
+            //  RigidBodyControl control = spatial.getControl(RigidBodyControl.class);
+            //  control.setEnabled(true);
+            // FoodEntity
+            //     control.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_04);
+            //         control.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_03);
             Apple.currentlyHolding = false;
             spatial.getControl(RigidBodyControl.class).setLinearVelocity(cam.getDirection().mult(25));
             cleanup();
