@@ -2,6 +2,7 @@ package com.teamjmonkey.level;
 
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -161,8 +162,9 @@ public class LevelManager extends AbstractAppState implements Manager {
             cc.play();
             run = false;
         } else if (!run && !cc.isRunning()) {
+            myApp.getCamera().setRotation(Quaternion.IDENTITY);
             mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
-            mainCharacter.getSpatial().move(-130, 40, -60);
+            mainCharacter.getSpatial().move(-130, 60, -60);
             mainCharacter.finalise();
             rootNode.attachChild(mainCharacter.getSpatial());
             currentLevel.getAllEntities().add(mainCharacter);

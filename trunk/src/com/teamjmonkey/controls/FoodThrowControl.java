@@ -57,7 +57,7 @@ public class FoodThrowControl extends BaseControl implements ActionListener {
            // FoodEntity
        //     control.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_04);
    //         control.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_03);
-
+            Apple.currentlyHolding = false;
             spatial.getControl(RigidBodyControl.class).setLinearVelocity(cam.getDirection().mult(25));
             cleanup();
         }
