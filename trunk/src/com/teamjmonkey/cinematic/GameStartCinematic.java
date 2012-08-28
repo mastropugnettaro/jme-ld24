@@ -15,21 +15,18 @@ public class GameStartCinematic implements CinematicComposition {
 
     private SimpleApplication myApp;
     private Cinematic cinematic;
-    private FadeFilter fade;
     private MotionEvent seagullCamMotion1;
     private MotionEvent seagullCamMotion2;
     private final float overallTime = 36f;
 
-    public GameStartCinematic(SimpleApplication myApp, FadeFilter fade) {
+    public GameStartCinematic(SimpleApplication myApp) {
         this.myApp = myApp;
-        this.fade = fade;
         this.cinematic = new Cinematic(myApp.getRootNode(), overallTime, LoopMode.DontLoop);
         createCamMotionPath();
         createCinematic();
     }
 
     private void createCinematic() {
-        cinematic.addCinematicEvent(0f, new FadeEvent(cinematic, fade, true, 1f));
         cinematic.activateCamera(0f, "seagull");
         cinematic.addCinematicEvent(2f, seagullCamMotion1);
         cinematic.addCinematicEvent(12f, seagullCamMotion2);

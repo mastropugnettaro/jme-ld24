@@ -45,7 +45,6 @@ public class GameNameGoesHere extends SimpleApplication {
     private PhysicsManager physicsManager;
     private SoundManager soundManager;
     private AnimManager animManager;
-
     private FilterPostProcessor fpp;
 
     public GameNameGoesHere() {
@@ -79,7 +78,7 @@ public class GameNameGoesHere extends SimpleApplication {
         animManager = new AnimManager();
 
         levelManager = new LevelManager();
-        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+        //bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
         uiManager.showMainMenu();
         inputManager.setCursorVisible(true);
@@ -176,6 +175,7 @@ public class GameNameGoesHere extends SimpleApplication {
     public BitmapFont getFont() {
         return guiFont;
     }
+
     public FilterPostProcessor getFpp() {
         return fpp;
     }

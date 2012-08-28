@@ -123,7 +123,6 @@ public class LevelCommon extends AbstractAppState {
     @Override
     public void stateAttached(AppStateManager stateManager) {
         super.stateAttached(stateManager);
-        cam.setLocation(new Vector3f(0, 10, 0));
     }
     
     @Override

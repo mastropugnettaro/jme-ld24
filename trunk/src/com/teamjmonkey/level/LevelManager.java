@@ -2,11 +2,7 @@ package com.teamjmonkey.level;
 
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
-import com.jme3.math.Quaternion;
-
 import com.jme3.math.Vector3f;
-import com.jme3.post.FilterPostProcessor;
-import com.jme3.post.filters.FadeFilter;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.teamjmonkey.GameNameGoesHere;
@@ -16,12 +12,9 @@ import com.teamjmonkey.ai.areas.WalkableArea;
 import com.teamjmonkey.ai.areas.WalkableRectangle;
 import com.teamjmonkey.animation.AnimManager;
 import com.teamjmonkey.appstates.LoadingScreenAppState;
-
 import com.teamjmonkey.cinematic.CinematicComposition;
 import com.teamjmonkey.cinematic.GameStartCinematic;
-
 import com.teamjmonkey.controls.AggroControl;
-
 import com.teamjmonkey.controls.ControlManager;
 import com.teamjmonkey.controls.MoveRandomControl;
 import com.teamjmonkey.entity.Enemy;
@@ -54,7 +47,6 @@ public class LevelManager extends AbstractAppState implements Manager {
     private final int NUM_LEVELS;
     private Node island;
     private CinematicComposition cc;
-    private FadeFilter fade;
     private MainCharacter mainCharacter;
 
     public LevelManager() {
@@ -87,6 +79,9 @@ public class LevelManager extends AbstractAppState implements Manager {
 
     // only call this once during the first ever level
     public void initialiseGameStatesOnce() {
+        myApp.getCamera().setLocation(new Vector3f(-231.00694f, 269.15887f, 319.6499f));
+        myApp.getCamera().lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
+
         // Load LevelCommon
 
         // Load Island
@@ -114,6 +109,9 @@ public class LevelManager extends AbstractAppState implements Manager {
         for (Spatial point : level4enemie.getChildren()) {
             addEnemy((Enemy) Entity.ENEMY_ELEPHANT.createEntity(), 6f, point.getWorldTranslation().add(0f, -15.4556f, 0f));
         }
+
+        cc = new GameStartCinematic(myApp);
+        cc.attach();
     }
 
     private void addEnemy(Enemy enemy, float enemySize, Vector3f spawn) {
@@ -150,26 +148,7 @@ public class LevelManager extends AbstractAppState implements Manager {
                 currentLevel.getAllEntities().add(apple);
             }
         }
-
-        /*
-        FilterPostProcessor fpp = myApp.getFpp();
-        myApp.getCamera().setLocation(new Vector3f(-186.47707f, 19.662216f, -72.307915f));
-        myApp.getCamera().lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
-
-        fade = new FadeFilter();
-        fpp.addFilter(fade);
-
-        cc = new GameStartCinematic(myApp, fade);
-        cc.attach();
-        fade.setValue(0f);
-
         myApp.getStateManager().attach(this);
-         */
-        mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
-        mainCharacter.getSpatial().move(-130, 40, -60);
-        mainCharacter.finalise();
-        rootNode.attachChild(mainCharacter.getSpatial());
-        currentLevel.getAllEntities().add(mainCharacter);
     }
     private float time = 0;
     private boolean run = true;
@@ -177,11 +156,16 @@ public class LevelManager extends AbstractAppState implements Manager {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-
         time += tpf;
-        if (time > 7f && run) {
+        if (run && time > 2f) {
             cc.play();
             run = false;
+        } else if (!run && !cc.isRunning()) {
+            mainCharacter = (MainCharacter) entityManager.create(Entity.MAIN_CHARACTER);
+            mainCharacter.getSpatial().move(-130, 40, -60);
+            mainCharacter.finalise();
+            rootNode.attachChild(mainCharacter.getSpatial());
+            currentLevel.getAllEntities().add(mainCharacter);
             myApp.getStateManager().detach(this);
         }
     }
@@ -229,7 +213,7 @@ public class LevelManager extends AbstractAppState implements Manager {
         // cleanup();
 
         //this calls currentLevel.load() inside
-      //  myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
+        //  myApp.getStateManager().attach(myApp.getMonkeyAppStateManager().getAppState(LoadingScreenAppState.class));
     }
 
     public void loadNextLevel() {
@@ -256,15 +240,11 @@ public class LevelManager extends AbstractAppState implements Manager {
 
     @Override
     public void cleanup() {
-
-
         materialManager.cleanup();
         physicsManager.cleanup();
         soundManager.cleanup();
         graphicsManager.cleanup();
-
-//        currentLevel.cleanup();
-        //  animManager.cleanup();
-
+        //currentLevel.cleanup();
+        // animManager.cleanup();
     }
 }
