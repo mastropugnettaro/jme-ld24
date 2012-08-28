@@ -18,6 +18,7 @@ public class Apple extends FoodEntity implements PhysicsCollisionListener {
     private RigidBodyControl rigidBodyControl;
     private Random random = new Random();
     private boolean stopColliding = false;
+    public static boolean currentlyHolding = false;
 
     public Apple() {
         super(Graphics.APPLE);
@@ -91,7 +92,8 @@ public class Apple extends FoodEntity implements PhysicsCollisionListener {
 
         //  System.out.println("ger");
 
-        if (spatial == null || event.getNodeA() == null || event.getNodeB() == null || stopColliding) {
+        if (spatial == null || event.getNodeA() == null || event.getNodeB() == null || stopColliding
+                || currentlyHolding) {
             return;
         }
 
@@ -110,6 +112,7 @@ public class Apple extends FoodEntity implements PhysicsCollisionListener {
             // spatial.getControl(MonkeyControl.FOOD_THROW_CONTROL.getClazz()).cleanup();
             // spatial.getControl(MonkeyControl.WEAPON_FOLLOW_CAM.getClazz()).cleanup();
             addControl();
+            currentlyHolding = true;
 
             spatial.removeControl(rigidBodyControl);
             bulletAppState.getPhysicsSpace().remove(rigidBodyControl);
